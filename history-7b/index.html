@@ -543,20 +543,31 @@ document.addEventListener('click', function(e) {
     
     if (foundData) {
       document.getElementById('modalTitle').textContent = foundData.keyword;
-      let bodyHtml = '';
       
-      if (foundData.tb) {
-        bodyHtml += `<div class="modal-section"><h3><span class="tag textbook">📖 课本详解</span></h3>${formatTbContent(foundData.tb)}</div>`;
-      }
-      if (foundData.exam) {
-        bodyHtml += `<div class="modal-section"><h3><span class="tag exam">📝 相关真题</span></h3><p>${foundData.exam}</p></div>`;
-      }
+      let tbContent = foundData.tb ? formatTbContent(foundData.tb) : '<p style="color:#999">暂无内容</p>';
+      let examContent = foundData.exam ? `<p>${foundData.exam}</p>` : '<p style="color:#999">📌 等你发了真题，我会补到这里～</p>';
       
-      document.getElementById('modalBody').innerHTML = bodyHtml || '<p style="color:#999">暂无详细信息</p>';
+      document.getElementById('modalBody').innerHTML = `
+        <div class="detail-tabs" style="margin-bottom:14px">
+          <div class="detail-tab active" onclick="switchModalTab(this,0)">📖 课本详解</div>
+          <div class="detail-tab" onclick="switchModalTab(this,1)">📝 相关真题</div>
+        </div>
+        <div class="tab-content" data-tab="0">${tbContent}</div>
+        <div class="tab-content" data-tab="1" style="display:none">${examContent}</div>
+      `;
       document.getElementById('modalOverlay').classList.add('show');
     }
   }
 });
+
+function switchModalTab(tab, index) {
+  const tabs = tab.parentElement.querySelectorAll('.detail-tab');
+  tabs.forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  const body = document.getElementById('modalBody');
+  body.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+  body.querySelectorAll('.tab-content')[index].style.display = 'block';
+}
 
 function closeModal() {
   document.getElementById('modalOverlay').classList.remove('show');
