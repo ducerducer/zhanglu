@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boss Dog - 英语学习</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .header {
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+      color: white;
+    }
+    .header h1 {
+      font-size: 28px;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      flex: 1;
+      padding: 0 20px 20px;
+    }
+    iframe {
+      width: 100%;
+      height: calc(100vh - 140px);
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      background: white;
+    }
+    .footer {
+      padding: 12px;
+      color: rgba(255,255,255,0.7);
+      font-size: 12px;
+      text-align: center;
+    }
+    .footer a {
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+    }
+    .loading {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #666;
+      font-size: 16px;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🐾 The Boss Dog of Blossom Street</h1>
+    <p>英语互动学习 · 原文展示 · 生词释义 · 练习题溯源</p>
+  </div>
+  <div class="container">
+    <div class="loading">加载中...</div>
+    <iframe src="https://zcnmb91bcqdj.aiforce.cloud/app/app_4k5budxz43wg3" 
+            title="Boss Dog 英语学习"
+            allow="clipboard-read; clipboard-write"
+            loading="lazy">
+    </iframe>
+  </div>
+  <div class="footer">
+    由 <a href="https://github.com/ducerducer/zhanglu">zhanglu</a> 提供 · 
+    <a href="https://zcnmb91bcqdj.aiforce.cloud/app/app_4k5budxz43wg3" target="_blank">在新窗口打开</a>
+  </div>
+</body>
+</html>
