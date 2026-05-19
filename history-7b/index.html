@@ -501,7 +501,7 @@ function toggleDetail(header) {
     KNOWLEDGE.forEach(p => {
       p.chapters.forEach(ch => {
         ch.points.forEach(pt => {
-          if (pt.num === num && textDiv.innerHTML.includes(pt.text.substring(0, 20))) {
+          if (pt.num === num && textDiv.textContent.includes(pt.text.substring(0, 20))) {
             foundPt = pt;
             foundCh = ch;
           }
