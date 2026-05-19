@@ -597,14 +597,14 @@ function buildPage() {
         html += `<div class="kp-text">${text}</div>`;
         html += `</div></div>`;
       });
+      const svgs = CHAPTER_SVGS[ch.id] || [];
+      svgs.forEach(svgKey => {
+        if (SVGS[svgKey]) {
+          html += SVGS[svgKey];
+        }
+      });
     });
     html += `</div>`;
-    const svgs = CHAPTER_SVGS[ch.id] || [];
-    svgs.forEach(svgKey => {
-      if (SVGS[svgKey]) {
-        html += SVGS[svgKey];
-      }
-    });
   });
 
   app.innerHTML = html;
