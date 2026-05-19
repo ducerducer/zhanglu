@@ -14,6 +14,15 @@
 
 ---
 
+### 📜 七年级下册历史知识点
+隋唐→辽宋夏金元→明清，共9大考点，红色关键词点击展开课本详解
+- 基于统编版·人民教育出版社教材
+- 适配手机和电脑
+
+👉 [**打开历史知识点**](https://ducerducer.github.io/learning-apps/history-7b/)
+
+---
+
 ### 🤖 micro:bit MakeCode 项目（2019 →）
 
 > 📁 源码在 `microbit/` 目录下
@@ -22,7 +31,6 @@
 
 - `pxt.json` — 项目配置
 - `main.ts` / `main.blocks` / `main.py` — 三种编辑模式的源代码
-- 具体玩法可以打开 [https://makecode.microbit.org/](https://makecode.microbit.org/) → **导入** → 输入仓库地址查看
 
 ---
 
@@ -31,6 +39,7 @@
 ```
 learning-apps/
 ├── boss-dog/        # Boss Dog 英语学习页
+├── history-7b/      # 七年级下册历史知识点
 ├── microbit/        # 5年前的 micro:bit 项目
 └── README.md        # 就是本页
 ```
