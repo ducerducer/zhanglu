@@ -14,30 +14,23 @@
 
 ---
 
-### 🤖 micro:bit MakeCode 扩展
+### 🤖 micro:bit MakeCode 项目（2019 →）
 
-> 在 [https://ducerducer.github.io/learning-apps/](https://ducerducer.github.io/learning-apps/) 打开此页面
+> 📁 源码在 `microbit/` 目录下
 
-#### 用作扩展
+一个 5 年前的 micro:bit MakeCode 小项目，用 AB 键控制跳动的心 ❤️
 
-此仓库可以作为 **插件** 添加到 MakeCode 中。
+- `pxt.json` — 项目配置
+- `main.ts` / `main.blocks` / `main.py` — 三种编辑模式的源代码
+- 具体玩法可以打开 [https://makecode.microbit.org/](https://makecode.microbit.org/) → **导入** → 输入仓库地址查看
 
-* 打开 [https://makecode.microbit.org/](https://makecode.microbit.org/)
-* 点击 **新项目**
-* 点击齿轮图标菜单下的 **扩展**
-* 搜索 **https://github.com/ducerducer/learning-apps** 并导入
+---
 
-#### 编辑此项目 ![构建状态标志](https://github.com/ducerducer/learning-apps/workflows/MakeCode/badge.svg)
+## 📂 目录结构
 
-* 打开 [https://makecode.microbit.org/](https://makecode.microbit.org/)
-* 点击 **导入**，然后点击 **导入 URL**
-* 粘贴 **https://github.com/ducerducer/learning-apps** 并点击导入
-
-#### 积木块预览
-
-![块的渲染视图](https://github.com/ducerducer/learning-apps/raw/master/.github/makecode/blocks.png)
-
-#### 元数据（用于搜索、渲染）
-
-* for PXT/microbit
-<script src="https://makecode.com/gh-pages-embed.js"></script><script>makeCodeRender("{{ site.makecode.home_url }}", "{{ site.github.owner_name }}/{{ site.github.repository_name }}");</script>
+```
+learning-apps/
+├── boss-dog/        # Boss Dog 英语学习页
+├── microbit/        # 5年前的 micro:bit 项目
+└── README.md        # 就是本页
+```
