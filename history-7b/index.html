@@ -43,8 +43,17 @@ header h1 .icon{width:32px;height:32px;border-radius:8px;background:#FDE8E4;disp
 .detail-tab{padding:8px 16px;font-size:12px;cursor:pointer;border-bottom:2px solid transparent;color:#888;transition:all .2s}
 .detail-tab.active{color:#C0392B;border-bottom-color:#C0392B;font-weight:600}
 .detail-body{padding:14px 16px;font-size:13px;line-height:1.8;color:#555}
-.detail-body .tb{background:#FFF8F0;border-left:3px solid #C0392B;padding:10px 14px;margin-bottom:10px;border-radius:0 6px 6px 0}
-.detail-body .exam{background:#F0F4FF;border-left:3px solid #2980B9;padding:10px 14px;margin-bottom:10px;border-radius:0 6px 6px 0}
+.detail-body .tb{background:#FFF8F0;border-left:3px solid #C0392B;padding:12px 16px;margin-bottom:12px;border-radius:0 8px 8px 0;font-size:13.5px;line-height:1.9;color:#2C3E50}
+.detail-body .tb .hl-dynasty{color:#C0392B;font-weight:600}
+.detail-body .tb .hl-year{color:#8E44AD;font-weight:600}
+.detail-body .tb .hl-person{color:#2C3E8C;font-weight:600}
+.detail-body .tb .hl-term{color:#1A7C3E;font-weight:600}
+.detail-body .tb .hl-place{color:#D35400;font-weight:600}
+.detail-body .tb .sec-label{display:inline-flex;align-items:center;gap:4px;background:#E8E0D5;padding:1px 10px;border-radius:4px;font-size:11px;color:#666;font-weight:500;margin-right:4px}
+.detail-body .tb p{margin-bottom:8px}
+.detail-body .tb p:last-child{margin-bottom:0}
+.detail-body .tb .sub-section{margin-top:10px;padding-top:8px;border-top:1px dashed #E0D5C8}
+.detail-body .exam{background:#F0F4FF;border-left:3px solid #2980B9;padding:12px 16px;margin-bottom:12px;border-radius:0 8px 8px 0}
 .detail-body .exam-q{font-weight:600;color:#2980B9;margin-bottom:4px}
 .detail-body .exam-a{color:#666}
 
@@ -63,6 +72,8 @@ header h1 .icon{width:32px;height:32px;border-radius:8px;background:#FDE8E4;disp
 .modal-section h3 .tag.textbook{background:#C0392B}
 .modal-section h3 .tag.exam{background:#2980B9}
 .modal-section p{font-size:14px;line-height:1.9;color:#444}
+.modal-body .tb{margin:0}
+.modal-body .hl-dynasty,.modal-body .hl-year,.modal-body .hl-person,.modal-body .hl-term,.modal-body .hl-place{font-size:14px}
 
 /* Loading/Skeleton */
 .loading{text-align:center;padding:40px;color:#999}
@@ -432,6 +443,48 @@ buildPage();
 
 // ==================== INTERACTIONS ====================
 
+// Format textbook content for better readability
+function formatTbContent(text) {
+  // Split into paragraphs by period/new sections
+  let paras = text.split(/(?<=[。！？])/);
+  
+  // Rejoin and format each paragraph
+  return paras.map(p => {
+    if (!p.trim()) return '';
+    
+    // Must-have keywords to bold
+    let formatted = p;
+    // Highlight year-like patterns: 581年, 589年, 627年—649年
+    formatted = formatted.replace(/(\d{3,4})年/g, '<span class="hl-year">$1</span>年');
+    // Bold dynasty names
+    const dynasties = ['隋朝','唐朝','宋朝','元朝','明朝','清朝','西周','东周','秦朝','汉朝','三国','魏晋','南北朝','隋唐','辽朝','西夏','金朝','南宋','北宋','五代十国'];
+    dynasties.forEach(d => {
+      const re = new RegExp(d.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+      formatted = formatted.replace(re, `<span class="hl-dynasty">${d}</span>`);
+    });
+    // Bold key historical person names (frequently occurring)
+    const persons = ['杨坚','李世民','武则天','赵匡胤','朱元璋','朱棣','忽必烈','成吉思汗','铁木真','岳飞','文成公主','松赞干布','玄奘','鉴真','郑和','戚继光','李自成','郑成功','康熙','乾隆','雍正','秦始皇','汉武帝','唐太宗','宋太祖','明太祖','明成祖','王安石','司马光','李时珍','宋应星','徐光启','黄宗羲','顾炎武','王夫之','曹雪芹','关汉卿','苏轼','辛弃疾','李清照','陆游','张居正','吴三桂','噶尔丹','林则徐'];
+    persons.forEach(pr => {
+      const re = new RegExp(pr.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+      formatted = formatted.replace(re, `<span class="hl-person">${pr}</span>`);
+    });
+    // Bold key terms
+    const terms = ['三省六部制','科举制','八股文','行省制度','军机处','一条鞭法','闭关锁国','崇文抑武','杯酒释兵权','澶渊之盟','靖康之变','安史之乱','贞观之治','开元盛世','文景之治','康乾盛世','推恩令','焚书坑儒','商鞅变法','戊戌变法','辛亥革命','鸦片战争','五四运动','均田制','租庸调制','两税法','摊丁入亩'];
+    terms.forEach(t => {
+      const re = new RegExp(t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+      formatted = formatted.replace(re, `<span class="hl-term">${t}</span>`);
+    });
+    // Bold place names
+    const places = ['长安','洛阳','开封','临安','大都','北京','南京','大兴','涿郡','余杭','西域','天竺','吐蕃'];
+    places.forEach(pl => {
+      const re = new RegExp(pl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+      formatted = formatted.replace(re, `<span class="hl-place">${pl}</span>`);
+    });
+    
+    return `<p>${formatted}</p>`;
+  }).filter(p => p.trim()).join('');
+}
+
 function toggleDetail(header) {
   const card = header.closest('.kp-card');
   let detail = card.querySelector('.kp-detail');
@@ -468,7 +521,7 @@ function toggleDetail(header) {
     if (foundPt && foundPt.kws) {
       Object.keys(foundPt.kws).forEach((kw, i) => {
         if (i > 0) tbHtml += '<hr style="border:none;border-top:1px dashed #E8E0D5;margin:12px 0">';
-        tbHtml += `<div class="tb"><strong style="color:#C0392B">🔍 ${kw}</strong><br><br>${foundPt.kws[kw].tb}</div>`;
+        tbHtml += `<div class="tb"><div style="color:#C0392B;font-weight:600;margin-bottom:8px;font-size:14px">🔍 ${kw}</div>${formatTbContent(foundPt.kws[kw].tb)}</div>`;
         if (foundPt.kws[kw].exam) {
           examHtml = examHtml.replace('<div style="color:#999;padding:10px">📌 等你发了真题，我会补到这里～</div>', '');
           examHtml += `<div class="exam"><div class="exam-q">${foundPt.kws[kw].exam}</div></div>`;
@@ -545,7 +598,7 @@ document.addEventListener('click', function(e) {
       let bodyHtml = '';
       
       if (foundData.tb) {
-        bodyHtml += `<div class="modal-section"><h3><span class="tag textbook">📖 课本详解</span></h3><p>${foundData.tb}</p></div>`;
+        bodyHtml += `<div class="modal-section"><h3><span class="tag textbook">📖 课本详解</span></h3>${formatTbContent(foundData.tb)}</div>`;
       }
       if (foundData.exam) {
         bodyHtml += `<div class="modal-section"><h3><span class="tag exam">📝 相关真题</span></h3><p>${foundData.exam}</p></div>`;
