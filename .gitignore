@@ -9,3 +9,10 @@ _site
 *.tgz
 .header.json
 .simstate.json
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
