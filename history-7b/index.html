@@ -123,13 +123,13 @@ const KNOWLEDGE = [
           }},
           { num: 2, text: "隋的统一，结束了长期分裂局面，顺应了民族交融的大趋势，进一步促进了南北方经济、文化的交流和发展。",
             kws: { "民族交融": { tb: "民族交融是魏晋南北朝时期的重要历史特征。自西晋末年起，北方少数民族大量内迁，匈奴、鲜卑、羯、氐、羌等民族与汉族在长期的共同生活中相互影响。北魏孝文帝改革（494年）推行汉化政策：改汉姓、说汉语、穿汉服、与汉族通婚，加速了北方民族融合。隋朝统一后，南北方的联系更加密切，南方的经济文化成果（如先进的农业生产技术）传入北方，北方的政治制度和文化传统也影响了南方。这种交融为隋唐时期文化的大繁荣奠定了基础，也促进了\"中华\"认同的形成。" } }
-          }},
+          },
           { num: 3, text: "隋朝建立后，发展经济，编订户籍，核实户口，减轻百姓赋役负担，统一币制和度量衡；加强中央集权，修订和减省刑律，简化机构，提高行政效率。隋朝经济迅速恢复和发展，人口数量和垦田面积大幅度增长，成为国力强盛的王朝。",
             kws: { "三省六部制": { tb: "三省六部制是隋朝创立的中央官制。三省指中书省（隋称内史省，负责草拟政令）、门下省（负责审核政令）、尚书省（负责执行政令），三省长官均为宰相，互相牵制。六部指尚书省下属的吏、户、礼、兵、刑、工六部，分别管理官员任免、财政税收、礼仪祭祀、军事、司法刑罚和工程建设。三省六部制将相权一分为三，加强了皇权，同时提高了行政效率。这一制度被唐朝继承并完善，成为此后历代王朝中央官制的基本框架，延续了1300多年。" } }
-          }},
+          },
           { num: 4, text: "为了加强南北交通，巩固隋朝对全国的统治，隋炀帝征发几百万人，从605年起，陆续开凿了一条贯通南北的大运河。大运河以洛阳为中心，北抵涿郡，南至余杭郡，连接了海河、黄河、淮河、长江、钱塘江五大水系，加强了南北地区政治、经济和文化上的交流，有利于国家统一和民族交融。",
             kws: { "大运河": { tb: "隋朝大运河是隋炀帝杨广下令开凿的宏伟水利工程，从605年至610年分多期完成。运河全长约2000多公里，以洛阳为中心，分为永济渠、通济渠、邗沟和江南河四段，北达涿郡（今北京），南至余杭（今杭州），连接了海河、黄河、淮河、长江和钱塘江五大水系。大运河的开凿动用了数百万民夫，给当时人民造成了沉重负担，但客观上加强了南北联系：南方的粮食和物资可以便捷地运往北方，北方的政治军事中心可以更有效地控制南方。大运河成为此后多个朝代的重要运输通道，唐代以后历代均进行了维护和扩建，直至今天仍在发挥作用。" } }
-          }},
+          },
           { num: 5, text: "隋文帝即位后，废除了前朝的选官制度，依才能取士。隋炀帝时，设置进士科，标志着通过考试选拔人才的科举制创立。",
             kws: { "科举制": { tb: "科举制是中国古代通过考试选拔官员的制度。隋文帝废除九品中正制，开始采用分科考试的方式选拔人才。隋炀帝大业年间（605年—618年）正式设置进士科，标志着科举制的创立。科举制打破了门阀世族对官场的垄断，使出身寒门的读书人也能通过考试进入仕途，体现了公平竞争的原则。唐朝进一步完善了科举制度：唐太宗扩大科举规模，武则天创立殿试和武举，唐玄宗时诗赋成为进士科考试的重要内容。科举制一直延续到1905年清朝废除科举，历时约1300年，对中国社会的政治、文化、教育产生了深远影响。" } }
           },
@@ -394,49 +394,7 @@ KNOWLEDGE.forEach((period, i) => {
   nav.appendChild(btn);
 });
 
-// Chapters
-let html = '';
-KNOWLEDGE.forEach(period => {
-  html += `<div class="chapter" id="${period.id}">`;
-  period.chapters.forEach(ch => {
-    html += `<div class="chapter-header"><div class="chapter-num">${ch.id.split('-')[1]}</div><div><div class="chapter-title">${ch.title}</div></div></div>`;
-    ch.points.forEach(pt => {
-      html += `<div class="kp-card"><div class="kp-header" onclick="toggleDetail(this)">`;
-      html += `<div class="kp-num">${pt.num}</div>`;
-      html += `<div class="kp-text">${pt.text.replace(/('kws?':\s*\{[^}]*\})|("kws?":\s*\{[^}]*\})/g, '').replace(/(\u4e00-\u9fff)+/g, match => {
-        // Check if this Chinese phrase is a keyword
-        for (const ch of period.chapters) {
-          for (const p of ch.points) {
-            if (p.kws && p.kws[match]) return `<span class="kw" onclick="event.stopPropagation();showKeyword('${match}', '${ch.id}')">${match}</span>`;
-          }
-        }
-        return match;
-      })}`;
-      html += `</div></div>`;
-      html += `<div class="kp-detail"><div class="detail-tabs"><div class="detail-tab active">📖 课本详解</div><div class="detail-tab">📝 相关真题</div></div><div class="detail-body"><div class="tb">加载中...</div></div></div>`;
-      html += `</div>`;
-    });
-  });
-  html += `</div>`;
-});
-app.innerHTML = html;
-
-// Then after render, replace the simple text matching with our keyword data
-function renderKeywordLinks() {
-  KNOWLEDGE.forEach(period => {
-    period.chapters.forEach(ch => {
-      ch.points.forEach(pt => {
-        if (!pt.kws) return;
-        const cards = document.querySelectorAll('.kp-card');
-        // Find matching card and replace specific words
-        // This is handled by the text replacement above
-      });
-    });
-  });
-}
-
-// Actually, let me rebuild with proper keyword matching
-// The simple approach above won't work perfectly. Let me use a different method.
+// Build page
 function buildPage() {
   let html = '';
   
@@ -447,12 +405,10 @@ function buildPage() {
       ch.points.forEach(pt => {
         // Process text to mark keywords
         let text = pt.text;
-        let hasKws = false;
         if (pt.kws) {
           Object.keys(pt.kws).forEach(kw => {
             const idx = text.indexOf(kw);
             if (idx >= 0) {
-              hasKws = true;
               const before = text.substring(0, idx);
               const after = text.substring(idx + kw.length);
               text = before + `<span class="kw" data-keyword="${kw}" data-chapter="${ch.id}" data-point="${pt.num}">${kw}</span>` + after;
