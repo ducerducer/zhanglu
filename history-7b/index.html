@@ -427,7 +427,7 @@ function buildPage() {
           });
         }
         
-        html += `<div class="kp-card"><div class="kp-header" onclick="toggleDetail(this)">`;
+        html += `<div class="kp-card"><div class="kp-header" onclick="toggleDetail(this, event)">`;
         html += `<div class="kp-num">${pt.num}</div>`;
         html += `<div class="kp-text">${text}</div>`;
         html += `</div></div>`;
@@ -485,78 +485,21 @@ function formatTbContent(text) {
   }).filter(p => p.trim()).join('');
 }
 
-function toggleDetail(header) {
+function toggleDetail(header, evt) {
+  // If clicking on a red keyword, don't expand card (modal handles it)
+  if (evt && evt.target && evt.target.closest && evt.target.closest('.kw')) return;
+  
   const card = header.closest('.kp-card');
   let detail = card.querySelector('.kp-detail');
   
   if (!detail) {
-    // Find the chapter and point data
-    const textDiv = header.querySelector('.kp-text');
-    const numDiv = header.querySelector('.kp-num');
-    const num = parseInt(numDiv.textContent);
-    
-    // Find matching data
-    let foundPt = null;
-    let foundCh = null;
-    KNOWLEDGE.forEach(p => {
-      p.chapters.forEach(ch => {
-        ch.points.forEach(pt => {
-          if (pt.num === num && textDiv.textContent.includes(pt.text.substring(0, 20))) {
-            foundPt = pt;
-            foundCh = ch;
-          }
-        });
-      });
-    });
-    
     detail = document.createElement('div');
-    detail.className = 'kp-detail';
-    
-    let detailHtml = '<div class="detail-tabs"><div class="detail-tab active" onclick="switchTab(this,0)">📖 课本详解</div><div class="detail-tab" onclick="switchTab(this,1)">📝 相关真题</div></div><div class="detail-body">';
-    
-    // Textbook content - build from keywords
-    let tbHtml = '';
-    let examHtml = '<div style="color:#999;padding:10px">📌 等你发了真题，我会补到这里～</div>';
-    
-    if (foundPt && foundPt.kws) {
-      Object.keys(foundPt.kws).forEach((kw, i) => {
-        if (i > 0) tbHtml += '<hr style="border:none;border-top:1px dashed #E8E0D5;margin:12px 0">';
-        tbHtml += `<div class="tb"><div style="color:#C0392B;font-weight:600;margin-bottom:8px;font-size:14px">🔍 ${kw}</div>${formatTbContent(foundPt.kws[kw].tb)}</div>`;
-        if (foundPt.kws[kw].exam) {
-          examHtml = examHtml.replace('<div style="color:#999;padding:10px">📌 等你发了真题，我会补到这里～</div>', '');
-          examHtml += `<div class="exam"><div class="exam-q">${foundPt.kws[kw].exam}</div></div>`;
-        }
-      });
-    } else {
-      tbHtml = '<div style="color:#999">暂无详细内容</div>';
-    }
-    
-    detailHtml += `<div class="tab-content" data-tab="0">${tbHtml}</div>`;
-    detailHtml += `<div class="tab-content" data-tab="1" style="display:none">${examHtml}</div>`;
-    detailHtml += '</div>';
-    
-    detail.innerHTML = detailHtml;
+    detail.className = 'kp-detail show';
+    detail.innerHTML = '<div class="detail-tabs"><div class="detail-tab active">📖 课本详解</div><div class="detail-tab">📝 相关真题</div></div><div class="detail-body" style="padding:10px 16px;color:#999;font-size:12px">点击红色关键词查看课本详解内容</div>';
     card.appendChild(detail);
-    
-    // Smooth show
-    detail.style.display = 'block';
-    detail.style.maxHeight = '0';
-    detail.style.overflow = 'hidden';
-    detail.style.transition = 'max-height 0.3s ease';
-    requestAnimationFrame(() => {
-      detail.style.maxHeight = detail.scrollHeight + 'px';
-    });
   } else {
-    if (detail.classList.contains('show')) {
-      detail.style.maxHeight = '0';
-      setTimeout(() => { detail.style.display = 'none'; detail.classList.remove('show'); }, 300);
-    } else {
-      detail.style.display = 'block';
-      detail.classList.add('show');
-      requestAnimationFrame(() => {
-        detail.style.maxHeight = detail.scrollHeight + 'px';
-      });
-    }
+    detail.classList.toggle('show');
+    detail.style.display = detail.classList.contains('show') ? 'block' : 'none';
   }
 }
 
