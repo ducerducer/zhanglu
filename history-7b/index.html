@@ -66,10 +66,8 @@ header h1 .icon{width:32px;height:32px;border-radius:8px;background:#FDE8E4;disp
 .hide-toggle.on .switch{background:#EF9A9A}
 .hide-toggle.on .switch::after{left:14px}
 
-.exam-a.hidden{display:none}
-.exam-a .blank-reveal{display:none;cursor:pointer;text-align:center;padding:6px 0 4px;border-top:1px dashed #2980B9;color:#2980B9;font-size:12px;letter-spacing:2px;transition:all .2s}
-.exam-a.hidden .blank-reveal{display:block}
-.exam-a .blank-reveal:hover{background:#F0F4FF;font-weight:600}
+/* 隐藏模式下红色关键词变空白 */
+.kw.hidden{color:#ccc!important;border-bottom:2px dashed #ccc!important;cursor:pointer!important}
 
 /* Modal for keyword detail */
 .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.4);z-index:100;justify-content:center;align-items:center;padding:20px}
@@ -598,34 +596,26 @@ function toggleHideMode(){
 
 function applyHideMode(){
   if(!hideMode) return;
-  document.querySelectorAll('.exam-a').forEach(el => {
+  document.querySelectorAll('.kw').forEach(el => {
     if(!el.dataset.originalText){
-      el.dataset.originalText = el.innerHTML;
+      el.dataset.originalText = el.textContent;
     }
+    el.textContent = el.textContent.replace(/./g, '_');
     el.classList.add('hidden');
-    let reveal = el.querySelector('.blank-reveal');
-    if(!reveal){
-      reveal = document.createElement('div');
-      reveal.className = 'blank-reveal';
-      reveal.textContent = '___ 点击显示答案 ___';
-      reveal.onclick = function(e){
-        e.stopPropagation();
-        el.classList.remove('hidden');
-      };
-      el.appendChild(reveal);
-    }
   });
 }
 
 function resetHideMode(){
-  document.querySelectorAll('.exam-a').forEach(el => {
+  document.querySelectorAll('.kw').forEach(el => {
+    if(el.dataset.originalText){
+      el.textContent = el.dataset.originalText;
+    }
     el.classList.remove('hidden');
   });
 }
 
 function closeModal() {
   document.getElementById('modalOverlay').classList.remove('show');
-  if(hideMode) resetHideMode();
 }
 
 // Close modal on overlay click
