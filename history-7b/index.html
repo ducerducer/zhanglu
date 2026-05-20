@@ -57,6 +57,20 @@ header h1 .icon{width:32px;height:32px;border-radius:8px;background:#FDE8E4;disp
 .detail-body .exam-q{font-weight:600;color:#2980B9;margin-bottom:4px}
 .detail-body .exam-a{color:#666}
 
+/* ====== 隐藏答案模式 ====== */
+.hide-toggle{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#888;cursor:pointer;user-select:none;white-space:nowrap;padding:4px 10px 4px 12px;border-radius:14px;border:1px solid #E8E0D5;background:#fdfaf5;transition:all .2s;flex-shrink:0}
+.hide-toggle:hover{border-color:#C0392B;color:#C0392B}
+.hide-toggle.on{background:#C0392B;color:#fff;border-color:#C0392B}
+.hide-toggle .switch{width:28px;height:14px;border-radius:7px;background:#ddd;position:relative;transition:all .3s;flex-shrink:0}
+.hide-toggle .switch::after{content:'';position:absolute;top:1px;left:2px;width:12px;height:12px;border-radius:50%;background:#fff;transition:all .3s;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.hide-toggle.on .switch{background:#EF9A9A}
+.hide-toggle.on .switch::after{left:14px}
+
+.exam-a.hidden{display:none}
+.exam-a .blank-reveal{display:none;cursor:pointer;text-align:center;padding:6px 0 4px;border-top:1px dashed #2980B9;color:#2980B9;font-size:12px;letter-spacing:2px;transition:all .2s}
+.exam-a.hidden .blank-reveal{display:block}
+.exam-a .blank-reveal:hover{background:#F0F4FF;font-weight:600}
+
 /* Modal for keyword detail */
 .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.4);z-index:100;justify-content:center;align-items:center;padding:20px}
 .modal-overlay.show{display:flex}
@@ -100,6 +114,7 @@ footer{padding:20px;text-align:center;font-size:12px;color:#aaa}
 <div class="container">
   <h1><span class="icon">📜</span> 七年级下册·历史知识点</h1>
   <div class="period-nav" id="periodNav"></div>
+  <div class="hide-toggle" id="hideToggle" onclick="toggleHideMode()"><span class="switch"></span><span>隐藏答案</span></div>
 </div>
 </header>
 
@@ -556,6 +571,7 @@ document.addEventListener('click', function(e) {
         <div class="tab-content" data-tab="1" style="display:none">${examContent}</div>
       `;
       document.getElementById('modalOverlay').classList.add('show');
+      applyHideMode();
     }
   }
 });
@@ -567,10 +583,49 @@ function switchModalTab(tab, index) {
   const body = document.getElementById('modalBody');
   body.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
   body.querySelectorAll('.tab-content')[index].style.display = 'block';
+  applyHideMode();
+}
+
+// ====== 隐藏答案模式 ======
+let hideMode = false;
+
+function toggleHideMode(){
+  hideMode = !hideMode;
+  document.getElementById('hideToggle').classList.toggle('on', hideMode);
+  if(hideMode) applyHideMode();
+  else resetHideMode();
+}
+
+function applyHideMode(){
+  if(!hideMode) return;
+  document.querySelectorAll('.exam-a').forEach(el => {
+    if(!el.dataset.originalText){
+      el.dataset.originalText = el.innerHTML;
+    }
+    el.classList.add('hidden');
+    let reveal = el.querySelector('.blank-reveal');
+    if(!reveal){
+      reveal = document.createElement('div');
+      reveal.className = 'blank-reveal';
+      reveal.textContent = '___ 点击显示答案 ___';
+      reveal.onclick = function(e){
+        e.stopPropagation();
+        el.classList.remove('hidden');
+      };
+      el.appendChild(reveal);
+    }
+  });
+}
+
+function resetHideMode(){
+  document.querySelectorAll('.exam-a').forEach(el => {
+    el.classList.remove('hidden');
+  });
 }
 
 function closeModal() {
   document.getElementById('modalOverlay').classList.remove('show');
+  if(hideMode) resetHideMode();
 }
 
 // Close modal on overlay click
