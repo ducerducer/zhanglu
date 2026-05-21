@@ -97,7 +97,7 @@ header h1 .icon{width:32px;height:32px;border-radius:8px;background:#FDE8E4;disp
 .kw.hidden{color:#ccc!important;border-bottom:2px dashed #ccc!important;cursor:pointer!important}
 
 /* Modal for keyword detail */
-.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:100;justify-content:center;align-items:flex-start;padding:20px 20px 10px}
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:100;justify-content:center;align-items:flex-start;padding:20px}
 .modal-overlay.show{display:flex}
 .modal{background:#fff;border-radius:14px;max-width:700px;width:100%;max-height:65vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.15)}
 .modal-header{position:sticky;top:0;background:#fff;border-bottom:1px solid #E8E0D5;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;z-index:10}
@@ -129,29 +129,9 @@ header h1 .icon{width:32px;height:32px;border-radius:8px;background:#FDE8E4;disp
 /* Footer */
 footer{padding:20px;text-align:center;font-size:12px;color:#aaa}
 /* ====== Short Answer ====== */
-.sa-section,.cq-section{margin-top:40px;margin-bottom:40px;scroll-margin-top:130px;padding-top:10px;border-top:3px dashed #E0D5C8}
-.sa-section-title,.cq-section-title{font-size:18px;font-weight:700;color:#C0392B;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.cq-section-title{color:#2980B9}
-.sa-section-title .sa-badge,.cq-section-title .cq-badge{font-size:11px;background:#FDE8E4;color:#C0392B;padding:2px 10px;border-radius:12px;font-weight:400}
-.cq-section-title .cq-badge{background:#E4EEF8;color:#2980B9}
-.cq-group{margin-bottom:16px}
-.cq-group-title{font-size:15px;font-weight:600;color:#2C3E50;margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.cq-card{background:#fff;border:1px solid #E0E7F0;border-radius:10px;margin-bottom:10px;overflow:hidden;box-shadow:0 1px 4px rgba(41,128,185,.06)}
-.cq-card .cq-q{padding:10px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none}
-.cq-card .cq-q .q-text{font-size:13.5px;line-height:1.6;color:#2C3E50;font-weight:600;flex:1;padding-right:8px}
-.cq-card .cq-q .cq-expand{font-size:10px;color:#bbb;flex-shrink:0}
-.cq-card .cq-options{padding:4px 14px 8px;font-size:13px;line-height:1.8;color:#444}
-.cq-card .cq-options .opt{display:block;padding:2px 0}
-.cq-card .cq-answer{display:none;padding:8px 14px 10px;background:#FFF5F5;border-top:1px solid #F0E0E0;font-size:13px;line-height:1.6;color:#C0392B;font-weight:500}
-.cq-card .cq-answer.show{display:block}
-.cq-card .cq-source{font-size:11px;color:#2980B9;font-weight:600;padding:6px 14px 2px}
-.cq-card .cq-options .opt-correct{color:#C0392B;font-weight:500}
-.cq-filters{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
-.cq-filter{padding:4px 12px;border-radius:14px;font-size:12px;cursor:pointer;border:1px solid #B8D4F0;background:#F4F9FF;color:#2980B9;user-select:none;transition:all .2s}
-.cq-filter.active{background:#2980B9;color:#fff;border-color:#2980B9}
-.cq-filter:hover:not(.active){background:#DAE8F8}
-.cq-card .cq-expand{font-size:10px;color:#bbb;flex-shrink:0;transition:transform .2s}
-.cq-card .cq-expand.open{transform:rotate(180deg)}
+.sa-section{margin-top:40px;margin-bottom:40px;scroll-margin-top:130px;padding-top:10px;border-top:3px dashed #E0D5C8}
+.sa-section-title{font-size:18px;font-weight:700;color:#C0392B;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.sa-section-title .sa-badge{font-size:11px;background:#FDE8E4;color:#C0392B;padding:2px 10px;border-radius:12px;font-weight:400}
 .sa-mat-btn{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#8B4513;cursor:pointer;user-select:none;padding:5px 12px;border-radius:8px;border:1px solid #D4B896;background:#FBF5EE;margin-bottom:16px;transition:all .2s}
 .sa-mat-btn:hover{background:#F5E6D0;border-color:#8B4513}
 .sa-group{border:1px solid #E8E0D5;border-radius:10px;margin-bottom:10px;overflow:hidden;background:#fff}
@@ -167,15 +147,15 @@ footer{padding:20px;text-align:center;font-size:12px;color:#aaa}
 .sa-a-wrap{display:none;margin-top:8px;padding:8px 10px;background:#FFF5F5;border-radius:6px;font-size:13px;line-height:1.6;color:#C0392B;font-weight:500}
 .sa-a-wrap.show{display:block}
 .sa-a-label{color:#999;font-weight:400;font-size:11px;margin-right:4px}
-.sa-mat-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.3);z-index:200;justify-content:flex-start;align-items:stretch;padding:0}
+.sa-mat-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.3);z-index:200;justify-content:center;align-items:flex-start;padding:60px 16px}
 .sa-mat-overlay.show{display:flex}
-.sa-mat-modal{background:#fff;width:100%;max-width:100%;height:100%;overflow-y:auto;box-shadow:0 8px 30px rgba(0,0,0,.15);border-radius:0}
-.sa-mat-header{position:sticky;top:0;background:#fff;padding:10px 14px;border-bottom:1px solid #E8E0D5;display:flex;align-items:center;justify-content:space-between}
-.sa-mat-header h3{font-size:15px;margin:0;color:#2C3E50}
-.sa-mat-close{background:none;border:none;font-size:16px;color:#999;cursor:pointer;padding:4px}
-.sa-mat-body{padding:12px 14px 40px;font-size:14px;line-height:1.8;color:#3D3D3D}
-.sa-mat-body .mat-block{margin-bottom:12px;padding:10px 12px;background:#FAFAF7;border-left:3px solid #C0392B;border-radius:4px}
-.sa-mat-body .mat-label{font-weight:600;color:#C0392B;margin-bottom:4px;font-size:13px}
+.sa-mat-modal{background:#fff;border-radius:12px;max-width:640px;width:100%;max-height:70vh;overflow-y:auto;box-shadow:0 8px 30px rgba(0,0,0,.15)}
+.sa-mat-header{position:sticky;top:0;background:#fff;padding:14px 18px;border-bottom:1px solid #E8E0D5;display:flex;align-items:center;justify-content:space-between}
+.sa-mat-header h3{font-size:16px;margin:0;color:#2C3E50}
+.sa-mat-close{background:none;border:none;font-size:18px;color:#999;cursor:pointer;padding:4px}
+.sa-mat-body{padding:16px 18px;font-size:14px;line-height:1.8;color:#3D3D3D}
+.sa-mat-body .mat-block{margin-bottom:16px;padding:12px;background:#FAFAF7;border-left:3px solid #C0392B;border-radius:4px}
+.sa-mat-body .mat-label{font-weight:600;color:#C0392B;margin-bottom:6px;font-size:13px}
 
 </style>
 </head>
@@ -185,10 +165,7 @@ footer{padding:20px;text-align:center;font-size:12px;color:#aaa}
 <div class="container">
   <div style="display:flex;width:100%;align-items:center">
     <h1 style="margin:0;flex:1"><span class="icon">📜</span> 七年级下册·历史知识点</h1>
-    <div style="display:flex;gap:6px">
-      <div class="sa-toggle-btn" id="saToggleBtn" onclick="scrollToSection('sa-main')" style="display:inline-flex;align-items:center;gap:4px;font-size:12px;color:#C0392B;cursor:pointer;user-select:none;white-space:nowrap;padding:4px 10px;border-radius:14px;border:1px solid #F0C8C0;background:#FDF5F3"> 简答题</div>
-      <div class="sa-toggle-btn" id="cqToggleBtn" onclick="scrollToSection('cq-main')" style="display:inline-flex;align-items:center;gap:4px;font-size:12px;color:#2980B9;cursor:pointer;user-select:none;white-space:nowrap;padding:4px 10px;border-radius:14px;border:1px solid #B8D4F0;background:#F4F9FF"> 选择题</div>
-    </div>
+    <div class="sa-toggle-btn" id="saToggleBtn" onclick="scrollToShortAnswer()" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#C0392B;cursor:pointer;user-select:none;white-space:nowrap;padding:4px 10px 4px 12px;border-radius:14px;border:1px solid #F0C8C0;background:#FDF5F3"> 简答题</div>
   </div>
   <div style="display:flex;width:100%;align-items:center;margin-top:4px">
     <div class="period-nav" id="periodNav" style="flex:1"></div>
@@ -372,7 +349,7 @@ const KNOWLEDGE = [
             kws: { "王安石变法": { tb: "王安石变法（1069年—1085年）是北宋中期一场重要的改革运动。北宋中期面临\"三冗\"（冗官、冗兵、冗费）问题，国家财政困难，社会矛盾尖锐。宋神宗即位后，锐意改革，于1069年任命王安石为参知政事（副宰相），主持变法。主要变法内容包括：经济方面——青苗法（由政府向农民提供低息贷款）、募役法（改差役为雇役，民户出钱雇人服役）、方田均税法（丈量土地，按田亩征税）、市易法（政府调控物价）等；军事方面——保甲法（民兵制度）、置将法（训练军队）等；教育方面——改革科举，专考经义策论。变法增加了政府收入，一定程度上减轻了农民负担，但在执行过程中弊端丛生，遭到保守派强烈反对。1085年宋神宗去世，高太后听政，起用保守派司马光为相，新法几乎全部废除。" , exam: "<div class='exam-card'><div class='exam-header'><span class='exam-source'>📝 2025四中期中</span></div><div class='exam-options'><span class='opt'>A.①②③</span><span class='opt'>B.①③④</span><span class='opt'>C.①②④</span><span class='opt'>D.②③④</span></div><div class='exam-body'><div class='exam-q'>以下对王安石变法的影响论述正确的是</div><div class='exam-a'><span class='label'>答案：</span><span class='a-text'>C. ①②④（①使政府财政收入大幅度增加 ②兴修了大量水利工程 ④使统治集团内部分裂日益严重）</span></div></div></div>" } }
           },
           { num: 6, text: "宋真宗时期，辽宋议和，签订盟约，史称\"澶渊之盟\"。1044年，北宋与西夏进行和谈，订立和约，元昊向宋称臣，宋给西夏钱物，称为\"岁赐\"。议和后，宋夏关系一直较为稳定。",
-            kws: { "澶渊之盟": { tb: "澶渊之盟是1005年北宋与辽国签订的和平盟约。1004年，辽圣宗和萧太后率大军南侵，直逼黄河北岸的澶州（今河南濮阳）。宋真宗在宰相寇准的坚持下，御驾亲征澶州。宋军士气大振，射杀辽军主帅萧挞凛，辽军受挫。辽朝见取胜无望，同意议和。1005年，双方在澶州签订盟约：宋辽约为兄弟之国，宋真宗尊辽萧太后为叔母；宋每年向辽提供银10万两、绢20万匹（称\"岁币\"）；双方撤军，以白沟河为界。澶渊之盟后，宋辽之间维持了约120年的和平，双方在边境开设榷场进行贸易，促进了经济文化交流。但\"岁币\"也加重了北宋的财政负担。" , exam: "<div class='exam-card'><div class='exam-header'><span class='exam-source'>📝 2024北师大附中期中</span></div><div class='exam-options'><span class='opt'>A.陈桥兵变</span><span class='opt'>B.澶渊之盟</span><span class='opt'>C.开元盛世</span><span class='opt'>D.安史之乱</span></div><div class='exam-body'><div class='exam-q'>北宋曾把与契丹政权边境交界地区的一些地方改名，如“威虏”改为“广信”，“静戎”改为“安肃”，“破虏”改为“信安”等。该现象的出现与下列哪一重大史实有关</div><div class='exam-a'><span class='label'>答案：</span><span class='a-text'>B. 澶渊之盟</span></div></div></div>\n<div class='exam-card'><div class='exam-header'><span class='exam-source'>📝 2024二中期中</span></div><div class='exam-options'><span class='opt'>A.都结束了长期分裂局面</span><span class='opt'>B.都促进了民族交融</span><span class='opt'>C.维持了相当一段时期的和平</span><span class='opt'>D.都加重了北宋的财政负担</span></div><div class='exam-body'><div class='exam-q'>1005年宋辽之间的澶渊之盟、1141年宋金之间的和议，两者的相同影响有</div><div class='exam-a'><span class='label'>答案：</span><span class='a-text'>C.维持了相当一段时期的和平</span></div></div></div>" } }
+            kws: { "澶渊之盟": { tb: "澶渊之盟是1005年北宋与辽国签订的和平盟约。1004年，辽圣宗和萧太后率大军南侵，直逼黄河北岸的澶州（今河南濮阳）。宋真宗在宰相寇准的坚持下，御驾亲征澶州。宋军士气大振，射杀辽军主帅萧挞凛，辽军受挫。辽朝见取胜无望，同意议和。1005年，双方在澶州签订盟约：宋辽约为兄弟之国，宋真宗尊辽萧太后为叔母；宋每年向辽提供银10万两、绢20万匹（称\"岁币\"）；双方撤军，以白沟河为界。澶渊之盟后，宋辽之间维持了约120年的和平，双方在边境开设榷场进行贸易，促进了经济文化交流。但\"岁币\"也加重了北宋的财政负担。" , exam: "<div class='exam-card'><div class='exam-header'><span class='exam-source'>📝 2024北师大附中期中</span></div><div class='exam-options'><span class='opt'>A.陈桥兵变</span><span class='opt'>B.澶渊之盟</span><span class='opt'>C.开元盛世</span><span class='opt'>D.安史之乱</span></div><div class='exam-body'><div class='exam-q'>北宋曾把与契丹政权边境交界地区的一些地方改名，如“威虏”改为“广信”，“静戎”改为“安肃”，“破虏”改为“信安”等。该现象的出现与下列哪一重大史实有关</div><div class='exam-a'><span class='label'>答案：</span><span class='a-text'>B. 澶渊之盟</span></div></div></div>\n<div class='exam-card'><div class='exam-header'><span class='exam-source'>📝 2024二中期中</span></div><div class='exam-body'><div class='exam-q'>1005年宋辽之间的澶渊之盟、1141年宋金之间的和议，两者的相同影响有</div><div class='exam-a'><span class='label'>答案：</span><span class='a-text'>C. 维持了相当一段时期的和平</span></div></div></div>" } }
           }
         ]
       },
@@ -728,134 +705,19 @@ function buildPage() {
       });
     }
   });
-  html += '</div>';
-  
-  // ====== 选择题 (extracted from exam data) ======
-  html = renderChoiceQuestions(html);
-  app.innerHTML = html;
+  html += '</div>';app.innerHTML = html;
 }
 
 buildPage();
 
-// ====== Scroll to Section ======
+// ====== Short Answer ======
 
-function scrollToSection(secId) {
-  var el = document.getElementById(secId);
-  if (el) { el.scrollIntoView({ behavior: 'smooth' }); }
-}
-
-// ====== 选择题 Section ======
-
-function renderChoiceQuestions(html) {
-  var cqHtml = '';
-  var total = 0;
-  
-  KNOWLEDGE.forEach(function(period) {
-    var periodQuestions = [];
-    period.chapters.forEach(function(ch) {
-      ch.points.forEach(function(pt) {
-        for (var kwName in pt.kws) {
-          var examHtml = pt.kws[kwName].exam;
-          if (!examHtml) continue;
-          if (examHtml.indexOf('exam-options') === -1) continue;
-          // Found exam data with options. Split into cards and extract
-          var parts = examHtml.split('<div class=\'exam-card\'>');
-          for (var pi = 1; pi < parts.length; pi++) {
-            var card = parts[pi];
-            if (card.indexOf('exam-options') === -1) continue;
-            // Extract source
-            var srcMatch = card.match(/exam-source[^>]*>([^<]*)<\/span>/);
-            var source = srcMatch ? srcMatch[1].trim() : '';
-            // Extract question
-            var qMatch = card.match(/exam-q[^>]*>([^<]*)<\/div>/);
-            var question = qMatch ? qMatch[1].trim() : '';
-            // Extract options
-            var opts = [];
-            var optRegex = /<span class='opt'>([^<]*)<\/span>/g;
-            var om;
-            while ((om = optRegex.exec(card)) !== null) {
-              opts.push(om[1].trim());
-            }
-            // Extract answer
-            var aMatch = card.match(/a-text[^>]*>([^<]*)<\/span>/);
-            var answer = aMatch ? aMatch[1].trim() : '';
-            // Extract analysis (解析)
-            var parseMatch = card.match(/exam-parse[^>]*>([^<]*)<\/span>/);
-            var analysis = parseMatch ? parseMatch[1].trim() : '';
-            if (question && opts.length > 0) {
-              periodQuestions.push({
-                source: source,
-                question: question,
-                options: opts,
-                answer: answer,
-                analysis: analysis
-              });
-            }
-          }
-        }
-      });
-    });
-    
-    if (periodQuestions.length > 0) {
-      total += periodQuestions.length;
-      cqHtml += '<div class="cq-group">';
-      cqHtml += '<div class="cq-group-title">📋 ' + period.period + ' <span style="font-size:12px;color:#888;font-weight:400">' + periodQuestions.length + '题</span></div>';
-      periodQuestions.forEach(function(q, qi) {
-        var cqId = 'cq-' + period.id + '-' + qi;
-        cqHtml += '<div class="cq-card">';
-        if (q.source) cqHtml += '<div class="cq-source">' + q.source + '</div>';
-        cqHtml += '<div class="cq-q" onclick="toggleCQAnswer(\'' + cqId + '\')">';
-        cqHtml += '<span class="q-text">' + q.question + '</span>';
-        cqHtml += '<span class="cq-expand">▾</span></div>';
-        cqHtml += '<div class="cq-options">';
-        q.options.forEach(function(o) {
-          cqHtml += '<span class="opt">' + o + '</span>';
-        });
-        cqHtml += '</div>';
-        cqHtml += '<div class="cq-answer" id="' + cqId + '"><span style="color:#999;font-weight:400">答案：</span>' + q.answer + (q.analysis ? '<br><span style="color:#666;font-weight:400;font-size:12px">解析：' + q.analysis + '</span>' : '') + '</div>';
-        cqHtml += '</div>';
-      });
-      cqHtml += '</div>';
-    }
-  });
-  
-  if (total > 0) {
-    html += '<div class="cq-section" id="cq-main">';
-    html += '<div class="cq-section-title"> 选择题 <span class="cq-badge">' + total + '题</span></div>';
-    html += '<div class="cq-filters" id="cqFilters">';
-    html += '<span class="cq-filter active" onclick="filterChoiceQuestions(this,\'all\')">全部</span>';
-    html += '<span class="cq-filter" onclick="filterChoiceQuestions(this,\'隋唐\')">隋唐</span>';
-    html += '<span class="cq-filter" onclick="filterChoiceQuestions(this,\'辽宋\')">辽宋金元</span>';
-    html += '<span class="cq-filter" onclick="filterChoiceQuestions(this,\'明清\')">明清</span>';
-    html += '</div>';
-    html += cqHtml;
-    html += '</div>';
+function scrollToShortAnswer() {
+  var btn = document.getElementById('saToggleBtn');
+  var el = document.querySelector('.sa-section');
+  if (el) { el.scrollIntoView({ behavior: 'smooth' });
+    if (btn) { btn.classList.add('active'); setTimeout(function() { btn.classList.remove('active'); }, 2000); }
   }
-  return html;
-}
-
-function toggleCQAnswer(id) {
-  var el = document.getElementById(id);
-  if (!el) return;
-  var icon = el.parentElement.querySelector('.cq-expand');
-  if (icon) icon.classList.toggle('open');
-  el.classList.toggle('show');
-}
-
-function filterChoiceQuestions(btn, period) {
-  // Update active button
-  document.querySelectorAll('.cq-filter').forEach(function(b) { b.classList.remove('active'); });
-  btn.classList.add('active');
-  // Show/hide groups
-  document.querySelectorAll('.cq-group').forEach(function(g) {
-    var title = g.querySelector('.cq-group-title');
-    if (!title) return;
-    if (period === 'all' || title.textContent.indexOf(period) >= 0) {
-      g.style.display = 'block';
-    } else {
-      g.style.display = 'none';
-    }
-  });
 }
 
 
@@ -966,14 +828,82 @@ document.addEventListener('click', function(e) {
         examContent = '<p style="color:#999;text-align:center;padding:20px 0">📌 暂无真题，等你发过来我会补上～</p>';
       }
       
-      document.getElementById('modalBody').innerHTML = `<div style="padding:6px 0">${tbContent}</div>`;
+      document.getElementById('modalBody').innerHTML = `
+        <div class="detail-tabs" style="margin-bottom:14px">
+          <div class="detail-tab active" onclick="switchModalTab(this,0)">📖 课本详解</div>
+          <div class="detail-tab" onclick="switchModalTab(this,1)">📝 相关真题</div>
+        </div>
+        <div class="tab-content" data-tab="0">${tbContent}</div>
+        <div class="tab-content" data-tab="1" style="display:none">${examContent}</div>
+      `;
       document.getElementById('modalOverlay').classList.add('show');
       applyHideMode();
     }
   }
 });
 
-// (removed switchModalTab, initExamAns, initExamPager - no longer used)
+function switchModalTab(tab, index) {
+  const tabs = tab.parentElement.querySelectorAll('.detail-tab');
+  tabs.forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  const body = document.getElementById('modalBody');
+  body.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+  body.querySelectorAll('.tab-content')[index].style.display = 'block';
+  if (index === 1) { setTimeout(initExamPager, 50); setTimeout(initExamAns, 100); }
+  applyHideMode();
+}
+
+
+function initExamAns() {
+  var container = document.querySelector('.tab-content[data-tab="1"]');
+  if (!container) return;
+  container.querySelectorAll('.exam-card .exam-a').forEach(function(el) {
+    if (!el.classList.contains('initialized')) {
+      el.classList.add('initialized');
+    }
+  });
+  container.querySelectorAll('.exam-card .exam-q').forEach(function(el) {
+    if (!el.getAttribute('data-ans-init')) {
+      el.setAttribute('data-ans-init', '1');
+      el.innerHTML += '<span class="expand-hint">点击查看答案</span>';
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', function(e) {
+        var ans = this.parentElement.querySelector('.exam-a');
+        if (ans) {
+          ans.classList.toggle('show');
+          var hint = this.querySelector('.expand-hint');
+          if (hint) hint.textContent = ans.classList.contains('show') ? '收起答案' : '点击查看答案';
+        }
+      });
+    }
+  });
+}
+
+function initExamPager() {
+  const container = document.querySelector('.tab-content[data-tab="1"] .exam-container');
+  if (!container) return;
+  const cards = container.querySelectorAll('.exam-card');
+  if (cards.length <= 1) { cards.forEach(c => c.classList.add('active')); return; }
+  const oldPager = container.querySelector('.exam-pager');
+  if (oldPager) oldPager.remove();
+  cards.forEach((c,i) => c.classList.toggle('active', i===0));
+  const pager = document.createElement('div');
+  pager.className = 'exam-pager';
+  for (let i = 0; i < cards.length; i++) {
+    const dot = document.createElement('span');
+    dot.className = 'exam-dot' + (i===0?' active':'');
+    dot.dataset.index = i;
+    dot.onclick = function() {
+      cards.forEach(c => c.classList.remove('active'));
+      cards[i].classList.add('active');
+      pager.querySelectorAll('.exam-dot').forEach(d => d.classList.remove('active'));
+      this.classList.add('active');
+      applyHideMode();
+    };
+    pager.appendChild(dot);
+  }
+  container.appendChild(pager);
+}
 
 
 // ====== Short Answer ======
