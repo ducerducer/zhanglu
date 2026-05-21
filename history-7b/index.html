@@ -129,9 +129,28 @@ header h1 .icon{width:32px;height:32px;border-radius:8px;background:#FDE8E4;disp
 /* Footer */
 footer{padding:20px;text-align:center;font-size:12px;color:#aaa}
 /* ====== Short Answer ====== */
-.sa-section{margin-top:40px;margin-bottom:40px;scroll-margin-top:130px;padding-top:10px;border-top:3px dashed #E0D5C8}
-.sa-section-title{font-size:18px;font-weight:700;color:#C0392B;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.sa-section-title .sa-badge{font-size:11px;background:#FDE8E4;color:#C0392B;padding:2px 10px;border-radius:12px;font-weight:400}
+.sa-section,.cq-section{margin-top:40px;margin-bottom:40px;scroll-margin-top:130px;padding-top:10px;border-top:3px dashed #E0D5C8}
+.sa-section-title,.cq-section-title{font-size:18px;font-weight:700;color:#C0392B;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.cq-section-title{color:#2980B9}
+.sa-section-title .sa-badge,.cq-section-title .cq-badge{font-size:11px;background:#FDE8E4;color:#C0392B;padding:2px 10px;border-radius:12px;font-weight:400}
+.cq-section-title .cq-badge{background:#E4EEF8;color:#2980B9}
+.cq-group{margin-bottom:16px}
+.cq-group-title{font-size:15px;font-weight:600;color:#2C3E50;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.cq-card{background:#fff;border:1px solid #E0E7F0;border-radius:10px;margin-bottom:10px;overflow:hidden;box-shadow:0 1px 4px rgba(41,128,185,.06)}
+.cq-card .cq-q{padding:10px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none}
+.cq-card .cq-q .q-text{font-size:13.5px;line-height:1.6;color:#2C3E50;font-weight:600;flex:1;padding-right:8px}
+.cq-card .cq-q .cq-expand{font-size:10px;color:#bbb;flex-shrink:0}
+.cq-card .cq-options{padding:4px 14px 8px;font-size:13px;line-height:1.8;color:#444}
+.cq-card .cq-options .opt{display:block;padding:2px 0}
+.cq-card .cq-answer{display:none;padding:8px 14px 10px;background:#FFF5F5;border-top:1px solid #F0E0E0;font-size:13px;line-height:1.6;color:#C0392B;font-weight:500}
+.cq-card .cq-answer.show{display:block}
+.cq-card .cq-source{font-size:11px;color:#2980B9;font-weight:600;padding:6px 14px 2px}
+.cq-filters{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.cq-filter{padding:4px 12px;border-radius:14px;font-size:12px;cursor:pointer;border:1px solid #B8D4F0;background:#F4F9FF;color:#2980B9;user-select:none;transition:all .2s}
+.cq-filter.active{background:#2980B9;color:#fff;border-color:#2980B9}
+.cq-filter:hover:not(.active){background:#DAE8F8}
+.cq-card .cq-expand{font-size:10px;color:#bbb;flex-shrink:0;transition:transform .2s}
+.cq-card .cq-expand.open{transform:rotate(180deg)}
 .sa-mat-btn{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#8B4513;cursor:pointer;user-select:none;padding:5px 12px;border-radius:8px;border:1px solid #D4B896;background:#FBF5EE;margin-bottom:16px;transition:all .2s}
 .sa-mat-btn:hover{background:#F5E6D0;border-color:#8B4513}
 .sa-group{border:1px solid #E8E0D5;border-radius:10px;margin-bottom:10px;overflow:hidden;background:#fff}
@@ -705,19 +724,116 @@ function buildPage() {
       });
     }
   });
-  html += '</div>';app.innerHTML = html;
+  html += '</div>';
+  
+  // ====== 选择题 (extracted from exam data) ======
+  html = renderChoiceQuestions(html);
+  app.innerHTML = html;
 }
 
 buildPage();
 
 // ====== Short Answer ======
 
-function scrollToShortAnswer() {
-  var btn = document.getElementById('saToggleBtn');
-  var el = document.querySelector('.sa-section');
-  if (el) { el.scrollIntoView({ behavior: 'smooth' });
-    if (btn) { btn.classList.add('active'); setTimeout(function() { btn.classList.remove('active'); }, 2000); }
+function scrollToSection(secId) {
+  var el = document.getElementById(secId);
+  if (el) { el.scrollIntoView({ behavior: 'smooth' }); }
+}
+
+// ====== 选择题 Section ======
+
+function renderChoiceQuestions(html) {
+  var cqHtml = '';
+  var total = 0;
+  
+  KNOWLEDGE.forEach(function(period) {
+    var periodQuestions = [];
+    period.chapters.forEach(function(ch) {
+      ch.points.forEach(function(pt) {
+        for (var kwName in pt.kws) {
+          var examHtml = pt.kws[kwName].exam;
+          if (!examHtml) continue;
+          if (examHtml.indexOf('exam-options') === -1) continue;
+          var parts = examHtml.split('<div class=\'exam-card\'>');
+          for (var pi = 1; pi < parts.length; pi++) {
+            var card = parts[pi];
+            if (card.indexOf('exam-options') === -1) continue;
+            var srcMatch = card.match(/exam-source[^>]*>([^<]*)<\/span>/);
+            var source = srcMatch ? srcMatch[1].trim() : '';
+            var qMatch = card.match(/exam-q[^>]*>([^<]*)<\/div>/);
+            var question = qMatch ? qMatch[1].trim() : '';
+            var opts = [];
+            var optRegex = /<span class='opt'>([^<]*)<\/span>/g;
+            var om;
+            while ((om = optRegex.exec(card)) !== null) { opts.push(om[1].trim()); }
+            var aMatch = card.match(/a-text[^>]*>([^<]*)<\/span>/);
+            var answer = aMatch ? aMatch[1].trim() : '';
+            var parseMatch = card.match(/exam-parse[^>]*>([^<]*)<\/span>/);
+            var analysis = parseMatch ? parseMatch[1].trim() : '';
+            if (question && opts.length > 0) {
+              periodQuestions.push({ source: source, question: question, options: opts, answer: answer, analysis: analysis });
+            }
+          }
+        }
+      });
+    });
+    
+    if (periodQuestions.length > 0) {
+      total += periodQuestions.length;
+      cqHtml += '<div class="cq-group">';
+      cqHtml += '<div class="cq-group-title">📋 ' + period.period + ' <span style="font-size:12px;color:#888;font-weight:400">' + periodQuestions.length + '题</span></div>';
+      periodQuestions.forEach(function(q, qi) {
+        var cqId = 'cq-' + period.id + '-' + qi;
+        cqHtml += '<div class="cq-card">';
+        if (q.source) cqHtml += '<div class="cq-source">' + q.source + '</div>';
+        cqHtml += '<div class="cq-q" onclick="toggleCQAnswer(\'' + cqId + '\')">';
+        cqHtml += '<span class="q-text">' + q.question + '</span>';
+        cqHtml += '<span class="cq-expand">▾</span></div>';
+        cqHtml += '<div class="cq-options">';
+        q.options.forEach(function(o) { cqHtml += '<span class="opt">' + o + '</span>'; });
+        cqHtml += '</div>';
+        cqHtml += '<div class="cq-answer" id="' + cqId + '"><span style="color:#999;font-weight:400">答案：</span>' + q.answer + (q.analysis ? '<br><span style="color:#666;font-weight:400;font-size:12px">解析：' + q.analysis + '</span>' : '') + '</div>';
+        cqHtml += '</div>';
+      });
+      cqHtml += '</div>';
+    }
+  });
+  
+  if (total > 0) {
+    html += '<div class="cq-section" id="cq-main">';
+    html += '<div class="cq-section-title"> 选择题 <span class="cq-badge">' + total + '题</span></div>';
+    html += '<div class="cq-filters" id="cqFilters">';
+    html += '<span class="cq-filter active" onclick="filterChoiceQuestions(this,\'all\')">全部</span>';
+    html += '<span class="cq-filter" onclick="filterChoiceQuestions(this,\'隋唐\')">隋唐</span>';
+    html += '<span class="cq-filter" onclick="filterChoiceQuestions(this,\'辽宋\')">辽宋金元</span>';
+    html += '<span class="cq-filter" onclick="filterChoiceQuestions(this,\'明清\')">明清</span>';
+    html += '</div>';
+    html += cqHtml;
+    html += '</div>';
   }
+  return html;
+}
+
+function toggleCQAnswer(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  var icon = el.parentElement.querySelector('.cq-expand');
+  if (icon) icon.classList.toggle('open');
+  el.classList.toggle('show');
+}
+
+function filterChoiceQuestions(btn, period) {
+  document.querySelectorAll('.cq-filter').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('.cq-group').forEach(function(g) {
+    var title = g.querySelector('.cq-group-title');
+    if (!title) return;
+    if (period === 'all' || title.textContent.indexOf(period) >= 0) {
+      g.style.display = 'block';
+    } else {
+      g.style.display = 'none';
+    }
+  });
 }
 
 
