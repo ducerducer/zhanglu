@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>阅读理解 · 语文练习</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#F5F5F5;color:#333;font-family:-apple-system,'PingFang SC','Noto Sans SC',sans-serif;line-height:1.8;min-height:100vh}
+header{background:#1565C0;color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+header h1{font-size:20px;font-weight:600}
+.header-actions{display:flex;gap:10px;align-items:center}
+.header-btn{background:rgba(255,255,255,.2);color:#fff;border:none;padding:6px 14px;border-radius:16px;font-size:13px;cursor:pointer;transition:background .2s}
+.header-btn:hover{background:rgba(255,255,255,.35)}
+.header-btn.danger{background:#e53935}
+.header-btn.danger:hover{background:#c62828}
+
+.score-bar{display:none;background:#E3F2FD;padding:14px 24px;margin:0;border-bottom:2px solid #1565C0}
+.score-bar.show{display:block}
+.score-bar .total{font-size:18px;font-weight:600;color:#1565C0}
+.score-bar .stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+.score-bar .stat{background:#fff;padding:4px 12px;border-radius:12px;font-size:13px;border:1px solid #BBDEFB}
+.score-bar .stat.weak{background:#FFEBEE;border-color:#EF9A9A;color:#C62828}
+.score-bar .stat-label{color:#666}
+.stat strong{margin:0 2px}
+
+.container{max-width:800px;margin:0 auto;padding:20px 16px 80px}
+
+.article-box{background:#fff;border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.article-box h2{font-size:16px;color:#1565C0;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #E3F2FD}
+.article-content{font-size:15px;color:#444;text-indent:2em;line-height:2}
+
+.question-group{margin-bottom:24px}
+.question-group h3{font-size:14px;color:#666;margin-bottom:10px;padding-left:10px;border-left:3px solid #1565C0}
+
+.q-card{background:#fff;border-radius:10px;padding:16px 20px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.06);transition:box-shadow .2s}
+.q-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.q-card .q-stem{font-size:15px;margin-bottom:10px;line-height:1.7}
+.q-card .q-number{color:#1565C0;font-weight:600;margin-right:4px}
+
+.q-card .options{display:flex;flex-direction:column;gap:4px}
+.q-card .options label{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:8px;cursor:pointer;transition:background .15s;font-size:14px}
+.q-card .options label:hover{background:#F5F5F5}
+.q-card .options input[type="radio"]{accent-color:#1565C0;width:16px;height:16px}
+
+.q-card.submitted .correct{background:#E8F5E9!important;color:#2E7D32}
+.q-card.submitted .wrong{background:#FFEBEE!important;color:#C62828}
+.q-card.submitted .options label{cursor:default}
+.q-card.submitted .options label:hover{background:transparent}
+
+.q-card .result-tag{display:inline-block;padding:2px 10px;border-radius:10px;font-size:12px;font-weight:600;margin-top:8px}
+.q-card .result-tag.correct{background:#E8F5E9;color:#2E7D32}
+.q-card .result-tag.wrong{background:#FFEBEE;color:#C62828}
+
+/* 简答题 */
+.q-card textarea{width:100%;min-height:80px;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;font-family:inherit;line-height:1.6;resize:vertical;transition:border .2s}
+.q-card textarea:focus{outline:none;border-color:#1565C0;box-shadow:0 0 0 2px rgba(21,101,192,.15)}
+.q-card .ref-answer{display:none;margin-top:8px;padding:10px 14px;background:#FFF8E1;border-radius:8px;font-size:14px;color:#795548;border-left:3px solid #FFC107}
+.q-card .ref-answer.show{display:block}
+.q-card .ref-answer .label{font-weight:600;color:#F57F17}
+
+.submit-area{text-align:center;padding:20px 0}
+.btn-submit{background:#1565C0;color:#fff;border:none;padding:12px 48px;border-radius:24px;font-size:16px;font-weight:600;cursor:pointer;transition:background .2s,transform .15s}
+.btn-submit:hover{background:#0D47A1;transform:translateY(-1px)}
+.btn-submit:active{transform:translateY(0)}
+.btn-submit:disabled{background:#90CAF9;cursor:not-allowed;transform:none}
+
+/* 错题本模态框 */
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:200;justify-content:center;align-items:flex-start;overflow-y:auto;padding:40px 16px}
+.modal-overlay.show{display:flex}
+.modal-box{background:#fff;border-radius:12px;width:100%;max-width:600px;margin:auto;padding:24px;box-shadow:0 8px 32px rgba(0,0,0,.2);position:relative}
+.modal-box h2{font-size:18px;color:#333;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #E3F2FD}
+.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;font-size:24px;color:#999;cursor:pointer;padding:4px 8px;line-height:1}
+.modal-close:hover{color:#333}
+
+.error-item{padding:12px 0;border-bottom:1px solid #f0f0f0}
+.error-item:last-child{border-bottom:none}
+.error-item .e-q{font-size:14px;margin-bottom:4px;color:#555}
+.error-item .e-detail{font-size:13px;color:#999;display:flex;gap:16px;flex-wrap:wrap}
+.error-item .e-detail .wrong-ans{color:#C62828}
+.error-item .e-detail .right-ans{color:#2E7D32}
+.error-date{font-size:12px;color:#bbb}
+.empty-errors{text-align:center;padding:30px;color:#999;font-size:14px}
+
+.no-print{user-select:none}
+@media print{header,.btn-submit,.header-actions{display:none!important}}
+@media(max-width:600px){
+  header{padding:14px 16px}
+  header h1{font-size:17px}
+  .container{padding:12px 10px 60px}
+  .article-box{padding:16px}
+  .q-card{padding:12px 14px}
+  .q-card .q-stem{font-size:14px}
+  .q-card .options label{font-size:13px;padding:5px 8px}
+  .score-bar{padding:12px 16px}
+  .score-bar .total{font-size:16px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📖 阅读理解 · 语文练习</h1>
+  <div class="header-actions">
+    <button class="header-btn" onclick="toggleErrorBook()">📕 错题本</button>
+    <button class="header-btn" onclick="showAdmin()">⚙ 出题</button>
+  </div>
+</header>
+
+<div class="score-bar" id="scoreBar">
+  <div class="total" id="totalScore">总分：0/0</div>
+  <div class="stats" id="statDetails"></div>
+</div>
+
+<div class="container" id="app"></div>
+
+<div class="modal-overlay" id="errorModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="toggleErrorBook()">✕</button>
+    <h2>📕 错题本</h2>
+    <div id="errorList"></div>
+    <div style="text-align:right;margin-top:12px">
+      <button class="header-btn danger" onclick="clearErrors()">清空错题本</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="adminModal">
+  <div class="modal-box" style="max-width:700px">
+    <button class="modal-close" onclick="closeAdmin()">✕</button>
+    <h2>⚙ 管理题目</h2>
+    <p style="color:#666;font-size:13px;margin-bottom:12px">直接修改下方题目 JSON，点击"更新"生效。</p>
+    <textarea id="adminEditor" style="width:100%;min-height:400px;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:13px;font-family:monospace;line-height:1.5;resize:vertical"></textarea>
+    <div style="text-align:right;margin-top:10px;display:flex;gap:10px;justify-content:flex-end">
+      <button class="header-btn" onclick="closeAdmin()">取消</button>
+      <button class="btn-submit" style="padding:8px 24px;font-size:14px" onclick="saveAdmin()">更新</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ====== 题目数据（可修改） ======
+// 格式：每个 passage 包含文章 + 题目列表
+// type: "choice" = 选择题, "essay" = 简答题
+const DATA = [
+  {
+    title: "阅读下面的文章，完成1-4题。",
+    content: "那是一个春寒料峭的黄昏，饭店里来了一对特殊的客人——一对父子。说他们特殊，是因为父亲是个盲人。他眼睛上蒙着一块灰色的布，摸索着走进店里。\n\n儿子看上去二十来岁，衣着朴素得有点寒酸。他扶父亲坐在桌前，然后大声说：\"爸，你想吃什么？\"\n\n\"给我来碗牛肉面。\"父亲声音不大。\n\n儿子对服务员说：\"来两碗牛肉面。\"\n\n\"只要一碗。\"父亲赶紧纠正，\"我胃口不好，牛肉面吃不完，你吃一碗馄饨吧。\"\n\n\"好，一碗牛肉面，一碗馄饨。\"儿子对服务员说完，又对父亲说，\"爸，你不是最喜欢吃牛肉面吗？\"\n\n父亲笑了笑，没再说什么。\n\n不一会儿，服务员端来一碗牛肉面和一碗馄饨。儿子把牛肉面端到父亲面前，自己端起那碗馄饨。父亲拿起筷子，摸索着夹起一块牛肉，放在儿子碗里。\n\n\"爸，你吃，碗里肉多着呢。\"儿子说着，把牛肉又夹了回去。\n\n两人就这样你推我让，一碗面吃了很久。\n\n吃完后，儿子对服务员说：\"服务员，结账。\"\n\n服务员走过来，儿子把一张皱巴巴的纸币递过去。服务员正要找零，却看见那对父子已经走出了店门。\n\n她打开那张纸币，发现里面包着一张纸条，上面写着：\"这碗牛肉面是给我父亲吃的，他的那碗馄饨里其实没有肉。请把找零的钱给这位盲人父亲，让他以为这碗面很便宜。\"\n\n服务员愣住了。她追了出去，在街角追上那对父子，说：\"大爷，这碗面搞活动，买一送一，这是找您的钱。\"\n\n父亲接过钱，连声道谢。\n\n目送父子俩远去，服务员站在那里，很久没有动。那个春寒料峭的黄昏，因这碗牛肉面，变得格外温暖。",
+    questions: [
+      {
+        id: 1,
+        type: "choice",
+        stem: '文中"春寒料峭"一词的意思是：',
+        options: ["A.春天很寒冷", "B.初春时节乍暖还寒", "C.天气很温暖", "D.春天来了很暖和"],
+        answer: 1
+      },
+      {
+        id: 2,
+        type: "choice",
+        stem: "父亲为什么坚持\"只要一碗\"牛肉面？",
+        options: ["A.他胃口不好吃不下", "B.他想省钱，让儿子吃好的", "C.他不喜欢吃牛肉面", "D.他想让儿子也吃牛肉面"],
+        answer: 1
+      },
+      {
+        id: 3,
+        type: "choice",
+        stem: "儿子在面条里夹肉给父亲，体现了什么？",
+        options: ["A.儿子不爱吃肉", "B.儿子想让父亲多吃点肉", "C.牛肉太多吃不完", "D.馄饨里也有肉"],
+        answer: 1
+      },
+      {
+        id: 4,
+        type: "choice",
+        stem: '服务员追出去说"买一送一"的原因是什么？',
+        options: ["A.店里确实在搞活动", "B.她想帮助这个儿子，不拆穿他的孝心", "C.她怕顾客投诉", "D.她觉得牛肉面太贵"],
+        answer: 1
+      },
+      {
+        id: 5,
+        type: "essay",
+        stem: '文章最后说"那个春寒料峭的黄昏，因这碗牛肉面，变得格外温暖。"请结合全文，谈谈你对这句话的理解。（4分）',
+        refAnswer: "这句话点明了文章主题。\"春寒料峭\"与\"温暖\"形成对比，\"春寒料峭\"既写出了天气的寒冷，也烘托出父子生活的艰难；而\"温暖\"不仅指牛肉面的温度，更指儿子对父亲的孝心、父亲对儿子的疼爱，以及服务员善意的帮助所带来的心灵温暖。这种人间真情，让人在乍暖还寒的黄昏感到格外温暖。"
+      }
+    ]
+  }
+];
+
+// ====== 渲染 ======
+function render() {
+  const app = document.getElementById('app');
+  let html = '';
+  
+  DATA.forEach((p, pi) => {
+    html += `<div class="article-box"><h2>${p.title}</h2><div class="article-content">${p.content.replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>')}</div></div>`;
+    
+    html += `<div class="question-group"><h3>📝 根据文章内容回答问题</h3>`;
+    const choiceQs = p.questions.filter(q => q.type === 'choice');
+    const essayQs = p.questions.filter(q => q.type === 'essay');
+    
+    if (choiceQs.length) {
+      choiceQs.forEach(q => {
+        html += `<div class="q-card" data-qid="${q.id}">
+          <div class="q-stem"><span class="q-number">${q.id}.</span>${q.stem}</div>
+          <div class="options">`;
+        q.options.forEach((opt, oi) => {
+          html += `<label><input type="radio" name="q${q.id}" value="${oi}" onchange="checkChoice(${q.id})">${opt}</label>`;
+        });
+        html += `</div><div class="result-tag" id="result${q.id}"></div></div>`;
+      });
+    }
+    
+    if (essayQs.length) {
+      essayQs.forEach(q => {
+        html += `<div class="q-card" data-qid="${q.id}">
+          <div class="q-stem"><span class="q-number">${q.id}.</span>${q.stem}</div>
+          <textarea id="answer${q.id}" placeholder="在此输入你的答案..."></textarea>
+          <div class="ref-answer" id="ref${q.id}"><span class="label">参考答案：</span>${q.refAnswer}</div>
+        </div>`;
+      });
+    }
+    
+    html += `</div>`;
+  });
+  
+  html += `<div class="submit-area"><button class="btn-submit" id="btnSubmit" onclick="submitAll()">提交批改</button></div>`;
+  
+  app.innerHTML = html;
+  resetScoreBar();
+}
+
+// ====== 选择题判分 ======
+function checkChoice(qid) {
+  const selected = document.querySelector(`input[name="q${qid}"]:checked`);
+  const card = document.querySelector(`[data-qid="${qid}"]`);
+  if (!card) return;
+  card.classList.remove('submitted');
+  
+  // Find passage and question
+  for (const p of DATA) {
+    const q = p.questions.find(qq => qq.id === qid);
+    if (q && q.type === 'choice') {
+      const tag = document.getElementById(`result${qid}`);
+      if (selected) {
+        const isCorrect = parseInt(selected.value) === q.answer;
+        tag.textContent = isCorrect ? '✅ 正确' : '❌ 错误';
+        tag.className = `result-tag ${isCorrect ? 'correct' : 'wrong'}`;
+      } else {
+        tag.textContent = '';
+        tag.className = 'result-tag';
+      }
+      break;
+    }
+  }
+}
+
+// ====== 全部提交 ======
+function submitAll() {
+  const btn = document.getElementById('btnSubmit');
+  btn.disabled = true;
+  btn.textContent = '批改中...';
+  
+  let total = 0, correct = 0;
+  const errors = [];
+  
+  // 遍历所有选择题
+  for (const p of DATA) {
+    for (const q of p.questions) {
+      if (q.type === 'choice') {
+        total++;
+        const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+        const card = document.querySelector(`[data-qid="${q.id}"]`);
+        const tag = document.getElementById(`result${q.id}`);
+        
+        if (selected) {
+          const isCorrect = parseInt(selected.value) === q.answer;
+          if (isCorrect) correct++;
+          else {
+            errors.push({ id: q.id, stem: q.stem, yourAnswer: q.options[parseInt(selected.value)], correctAnswer: q.options[q.answer] });
+          }
+          tag.textContent = isCorrect ? '✅ 正确' : '❌ 错误';
+          tag.className = `result-tag ${isCorrect ? 'correct' : 'wrong'}`;
+          if (card) {
+            // Highlight correct/wrong on options
+            card.classList.add('submitted');
+            const labels = card.querySelectorAll('.options label');
+            labels.forEach((l, i) => {
+              if (i === q.answer) l.classList.add('correct');
+              if (i === parseInt(selected.value) && !isCorrect) l.classList.add('wrong');
+            });
+          }
+        } else {
+          // 未作答算错
+          errors.push({ id: q.id, stem: q.stem, yourAnswer: '（未作答）', correctAnswer: q.options[q.answer] });
+          tag.textContent = '❌ 未作答';
+          tag.className = 'result-tag wrong';
+        }
+      } else if (q.type === 'essay') {
+        // 简答题：展示参考答案
+        const ref = document.getElementById(`ref${q.id}`);
+        if (ref) ref.classList.add('show');
+      }
+    }
+  }
+  
+  // 存错题
+  if (errors.length) saveErrors(errors);
+  
+  // 显示成绩
+  showScore(correct, total);
+  
+  btn.disabled = false;
+  btn.textContent = '重新批改';
+  btn.onclick = resetAll;
+}
+
+// ====== 成绩显示 ======
+function showScore(correct, total) {
+  const bar = document.getElementById('scoreBar');
+  bar.classList.add('show');
+  document.getElementById('totalScore').textContent = `总分：${correct}/${total}`;
+  
+  const stats = document.getElementById('statDetails');
+  const pct = total > 0 ? Math.round(correct/total*100) : 0;
+  stats.innerHTML = `<div class="stat"><span class="stat-label">正确率：</span><strong>${pct}%</strong></div>
+    <div class="stat ${pct < 60 ? 'weak' : ''}"><span class="stat-label">阅读理解：</span><strong>${correct}/${total}</strong> ${pct < 60 ? '⚠️ 薄弱' : '✅'}</div>`;
+}
+
+function resetScoreBar() {
+  const bar = document.getElementById('scoreBar');
+  bar.classList.remove('show');
+}
+
+// ====== 重置 ======
+function resetAll() {
+  const btn = document.getElementById('btnSubmit');
+  btn.disabled = false;
+  btn.textContent = '提交批改';
+  btn.onclick = submitAll;
+  
+  // 清除选中和结果
+  document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+  document.querySelectorAll('.q-card.submitted').forEach(c => c.classList.remove('submitted'));
+  document.querySelectorAll('.options label').forEach(l => { l.classList.remove('correct','wrong'); });
+  document.querySelectorAll('.result-tag').forEach(t => { t.textContent = ''; t.className = 'result-tag'; });
+  
+  // 隐藏参考答案
+  document.querySelectorAll('.ref-answer').forEach(r => r.classList.remove('show'));
+  
+  // 清空简答
+  document.querySelectorAll('textarea').forEach(t => t.value = '');
+  
+  resetScoreBar();
+}
+
+// ====== 错题本（localStorage） ======
+function saveErrors(newErrors) {
+  let all = JSON.parse(localStorage.getItem('rdErrors') || '[]');
+  const now = new Date().toLocaleString('zh-CN');
+  newErrors.forEach(e => {
+    all.push({ ...e, time: now });
+  });
+  localStorage.setItem('rdErrors', JSON.stringify(all));
+}
+
+function toggleErrorBook() {
+  const modal = document.getElementById('errorModal');
+  modal.classList.toggle('show');
+  if (modal.classList.contains('show')) renderErrorBook();
+}
+
+function renderErrorBook() {
+  const list = document.getElementById('errorList');
+  const all = JSON.parse(localStorage.getItem('rdErrors') || '[]');
+  
+  if (!all.length) {
+    list.innerHTML = '<div class="empty-errors">📝 暂无错题记录，加油！</div>';
+    return;
+  }
+  
+  const grouped = {};
+  all.forEach(e => {
+    const key = e.time.substring(0, 10);
+    if (!grouped[key]) grouped[key] = [];
+    grouped[key].push(e);
+  });
+  
+  let html = '';
+  Object.keys(grouped).reverse().forEach(date => {
+    html += `<div style="margin-bottom:12px"><div style="font-size:12px;color:#999;margin-bottom:6px">📅 ${date}</div>`;
+    grouped[date].forEach(e => {
+      html += `<div class="error-item">
+        <div class="e-q">${e.id}. ${e.stem}</div>
+        <div class="e-detail">
+          <span>你的答案：<span class="wrong-ans">${e.yourAnswer}</span></span>
+          <span>正确答案：<span class="right-ans">${e.correctAnswer}</span></span>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+  
+  list.innerHTML = html;
+}
+
+function clearErrors() {
+  if (!confirm('确定要清空所有错题记录吗？')) return;
+  localStorage.removeItem('rdErrors');
+  renderErrorBook();
+}
+
+// ====== 出题模式 ======
+function showAdmin() {
+  document.getElementById('adminEditor').value = JSON.stringify(DATA, null, 2);
+  document.getElementById('adminModal').classList.add('show');
+}
+
+function closeAdmin() {
+  document.getElementById('adminModal').classList.remove('show');
+}
+
+function saveAdmin() {
+  try {
+    const newData = JSON.parse(document.getElementById('adminEditor').value);
+    if (!Array.isArray(newData) || !newData.length) throw '数据必须是非空数组';
+    // Validate structure
+    newData.forEach((p, i) => {
+      if (!p.title || !p.content || !Array.isArray(p.questions)) throw `第${i+1}篇文章数据格式不正确`;
+      p.questions.forEach((q, j) => {
+        if (!q.id || !q.type || !q.stem) throw `第${i+1}篇第${j+1}题缺少必要字段`;
+      });
+    });
+    // Replace DATA and re-render
+    DATA.splice(0, DATA.length, ...newData);
+    closeAdmin();
+    resetAll();
+    render();
+  } catch(e) {
+    alert('数据格式错误：' + e);
+  }
+}
+
+// ====== 初始化 ======
+render();
+</script>
+</body>
+</html>
