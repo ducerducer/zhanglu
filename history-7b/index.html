@@ -184,7 +184,10 @@ footer{padding:20px;text-align:center;font-size:12px;color:#aaa}
 <div class="container">
   <div style="display:flex;width:100%;align-items:center">
     <h1 style="margin:0;flex:1"><span class="icon">📜</span> 七年级下册·历史知识点</h1>
-    <div class="sa-toggle-btn" id="saToggleBtn" onclick="scrollToShortAnswer()" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#C0392B;cursor:pointer;user-select:none;white-space:nowrap;padding:4px 10px 4px 12px;border-radius:14px;border:1px solid #F0C8C0;background:#FDF5F3"> 简答题</div>
+    <div style="display:flex;gap:6px">
+      <div class="sa-toggle-btn" id="saToggleBtn" onclick="scrollToSection('sa-main')" style="display:inline-flex;align-items:center;gap:4px;font-size:12px;color:#C0392B;cursor:pointer;user-select:none;white-space:nowrap;padding:4px 10px;border-radius:14px;border:1px solid #F0C8C0;background:#FDF5F3"> 简答题</div>
+      <div class="sa-toggle-btn" id="cqToggleBtn" onclick="scrollToSection('cq-main')" style="display:inline-flex;align-items:center;gap:4px;font-size:12px;color:#2980B9;cursor:pointer;user-select:none;white-space:nowrap;padding:4px 10px;border-radius:14px;border:1px solid #B8D4F0;background:#F4F9FF"> 选择题</div>
+    </div>
   </div>
   <div style="display:flex;width:100%;align-items:center;margin-top:4px">
     <div class="period-nav" id="periodNav" style="flex:1"></div>
