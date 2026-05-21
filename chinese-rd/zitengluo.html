@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>紫藤萝瀑布 - 语文阅读理解练习</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f0eb; color: #333; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+
+/* Nav */
+.nav { flex-shrink: 0; z-index: 100; background: #2d5a27; color: #fff; display: flex; align-items: center; padding: 12px 16px; gap: 8px; }
+.nav-title { font-size: 18px; font-weight: 700; flex: 1; }
+.nav-btn { background: rgba(255,255,255,0.15); border: none; color: #fff; padding: 6px 14px; border-radius: 16px; font-size: 14px; cursor: pointer; }
+.nav-btn.active { background: rgba(255,255,255,0.3); }
+.nav-btn:hover { background: rgba(255,255,255,0.25); }
+
+/* Pages */
+.page { display: none; height: 0; flex: 1; overflow: hidden; }
+.page.active { display: flex; flex-direction: column; }
+
+/* Article Panel (top half) - resizable */
+.article-panel { background: #fff; overflow: hidden; display: flex; flex-direction: column; }
+.article-header { padding: 12px 16px 4px; flex-shrink: 0; }
+.article-title { font-size: 20px; font-weight: 700; text-align: center; }
+.article-author { text-align: center; color: #888; font-size: 13px; }
+.article-scroll { flex: 1; overflow-y: auto; padding: 0 16px 12px; }
+.article-text { line-height: 1.8; font-size: 15px; padding-bottom: 8px; }
+.article-text p { margin-bottom: 10px; }
+
+/* Drag handle */
+.drag-handle { flex-shrink: 0; height: 16px; min-height: 16px; background: #e8e0d8; cursor: row-resize; display: flex; align-items: center; justify-content: center; user-select: none; -webkit-tap-highlight-color: transparent; }
+.drag-handle::after { content: "⠿"; color: #bbb; font-size: 11px; letter-spacing: 4px; }
+.drag-handle:active, .drag-handle:hover { background: #d5ccc2; }
+/* Bottom safe area for phones */
+.questions-panel { padding-bottom: max(24px, env(safe-area-inset-bottom, 16px)); }
+
+/* Questions Panel (bottom half) */
+.questions-panel { flex: 1; overflow-y: auto; padding: 12px 16px 24px; }
+.question-card { background: #fff; border-radius: 12px; padding: 14px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 12px; border-left: 4px solid #2d5a27; }
+.question-label { font-weight: 700; color: #2d5a27; font-size: 14px; margin-bottom: 6px; }
+.question-text { font-size: 14px; line-height: 1.7; margin-bottom: 8px; }
+.question-subtext { color: #555; font-size: 13px; padding-left: 8px; border-left: 3px solid #ddd; margin-bottom: 8px; line-height: 1.6; }
+
+/* Foldable answer */
+.answer-toggle { margin-bottom: 8px; }
+.answer-toggle summary { font-size: 13px; color: #2d5a27; cursor: pointer; padding: 4px 0; font-weight: 600; user-select: none; }
+.answer-toggle[open] summary { margin-bottom: 6px; }
+.answer-content { background: #f0f7ee; border-radius: 8px; padding: 10px 12px; font-size: 14px; line-height: 1.6; color: #333; }
+.answer-content table { width: 100%; border-collapse: collapse; margin-top: 4px; font-size: 13px; }
+.answer-content th { background: #2d5a27; color: #fff; padding: 5px 6px; text-align: left; }
+.answer-content td { padding: 4px 6px; border-bottom: 1px solid #ddd; font-size: 13px; }
+.answer-content .text { font-size: 14px; line-height: 1.6; }
+
+/* Input */
+.input-area textarea { width: 100%; min-height: 56px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; font-family: inherit; resize: vertical; line-height: 1.6; }
+.input-area textarea:focus { outline: none; border-color: #2d5a27; }
+
+/* Actions */
+.action-row { display: flex; gap: 8px; margin-top: 8px; align-items: center; }
+.analyze-btn { background: #2d5a27; color: #fff; border: none; padding: 8px 20px; border-radius: 20px; font-size: 14px; cursor: pointer; flex-shrink: 0; }
+.analyze-btn:hover { background: #3a7a33; }
+.analyze-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.status-text { font-size: 13px; color: #888; }
+
+/* Analysis Result */
+.analysis-result { display: none; background: #fffbe6; border-radius: 10px; padding: 12px; margin-top: 10px; border: 1px solid #f0dca0; }
+.analysis-result.visible { display: block; }
+.analysis-section { margin-bottom: 8px; }
+.analysis-section:last-child { margin-bottom: 0; }
+.analysis-section .section-label { font-weight: 700; font-size: 14px; display: block; margin-bottom: 3px; }
+.analysis-section .section-label.miss { color: #c0392b; }
+.analysis-section .section-label.reason { color: #d35400; }
+.analysis-section .section-label.suggest { color: #27ae60; }
+.analysis-section .section-content { font-size: 14px; line-height: 1.6; padding-left: 2px; }
+.analysis-section .section-content p { margin-bottom: 4px; }
+
+/* Error Book */
+.err-book { background: #fff; border-radius: 12px; padding: 16px 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.err-entry { border: 1px solid #e8e0d8; border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+.err-entry:last-child { margin-bottom: 0; }
+.err-entry .meta { font-size: 13px; color: #888; margin-bottom: 4px; }
+.err-entry .q-text { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+.err-entry .analysis-summary { font-size: 13px; line-height: 1.6; color: #555; }
+.empty-state { text-align: center; color: #aaa; padding: 40px 0; font-size: 15px; }
+.summary-btn { background: #8e44ad; color: #fff; border: none; padding: 10px 24px; border-radius: 20px; font-size: 15px; cursor: pointer; margin: 10px 0; display: block; width: 100%; }
+.summary-btn:hover { background: #9b59b6; }
+.summary-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.overall-analysis { display: none; background: #f3ecfa; border-radius: 10px; padding: 16px; margin-top: 12px; border: 1px solid #d5c0e8; line-height: 1.8; font-size: 14px; white-space: pre-wrap; }
+.overall-analysis.visible { display: block; }
+.delete-entry { float: right; color: #e74c3c; font-size: 18px; cursor: pointer; background: none; border: none; padding: 2px 6px; }
+
+/* Loading */
+.loading { display: inline-block; width: 14px; height: 14px; border: 2px solid #ddd; border-top-color: #2d5a27; border-radius: 50%; animation: spin 0.6s linear infinite; vertical-align: middle; margin-right: 4px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.point-badge { display: inline-block; font-size: 12px; color: #888; margin-left: 4px; }
+
+/* Mobile adjust */
+@media (max-width: 480px) {
+  .questions-panel { padding: 8px 10px 16px; }
+  .question-card { padding: 10px 12px; }
+  .article-scroll { padding: 0 10px 8px; }
+  .article-header { padding: 8px 10px 2px; }
+}
+
+@media (max-width: 360px) {
+  .article-text { font-size: 14px; line-height: 1.7; }
+  .question-text { font-size: 13px; }
+}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <span class="nav-title">🌸 紫藤萝瀑布 · 阅读理解</span>
+  <button class="nav-btn active" id="navArticleBtn" onclick="showPage('article')">练习</button>
+  <button class="nav-btn" id="navErrBtn" onclick="showPage('errbook')">错题本</button>
+</div>
+
+<!-- Practice Page -->
+<div class="page active" id="pageArticle">
+  <div class="article-panel" id="articlePanel">
+    <div class="article-header">
+      <div class="article-title">紫藤萝瀑布</div>
+      <div class="article-author">宗璞</div>
+    </div>
+    <div class="article-scroll" id="articleScroll">
+      <div class="article-text" id="articleText"></div>
+    </div>
+  </div>
+  <div class="drag-handle" id="dragHandle"></div>
+  <div class="questions-panel" id="questionsPanel">
+    <div id="questionsContainer"></div>
+  </div>
+</div>
+
+<!-- Error Book Page -->
+<div class="page" id="pageErrbook">
+  <div style="overflow-y:auto;flex:1;padding:12px 16px 24px;">
+    <div class="err-book">
+      <h2 style="font-size:18px;margin-bottom:8px;">📖 错题本</h2>
+      <p style="font-size:13px;color:#888;margin-bottom:10px;" id="errCountText">共 0 条分析记录</p>
+      <button class="summary-btn" id="summaryBtn" onclick="generateOverallSummary()">🧠 根据错题本生成总结</button>
+      <div id="errEntries"></div>
+      <div class="overall-analysis" id="overallAnalysis"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ========== DATA ==========
+const ARTICLE_PARAGRAPHS = [
+  "①我不由得停住了脚步。",
+  "②从未见过开得这样盛的藤萝，只见一片辉煌的淡紫色，像一条瀑布，从空中垂下，不见其发端，也不见其终极。只是深深浅浅的紫，仿佛在流动，在欢笑，在不停地生长。紫色的大条幅上，泛着点点银光，就像迸溅的水花。仔细看时，才知道那是每一朵紫花中的最浅淡的部分，在和阳光互相挑逗。",
+  "③这里春红已谢，没有赏花的人群，也没有蜂围蝶阵。有的就是这一树闪光的、盛开的藤萝。花朵儿一串挨着一串，一朵接着一朵，彼此推着挤着，好不活泼热闹！",
+  "④\"我在开花！\"它们在笑。",
+  "⑤\"我在开花！\"它们嚷嚷。",
+  "⑥每一穗花都是上面的盛开，下面的待放。颜色便上浅下深，好像那紫色沉淀下来了，沉淀在最嫩最小的花苞里。每一朵盛开的花就像是一个小小的张满了的帆，帆下带着尖底的舱。船舱鼓鼓的，又像一个忍俊不禁的笑容，就要绽开似的。那里装的是什么仙露琼浆？我凑上去，想摘一朵。",
+  "⑦但是我没有摘。我没有摘花的习惯。我只是伫立凝望，觉得这一条紫藤萝瀑布不只在我眼前，也在我心上缓缓流过。流着流着，它带走了这些时一直压在我心上的关于生死的疑惑，关于疾病的痛楚。我浸在这繁密的花朵的光辉中，别的一切暂时都不存在，有的只是精神的宁静和生的喜悦。",
+  "⑧这里除了光彩，还有淡淡的芳香，香气似乎也是浅紫色的，梦幻一般轻轻地笼罩着我。忽然记起十多年前，家门外也曾有过一大株紫藤萝，它依傍一株枯槐爬得很高，但花朵从来都稀落，东一穗西一串伶仃地挂在树梢，好像在察言观色，试探什么。后来索性连那稀零的花串也没有了。园中别的紫藤花架也都拆掉，改种了果树。那时的说法是，花和生活腐化有什么必然关系。我曾遗憾地想：这里再也看不见藤萝花了。",
+  "⑨过了这么多年，藤萝又开花了，而且开得这样盛，这样密，紫色的瀑布遮住了粗壮的盘虬卧龙般的枝干，不断地流着，流着，流向人的心底。",
+  "⑩花和人都会遇到各种各样的不幸，但是生命的长河是无止境的。我抚摸了一下那小小的紫色的花舱，那里满装生命的酒酿，它张满了帆，在这闪光的花的河流上航行。它是万花中的一朵，也正是一朵一朵花，组成了万花灿烂的流动的瀑布。",
+  "⑪在这浅紫色的光辉和浅紫色的芳香中，我不觉加快了脚步。"
+];
+
+const QUESTIONS = [
+  {
+    id: "q1",
+    label: "1",
+    point: "3分",
+    text: `下列加点字的注音全部正确的一项是（　　）`,
+    options: ["(备选)A.迸溅(bìng) 伶仃(dīng) 枯槐(huái) 仙露琼浆(qióng)", "(备选)B.挑逗(tiǎo) 遗憾(hàn) 沉淀(dìng) 忍俊不禁(jìn)", "(备选)C.瀑布(pù) 笼罩(lǒng) 盘虬(qiú) 酿酒(niàng)", "(备选)D.依傍(páng) 凝望(níng) 伫立(chù) 稀落(xī)"],
+    answer: `C`,
+    answerNote: "（解析：A项「迸」应读bèng；B项「淀」应读diàn，「禁」应读jīn；D项「傍」应读bàng，「伫」应读zhù）"
+  },
+  {
+    id: "q2",
+    label: "2",
+    point: "3分",
+    text: `下列词语中没有错别字的一项是（　　）`,
+    options: ["(备选)A.瀑布 繁蜜 蜂围蝶阵 察颜观色", "(备选)B.条幅 枯愧 盘虬卧龙 春红以谢", "(备选)C.灿烂 迸溅 漫布辉煌 紫藤萝", "(备选)D.树梢 伫立 忍俊不禁 伶仃"],
+    answer: `D`,
+    answerNote: "（解析：A项「繁蜜」应为「繁密」，「察颜观色」应为「察言观色」；B项「枯愧」应为「枯槐」，「春红以谢」应为「春红已谢」；C项「漫布」应为「满布」）"
+  },
+  {
+    id: "q3",
+    label: "3",
+    point: "3分",
+    text: `下列句子中加点词语使用不正确的一项是（　　）`,
+    options: ["(备选)A.春天来了，校园里的紫藤萝开得正盛，远远望去像一条紫色的瀑布，令人忍俊不禁。", "(备选)B.他从不在人前炫耀，只是伫立凝望着远方，谁也不知道他在想什么。", "(备选)C.这种盛开的景象让我感到仙露琼浆般的美好与感动。", "(备选)D.这棵老槐树的枯枝盘虬卧龙般伸向天空，诉说着岁月的沧桑。"],
+    answer: `B`,
+    answerNote: "（解析：「伫立凝望」指长时间站立凝神远望，用在此处语境不合适）"
+  },
+  {
+    id: "q4",
+    label: "4",
+    point: "3分",
+    text: `下列表述不正确的一项是（　　）`,
+    options: ["(备选)A.「我在开花！」它们在笑。——加点词「在」是副词", "(备选)B.从空中垂下——加点词「从」是动词", "(备选)C.「我」凑上去，想摘一朵。——加点词「我」是代词", "(备选)D.「那」里装的是什么仙露琼浆？——加点词「那」是指示代词"],
+    answer: `B`,
+    answerNote: "（解析：「从」在这里表示时间或处所的起点，是介词，不是动词）"
+  },
+  {
+    id: "q5",
+    label: "5",
+    point: "6分",
+    text: `根据课文内容，完成下面的填空。`,
+    subtext: `（1）看到盛开的紫藤萝花时，作者的心理感受是得到了＿＿＿＿＿＿，心情变得＿＿＿＿＿＿。
+（2）回忆十多年前家门外紫藤萝花的稀落和后来被拆掉，作者心中充满＿＿＿＿＿＿。
+（3）面对眼前的紫藤萝花，作者恍然大悟，体悟到＿＿＿＿＿＿＿＿＿＿＿＿＿＿。`,
+    answer: `（1）精神的宁静 欣喜欢愉（或：喜悦）
+（2）遗憾与悲痛（或：遗憾）
+（3）花和人都会遇到各种各样的不幸，但是生命的长河是无止境的`
+  },
+  {
+    id: "q6a",
+    label: "6①",
+    point: "4分",
+    text: `请按要求赏析下面的句子。`,
+    subtext: `从修辞手法的角度赏析第②段画线句子「只见一片辉煌的淡紫色，像一条瀑布，从空中垂下，不见其发端，也不见其终极。只是深深浅浅的紫，仿佛在流动，在欢笑，在不停地生长」的表达效果。`,
+    answer: `运用比喻和拟人的修辞手法，将紫藤萝花比作瀑布，同时赋予花以人的动作（"欢笑""生长"），生动形象地写出了紫藤萝花盛开时繁盛茂密、气势磅礴的景象，表现了紫藤萝花生机盎然的特点，抒发了作者内心的喜悦与惊叹之情。`
+  },
+  {
+    id: "q6b",
+    label: "6②",
+    point: "3分",
+    text: `请从修辞手法的角度赏析下面句子中加点词语的表达效果。`,
+    subtext: `「花朵儿一串挨着一串，一朵接着一朵，彼此推着挤着，好不活泼热闹！」——加点词语为「推着挤着」`,
+    answer: `运用拟人的修辞手法，"推着挤着"赋予紫藤萝花以人的动作，生动形象地写出了花朵繁盛茂密、竞相开放的活泼热闹景象，表达了作者对紫藤萝花蓬勃生命力的赞美之情。`
+  }
+];
+
+const MAIN_QUESTION_IDS = ["q1","q2","q3","q4","q5","q6a","q6b"];
+
+// ========== API CONFIG ==========
+const API_KEY = "sk-f93ebb57f1d94d90b53bd89b89ffa220";
+const API_URL = "https://api.deepseek.com/chat/completions";
+const MODEL = "deepseek-v4-pro";
+
+// ========== INIT ==========
+function init() {
+  renderArticle();
+  renderQuestions();
+  renderErrorBook();
+  initDragResize();
+  // Set initial article height
+  setTimeout(setInitialHeight, 50);
+}
+
+function setInitialHeight() {
+  const page = document.getElementById("pageArticle");
+  const articlePanel = document.getElementById("articlePanel");
+  const pageH = page.offsetHeight;
+  // Start with ~40% of the page for article, with a sane min/max
+  let h = Math.max(120, Math.min(pageH - 160, Math.round(pageH * 0.4)));
+  articlePanel.style.height = h + "px";
+}
+
+function renderArticle() {
+  const el = document.getElementById("articleText");
+  el.innerHTML = ARTICLE_PARAGRAPHS.map(p => `<p>${p}</p>`).join("");
+}
+
+function renderQuestions() {
+  const container = document.getElementById("questionsContainer");
+  container.innerHTML = QUESTIONS.map((q, idx) => {
+    const tableHTML = q.answerRows
+      ? `<table><thead><tr><th>作品</th><th>所托花木</th><th>特征</th><th>所言情志</th></tr></thead><tbody>` +
+        q.answerRows.map(r =>
+          `<tr><td>${r.work}</td><td>${r.flower}</td><td>${r.trait}</td><td>${r.zhi}</td></tr>`
+        ).join("") + `</tbody></table>`
+      : `<div class="text">${q.answer}</div>`;
+
+    return `
+      <div class="question-card" id="card_${q.id}">
+        <div class="question-label">第${q.label}题 <span class="point-badge">${q.point}</span></div>
+        <div class="question-text">${q.text}</div>
+        ${q.subtext ? `<div class="question-subtext">${q.subtext}</div>` : ""}
+
+        <details class="answer-toggle">
+          <summary>✅ 查看正确答案</summary>
+          <div class="answer-content">${tableHTML}</div>
+        </details>
+
+        <div class="input-area">
+          <textarea id="input_${q.id}" placeholder="在此输入孩子的答案……" oninput="onTyping('${q.id}')">${loadDraft(q.id)}</textarea>
+        </div>
+        <div class="action-row">
+          <button class="analyze-btn" id="btn_${q.id}" onclick="analyze('${q.id}', ${idx})">🔍 AI 分析</button>
+          <span class="status-text" id="status_${q.id}"></span>
+        </div>
+        <div class="analysis-result" id="result_${q.id}"></div>
+      </div>
+    `;
+  }).join("");
+}
+
+function loadDraft(qId) {
+  try { return localStorage.getItem("draft_" + qId) || ""; } catch(e) { return ""; }
+}
+
+function onTyping(qId) {
+  try { localStorage.setItem("draft_" + qId, document.getElementById("input_" + qId).value); } catch(e) {}
+}
+
+// ========== DRAG RESIZE ==========
+function initDragResize() {
+  const handle = document.getElementById("dragHandle");
+  const articlePanel = document.getElementById("articlePanel");
+  const page = document.getElementById("pageArticle");
+  let startY, startH;
+
+  function onStart(e) {
+    e.preventDefault();
+    startY = e.type.startsWith("touch") ? e.touches[0].clientY : e.clientY;
+    startH = articlePanel.offsetHeight;
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseup", onEnd);
+    document.addEventListener("touchmove", onMove, { passive: false });
+    document.addEventListener("touchend", onEnd);
+  }
+
+  function onMove(e) {
+    e.preventDefault();
+    const clientY = e.type.startsWith("touch") ? e.touches[0].clientY : e.clientY;
+    const delta = clientY - startY;
+    const pageH = page.offsetHeight;
+    const minH = 80;
+    const maxH = pageH - 120;
+    let newH = Math.max(minH, Math.min(maxH, startH + delta));
+    articlePanel.style.height = newH + "px";
+  }
+
+  function onEnd() {
+    document.removeEventListener("mousemove", onMove);
+    document.removeEventListener("mouseup", onEnd);
+    document.removeEventListener("touchmove", onMove);
+    document.removeEventListener("touchend", onEnd);
+  }
+
+  handle.addEventListener("mousedown", onStart);
+  handle.addEventListener("touchstart", onStart, { passive: true });
+}
+
+// ========== AI ANALYSIS ==========
+function analyze(qId, qIdx) {
+  const q = QUESTIONS[qIdx];
+  const studentAnswer = document.getElementById("input_" + qId).value.trim();
+  if (!studentAnswer) {
+    document.getElementById("status_" + qId).textContent = "⚠️ 请先输入答案";
+    return;
+  }
+
+  const btn = document.getElementById("btn_" + qId);
+  const status = document.getElementById("status_" + qId);
+  const resultDiv = document.getElementById("result_" + qId);
+
+  btn.disabled = true;
+  status.innerHTML = '<span class="loading"></span> AI 分析中……';
+  resultDiv.classList.remove("visible");
+
+  const questionFullText = q.text + (q.subtext ? "\n" + q.subtext : "");
+  const answerText = q.answerRows
+    ? q.answerRows.map(r => `${r.work}: 花木=${r.flower}, 特征=${r.trait}, 情志=${r.zhi}`).join("\n")
+    : q.answer;
+
+  const systemPrompt = `你是一位经验丰富的初中语文教师。你要对学生的阅读理解答案进行精准分析。
+
+你将收到：一道语文阅读题 + 正确答案 + 学生的回答。
+
+请按照以下三点进行分析（这个分析将存入错题本，以后会根据所有错题本记录来总结学生的语文能力薄弱环节）：
+
+【缺失点】学生哪些答案要点没有答出来？对比正确答案，逐点指出。
+
+【原因分析】学生没答出来的根本原因是什么？可能是：漏掉了某个答案点、没有理解文章深层含义或作者意图、审题不清、答题技巧不足、表达不完整等。请具体分析。
+
+【改进建议】针对这道题，告诉学生下次遇到同类题目时具体怎么做才能答对。建议要具体、可操作。
+
+注意：语气对事不对人，以鼓励为主。不要在分析中透露这是给家长看的。`;
+
+  const userMessage = `## 文章
+《紫藤萝瀑布》（宗璞）
+
+## 题目
+${questionFullText}
+
+## 正确答案
+${answerText}
+
+## 学生的回答
+${studentAnswer}
+
+请按【缺失点】【原因分析】【改进建议】三点给出分析。`;
+
+  fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + API_KEY
+    },
+    body: JSON.stringify({
+      model: MODEL,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userMessage }
+      ],
+      temperature: 0.3,
+      max_tokens: 2000
+    })
+  })
+  .then(r => r.json())
+  .then(data => {
+    btn.disabled = false;
+    if (data.error) {
+      status.textContent = "❌ API 错误：" + (data.error.message || JSON.stringify(data.error));
+      return;
+    }
+    const analysisText = data.choices?.[0]?.message?.content || "分析失败，未收到有效回复";
+    status.textContent = "✅ 分析完成";
+    displayAnalysis(qId, analysisText, q, studentAnswer, answerText);
+    saveToErrorBook(qId, q, studentAnswer, answerText, analysisText);
+    renderErrorBook();
+  })
+  .catch(err => {
+    btn.disabled = false;
+    status.textContent = "❌ 请求失败：" + err.message;
+  });
+}
+
+function displayAnalysis(qId, text) {
+  const div = document.getElementById("result_" + qId);
+  div.innerHTML = "";
+
+  let missContent = "", reasonContent = "", suggestContent = "";
+
+  const missMatch = text.match(/【缺失点】([\s\S]*?)(?=【原因分析】|【改进建议】|$)/);
+  const reasonMatch = text.match(/【原因分析】([\s\S]*?)(?=【缺失点】|【改进建议】|$)/);
+  const suggestMatch = text.match(/【改进建议】([\s\S]*?)(?=【缺失点】|【原因分析】|$)/);
+
+  if (missMatch) missContent = missMatch[1].trim();
+  if (reasonMatch) reasonContent = reasonMatch[1].trim();
+  if (suggestMatch) suggestContent = suggestMatch[1].trim();
+
+  if (!missContent && !reasonContent && !suggestContent) {
+    const lines = text.split("\n");
+    let currentSection = "";
+    for (const line of lines) {
+      const t = line.trim();
+      if (/缺失/.test(t)) { currentSection = "miss"; continue; }
+      if (/原因|为什么/.test(t)) { currentSection = "reason"; continue; }
+      if (/建议|改进|怎么做/.test(t)) { currentSection = "suggest"; continue; }
+      if (currentSection === "miss") missContent += t + "\n";
+      else if (currentSection === "reason") reasonContent += t + "\n";
+      else if (currentSection === "suggest") suggestContent += t + "\n";
+    }
+  }
+
+  if (!missContent && !reasonContent && !suggestContent) {
+    div.innerHTML = `<div style="font-size:14px;line-height:1.8;white-space:pre-wrap;">${escapeHtml(text)}</div>`;
+    div.classList.add("visible");
+    return;
+  }
+
+  if (missContent) {
+    div.innerHTML += `<div class="analysis-section"><span class="section-label miss">❌ 缺失点</span><div class="section-content">${formatText(missContent)}</div></div>`;
+  }
+  if (reasonContent) {
+    div.innerHTML += `<div class="analysis-section"><span class="section-label reason">🤔 原因分析</span><div class="section-content">${formatText(reasonContent)}</div></div>`;
+  }
+  if (suggestContent) {
+    div.innerHTML += `<div class="analysis-section"><span class="section-label suggest">💡 改进建议</span><div class="section-content">${formatText(suggestContent)}</div></div>`;
+  }
+
+  div.classList.add("visible");
+}
+
+function formatText(text) {
+  return text.split("\n").filter(l => l.trim()).map(l => `<p>${l.trim()}</p>`).join("");
+}
+
+function escapeHtml(text) {
+  const d = document.createElement("div");
+  d.textContent = text;
+  return d.innerHTML;
+}
+
+// ========== ERROR BOOK ==========
+function getErrorBook() {
+  try { return JSON.parse(localStorage.getItem("errorBook") || "[]"); } catch(e) { return []; }
+}
+
+function saveToErrorBook(qId, q, studentAnswer, correctAnswer, analysis) {
+  const book = getErrorBook();
+  const existingIdx = book.findIndex(e => e.qId === qId);
+  const entry = {
+    qId, label: q.label,
+    question: q.text + (q.subtext ? " " + q.subtext : ""),
+    correctAnswer, studentAnswer, analysis,
+    timestamp: new Date().toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" })
+  };
+  if (existingIdx >= 0) book[existingIdx] = entry;
+  else book.push(entry);
+  try { localStorage.setItem("errorBook", JSON.stringify(book)); } catch(e) {}
+}
+
+function deleteErrorEntry(qId) {
+  let book = getErrorBook();
+  book = book.filter(e => e.qId !== qId);
+  try { localStorage.setItem("errorBook", JSON.stringify(book)); } catch(e) {}
+  renderErrorBook();
+}
+
+function renderErrorBook() {
+  const book = getErrorBook();
+  const container = document.getElementById("errEntries");
+  const countText = document.getElementById("errCountText");
+  countText.textContent = `共 ${book.length} 条分析记录`;
+
+  if (book.length === 0) {
+    container.innerHTML = `<div class="empty-state">📝 暂无分析记录，先做一道题吧</div>`;
+    return;
+  }
+
+  container.innerHTML = book.map(e => {
+    let missPreview = "";
+    const m = e.analysis.match(/【缺失点】([\s\S]*?)(?=【原因分析】|【改进建议】|$)/);
+    if (m) missPreview = m[1].trim().substring(0, 120) + (m[1].trim().length > 120 ? "…" : "");
+    const s = e.analysis.match(/【改进建议】([\s\S]*?)(?=【缺失点】|【原因分析】|$)/);
+    const sp = s ? s[1].trim().substring(0, 100) + (s[1].trim().length > 100 ? "…" : "") : "";
+
+    return `
+      <div class="err-entry">
+        <button class="delete-entry" onclick="deleteErrorEntry('${e.qId}')" title="删除">✕</button>
+        <div class="meta">第${e.label}题 · ${e.timestamp}</div>
+        <div class="q-text">${e.question}</div>
+        <div class="analysis-summary">
+          <strong style="color:#c0392b;">缺失点：</strong>${missPreview || "（见详情）"}<br>
+          ${sp ? `<strong style="color:#27ae60;">建议：</strong>${sp}` : ""}
+        </div>
+        <details style="margin-top:6px;font-size:13px;">
+          <summary style="color:#2d5a27;cursor:pointer;">查看完整分析</summary>
+          <div style="margin-top:6px;padding:8px;background:#f9f9f9;border-radius:6px;line-height:1.7;white-space:pre-wrap;">${escapeHtml(e.analysis)}</div>
+        </details>
+      </div>
+    `;
+  }).join("");
+}
+
+// ========== OVERALL SUMMARY ==========
+function generateOverallSummary() {
+  const book = getErrorBook();
+  if (book.length === 0) {
+    document.getElementById("overallAnalysis").textContent = "错题本为空，请先做一些题目并分析。";
+    document.getElementById("overallAnalysis").classList.add("visible");
+    return;
+  }
+
+  const btn = document.getElementById("summaryBtn");
+  const resultDiv = document.getElementById("overallAnalysis");
+  btn.disabled = true;
+  btn.textContent = "⏳ 正在分析……";
+  resultDiv.classList.remove("visible");
+
+  const entriesText = book.map((e, i) =>
+    `【记录 ${i+1}】第${e.label}题\n问题：${e.question}\n学生答案：${e.studentAnswer}\n正确答案：${e.correctAnswer}\n分析：\n${e.analysis}`
+  ).join("\n\n---\n\n");
+
+  const systemPrompt = `你是一位经验丰富的初中语文教师。我将给你一份学生历次阅读理解练习的错题本记录，包含每次的题目、正确答案、学生答案以及之前对每道题的分析。
+
+请根据所有记录，做一份全面的总结分析，包括以下方面：
+
+1. **总体评价**：学生的语文阅读理解能力整体处于什么水平？
+2. **常见薄弱环节**：从这些错题中，可以归纳出学生哪些反复出现的问题？（如：审题不清、答案点遗漏、不理解深层含义、答题格式不规范等）
+3. **各能力维度分析**：从"信息提取能力""理解分析能力""鉴赏评价能力""语言表达能力"等维度分析学生的表现。
+4. **具体改进建议**：针对发现的薄弱环节，给出可操作的学习建议。
+5. **下一步学习重点**：建议重点练习哪些题型或能力。
+
+语气要对事不对人，以鼓励为主，不要打击学生信心。给出可操作的、有针对性的建议。`;
+
+  fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + API_KEY
+    },
+    body: JSON.stringify({
+      model: MODEL,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: `以下是我孩子的错题本记录，请根据这些记录做一份全面的总结分析。\n\n${entriesText}` }
+      ],
+      temperature: 0.3,
+      max_tokens: 3000
+    })
+  })
+  .then(r => r.json())
+  .then(data => {
+    btn.disabled = false;
+    btn.textContent = "🧠 根据错题本生成总结";
+    if (data.error) {
+      resultDiv.textContent = "❌ API 错误：" + (data.error.message || JSON.stringify(data.error));
+      resultDiv.classList.add("visible");
+      return;
+    }
+    resultDiv.textContent = data.choices?.[0]?.message?.content || "总结失败";
+    resultDiv.classList.add("visible");
+  })
+  .catch(err => {
+    btn.disabled = false;
+    btn.textContent = "🧠 根据错题本生成总结";
+    resultDiv.textContent = "❌ 请求失败：" + err.message;
+    resultDiv.classList.add("visible");
+  });
+}
+
+// ========== NAVIGATION ==========
+function showPage(page) {
+  document.querySelectorAll(".page").forEach(el => el.classList.remove("active"));
+  document.getElementById("page" + page.charAt(0).toUpperCase() + page.slice(1)).classList.add("active");
+  document.querySelectorAll(".nav-btn").forEach(el => el.classList.remove("active"));
+  document.getElementById("nav" + page.charAt(0).toUpperCase() + page.slice(1) + "Btn").classList.add("active");
+  if (page === "errbook") renderErrorBook();
+}
+
+// ========== START ==========
+document.addEventListener("DOMContentLoaded", init);
+</script>
+</body>
+</html>
