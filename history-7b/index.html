@@ -649,7 +649,6 @@ function buildPage() {
         
         html += `<div class="kp-card"><div class="kp-header" onclick="toggleDetail(this, event)">`;
         html += `<div class="kp-num">${pt.num}</div>`;
-        html += `<div class="kp-text">${text}</div>`;
         // Add unfound keywords inline after text
         if (pt.kws) {
           let extra_kws = '';
@@ -663,6 +662,8 @@ function buildPage() {
             text += extra_kws;
           }
         }
+        html += `<div class="kp-text">${text}</div>`;
+        
         html += `</div></div>`;
       });
     });
