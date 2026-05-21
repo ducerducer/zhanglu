@@ -147,11 +147,11 @@ footer{padding:20px;text-align:center;font-size:12px;color:#aaa}
 .sa-a-wrap{display:none;margin-top:8px;padding:8px 10px;background:#FFF5F5;border-radius:6px;font-size:13px;line-height:1.6;color:#C0392B;font-weight:500}
 .sa-a-wrap.show{display:block}
 .sa-a-label{color:#999;font-weight:400;font-size:11px;margin-right:4px}
-.sa-mat-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.3);z-index:200;justify-content:center;align-items:flex-start;padding:60px 16px}
+.sa-mat-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.3);z-index:200;justify-content:center;align-items:flex-start;padding:0}
 .sa-mat-overlay.show{display:flex}
-.sa-mat-modal{background:#fff;border-radius:12px;max-width:640px;width:100%;max-height:70vh;overflow-y:auto;box-shadow:0 8px 30px rgba(0,0,0,.15)}
-.sa-mat-header{position:sticky;top:0;background:#fff;padding:10px 14px;border-bottom:1px solid #E8E0D5;display:flex;align-items:center;justify-content:space-between}
-.sa-mat-header h3{font-size:14px;margin:0;color:#2C3E50}
+.sa-mat-modal{background:#fff;border-radius:0 0 12px 12px;max-width:640px;width:100%;max-height:80vh;overflow-y:auto;box-shadow:0 8px 30px rgba(0,0,0,.15)}
+.sa-mat-header{position:sticky;top:0;background:#fff;padding:6px 14px;border-bottom:none;display:flex;align-items:center;justify-content:flex-end}
+.sa-mat-header h3{font-size:12px;margin:0;color:#999}
 .sa-mat-close{background:none;border:none;font-size:14px;color:#999;cursor:pointer;padding:3px}
 .sa-mat-body{padding:12px 14px;font-size:13px;line-height:1.65;color:#3D3D3D}
 .sa-mat-body .mat-block{margin-bottom:10px;padding:8px 10px;background:#FAFAF7;border-left:3px solid #C0392B;border-radius:4px}
@@ -923,7 +923,7 @@ function openSAMat(mId) {
     });
   });
   if (!found) return;
-  document.getElementById('saMatTitle').textContent = found.period + ' · ' + found.title;
+  document.getElementById('saMatTitle').textContent = '📄 材料';
   var body = document.getElementById('saMatBody');
   var blocks = found.text.split('材料');
   var h = '';
