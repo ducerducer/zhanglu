@@ -115,34 +115,36 @@ header h1 .icon{width:32px;height:32px;border-radius:8px;background:#FDE8E4;disp
 /* Footer */
 footer{padding:20px;text-align:center;font-size:12px;color:#aaa}
 
-/* ====== 简答题区域样式 ====== */
+/* ====== 简答题 ====== */
 .sa-section{margin-top:40px;margin-bottom:40px;scroll-margin-top:130px;padding-top:10px;border-top:3px dashed #E0D5C8}
-.sa-title{font-size:18px;font-weight:700;color:#C0392B;margin-bottom:6px;display:flex;align-items:center;gap:8px}
-.sa-title .sa-badge{font-size:11px;background:#FDE8E4;color:#C0392B;padding:2px 10px;border-radius:12px;font-weight:400}
-.sa-subtitle{font-size:13px;color:#999;margin-bottom:20px}
-.sa-group{margin-bottom:14px;background:#fff;border-radius:10px;border:1px solid #E8E0D5;overflow:hidden;transition:box-shadow .2s}
-.sa-group:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.sa-group-header{padding:12px 16px;cursor:pointer;display:flex;align-items:center;gap:10px;user-select:none;background:#FFF8F5;transition:background .2s}
-.sa-group-header:hover{background:#FDE8E4}
-.sa-group-header .sa-num{min-width:26px;height:26px;border-radius:50%;background:#C0392B;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
-.sa-group-header .sa-label{font-size:14px;font-weight:600;color:#2C3E50;flex:1}
-.sa-group-header .sa-expand{font-size:12px;color:#C0392B;transition:transform .2s}
-.sa-group-header .sa-expand.open{transform:rotate(180deg)}
-.sa-group-body{display:none;border-top:1px solid #F0EBE0;background:#FAF8F5}
-.sa-group-body.show{display:block}
-.sa-q-item{padding:12px 16px;border-bottom:1px solid #F0EBE0}
+.sa-section-title{font-size:18px;font-weight:700;color:#C0392B;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.sa-section-title .sa-badge{font-size:11px;background:#FDE8E4;color:#C0392B;padding:2px 10px;border-radius:12px;font-weight:400}
+.sa-mat-btn{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#8B4513;cursor:pointer;user-select:none;padding:5px 12px;border-radius:8px;border:1px solid #D4B896;background:#FBF5EE;margin-bottom:16px;transition:all .2s}
+.sa-mat-btn:hover{background:#F5E6D0;border-color:#8B4513}
+.sa-group{border:1px solid #E8E0D5;border-radius:10px;margin-bottom:10px;overflow:hidden;background:#fff}
+.sa-group-title{font-size:14px;font-weight:600;color:#2C3E50;padding:10px 14px;background:#FFF8F5;border-bottom:1px solid #F0EBE0;display:flex;align-items:center;gap:8px}
+.sa-group-title .sa-num{min-width:24px;height:24px;border-radius:50%;background:#C0392B;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.sa-q-item{padding:10px 14px;border-bottom:1px solid #F5F0EA;cursor:pointer;transition:background .15s}
 .sa-q-item:last-child{border-bottom:none}
-.sa-q-item .sa-q{font-size:14px;line-height:1.7;color:#3D3D3D;margin-bottom:8px}
-.sa-q-item .sa-q .sa-q-icon{color:#C0392B;margin-right:4px}
-.sa-q-item .sa-a{font-size:14px;line-height:1.7;color:#C0392B;padding:8px 12px;background:#FFF5F5;border-radius:6px;font-weight:500}
-.sa-q-item .sa-a .sa-a-label{color:#999;font-weight:400;font-size:12px;margin-right:4px}
-.sa-q-item .sa-a .sa-a-text{color:#C0392B}
-.sa-q-item .sa-a .sa-a-hidden{color:#ccc;letter-spacing:2px}
+.sa-q-item:hover{background:#FFFCFA}
+.sa-q-item .sa-q{font-size:13px;line-height:1.6;color:#3D3D3D}
+.sa-q-item .sa-q-icon{color:#C0392B;margin-right:4px;font-size:11px}
+.sa-expand-icon{color:#aaa;margin-left:6px;font-size:10px;transition:transform .2s;display:inline-block}
+.sa-expand-icon.open{transform:rotate(180deg)}
+.sa-a-wrap{display:none;margin-top:8px;padding:8px 10px;background:#FFF5F5;border-radius:6px;font-size:13px;line-height:1.6;color:#C0392B;font-weight:500}
+.sa-a-wrap.show{display:block}
+.sa-a-label{color:#999;font-weight:400;font-size:11px;margin-right:4px}
 
-/* 简答题按钮 */
-.sa-toggle-btn{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#C0392B;cursor:pointer;user-select:none;white-space:nowrap;padding:4px 10px 4px 12px;border-radius:14px;border:1px solid #F0C8C0;background:#FDF5F3;transition:all .2s;flex-shrink:0;margin-right:6px}
-.sa-toggle-btn:hover{border-color:#C0392B;background:#FDE8E4}
-.sa-toggle-btn.active{background:#C0392B;color:#fff;border-color:#C0392B}
+/* 材料弹窗 */
+.sa-mat-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.3);z-index:200;justify-content:center;align-items:flex-start;padding:60px 16px}
+.sa-mat-overlay.show{display:flex}
+.sa-mat-modal{background:#fff;border-radius:12px;max-width:640px;width:100%;max-height:70vh;overflow-y:auto;box-shadow:0 8px 30px rgba(0,0,0,.15)}
+.sa-mat-header{position:sticky;top:0;background:#fff;padding:14px 18px;border-bottom:1px solid #E8E0D5;display:flex;align-items:center;justify-content:space-between}
+.sa-mat-header h3{font-size:16px;margin:0;color:#2C3E50}
+.sa-mat-close{background:none;border:none;font-size:18px;color:#999;cursor:pointer;padding:4px}
+.sa-mat-body{padding:16px 18px;font-size:14px;line-height:1.8;color:#3D3D3D}
+.sa-mat-body .mat-block{margin-bottom:16px;padding:12px;background:#FAFAF7;border-left:3px solid #C0392B;border-radius:4px}
+.sa-mat-body .mat-label{font-weight:600;color:#C0392B;margin-bottom:6px;font-size:13px}
 
 </style>
 </head>
@@ -152,7 +154,7 @@ footer{padding:20px;text-align:center;font-size:12px;color:#aaa}
 <div class="container">
   <div style="display:flex;width:100%;align-items:center">
     <h1 style="margin:0;flex:1"><span class="icon">📜</span> 七年级下册·历史知识点</h1>
-    <div class="sa-toggle-btn" id="saToggleBtn" onclick="scrollToShortAnswer()">📝 简答题</div>
+    <div class="sa-toggle-btn" id="saToggleBtn" onclick="scrollToShortAnswer()" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#C0392B;cursor:pointer;user-select:none;white-space:nowrap;padding:4px 10px 4px 12px;border-radius:14px;border:1px solid #F0C8C0;background:#FDF5F3">📝 简答题</div>
   </div>
   <div style="display:flex;width:100%;align-items:center;margin-top:4px">
     <div class="period-nav" id="periodNav" style="flex:1"></div>
@@ -270,46 +272,45 @@ const KNOWLEDGE = [
     ],
     shortAnswer: [
       {
-        num: "26",
-        title: "科举制",
+        num: "26", title: "科举制",
+        materials: "材料一：魏晋南北朝时期，选拔官员主要看门第出身，权贵子弟无论优劣都可以做官，形成\u201c上品无寒门，下品无势族\u201d的局面。\n材料二：隋唐科举制度建立，\u201c一切以程文定去留\u201d，不论贵族和平民皆可参加公开考试，考试成绩是录取的主要依据。",
         questions: [
-          { q: "(1) 材料一、二中选拔官吏的标准分别是什么？", a: "材料一选拔标准：出身门第（权贵子弟无论优劣都可以做官）；材料二选拔标准：考试成绩。" },
+          { q: "(1) 材料一、二中选拔官吏的标准分别是什么？", a: "材料一：出身门第；材料二：考试成绩。" },
           { q: "(2) 科举制度诞生于哪个朝代？其诞生的标志是什么？", a: "隋朝；隋炀帝设置进士科，标志着科举制的正式创立。" },
-          { q: "(3) 根据材料二，指出科举制度的特点。结合所学知识，简要指出科举制度的积极作用。", a: "特点：自由报考（不论贵族和贫民皆可参加公开考试）；考试内容广泛（涉及政治、经济、军事、文化、天文、地理、民族等）；以考试成绩决定录取（一切以程文定去留）。积极作用：加强了皇帝在选官和用人上的权力；扩大了官吏选拔的范围，使有才学的人能够由此参政；促进了教育的发展；推动了社会阶层的流动。" },
-          { q: "(4) 唐太宗和武则天对科举制度的完善分别作出了哪些贡献？", a: "唐太宗：扩充国学规模，增加科举考试科目，进士科逐渐成为最重要的科目；武则天：创立殿试制度和武举。" }
+          { q: "(3) 根据材料二，指出科举制度的特点。结合所学知识，简要指出科举制度的积极作用。", a: "特点：自由报考、内容广泛、以成绩定录取。积极作用：加强皇权选官；扩大官吏选拔范围；促进教育；推动阶层流动。" },
+          { q: "(4) 唐太宗和武则天对科举制度的完善分别作出了哪些贡献？", a: "唐太宗：扩充国学、增加科目；武则天：创立殿试和武举。" }
         ]
       },
       {
-        num: "27",
-        title: "大运河与隋唐经济",
+        num: "27", title: "大运河与隋唐经济",
+        materials: "材料一：隋朝大运河以洛阳为中心，北达涿郡，南至余杭，连接海河、黄河、淮河、长江、钱塘江五大水系。\n材料二：唐朝出现了曲辕犁和筒车。曲辕犁操作灵活，可调节深浅；筒车利用水流自动提水灌溉。\n材料三：唐玄宗前期出现开元盛世，后期因宠爱杨贵妃、信任奸臣导致安史之乱。",
         questions: [
-          { q: "(1) 分别指出大运河的南北两端。根据材料一并结合所学知识，简述隋唐时期大运河贯通与发展产生的历史影响。", a: "北端：涿郡（今北京）；南端：余杭郡（今杭州）。历史影响：大运河成为南北交通大动脉，加强了南北地区政治、经济和文化交流，促进了城市发展与经济繁荣。" },
-          { q: "(2) 材料二中的两种农具是唐朝时期出现的，它们分别是什么？", a: "曲辕犁和筒车。" },
-          { q: "(3) 唐玄宗统治前期出现了哪一盛世局面？根据材料三，比较唐玄宗统治前期和后期的不同之处。", a: "开元盛世。不同：前期节俭、反对铺张浪费，任人唯贤；后期骄奢淫逸、挥霍无度，专用投其所好者。" }
+          { q: "(1) 分别指出大运河的南北两端。根据材料一并结合所学知识，简述隋唐时期大运河贯通与发展产生的历史影响。", a: "北端：涿郡（今北京）；南端：余杭（今杭州）。影响：成为南北交通大动脉，加强政治经济文化交流，促进城市发展。" },
+          { q: "(2) 材料二中两种农具分别是什么？", a: "曲辕犁和筒车。" },
+          { q: "(3) 唐玄宗前期出现了什么盛世？比较其前期和后期的不同。", a: "开元盛世。前期节俭、任人唯贤；后期奢侈、专用投其所好者。" }
         ]
       },
       {
-        num: "28",
-        title: "唐朝的繁荣与开放",
+        num: "28", title: "唐朝的繁荣与开放",
+        materials: "材料一：唐太宗说：\u201c水能载舟，亦能覆舟。\u201d出现贞观之治。\n材料二：唐太宗实行开明民族政策，被尊为\u201c天可汗\u201d。\n材料三：日本派遣唐使来华学习制度、文化、建筑等。\n材料四：玄奘西行天竺取经，回国后由其口述、弟子记录成《大唐西域记》。",
         questions: [
-          { q: "(1) 材料一反映了唐太宗怎样的思想？历史上把唐太宗统治期间的局面称为什么？", a: "民本思想（以民为本，认识到人民力量的伟大）；贞观之治。" },
-          { q: "(2) 根据材料二，说一说唐太宗采取了什么样的民族政策？", a: "开明平等的民族政策（自古皆贵中华，贱夷狄，朕独爱之如一）。" },
-          { q: "(3) 结合材料三所述，日本派到唐朝的使节在当时称为什么？日本在哪些方面受唐朝文化影响？", a: "遣唐使。日本受唐朝文化影响的方面：文字（参照汉字创制日本文字）、建筑（仿唐长安城建造都城）、服饰、茶道、节日习俗等。" },
-          { q: "(4) 根据材料四中西行回国僧人的口述，由其弟子记录写成了哪本书？我们从他身上可以学到哪些精神？", a: "大唐西域记。精神：不畏艰险、坚持不懈、求知探索、开放包容。" }
+          { q: "(1) 材料一反映了唐太宗怎样的思想？历史上把唐太宗统治期间的局面称为什么？", a: "民本思想（以民为本）；贞观之治。" },
+          { q: "(2) 根据材料二，唐太宗采取什么样的民族政策？", a: "开明平等的民族政策。" },
+          { q: "(3) 日本派到唐朝的使节在当时称为什么？日本在哪些方面受唐朝文化影响？", a: "遣唐使。文字、建筑、服饰、茶道、节日习俗等。" },
+          { q: "(4) 根据材料四，玄奘西行回国后由其弟子记录写成了哪本书？从他身上可以学到哪些精神？", a: "《大唐西域记》。不畏艰险、求知探索、开放包容。" }
         ]
       },
       {
-        num: "29",
-        title: "新课标探究性学习",
+        num: "29", title: "新课标探究性学习",
+        materials: "材料一：唐代李白（诗仙）、杜甫（诗圣）；颜真卿、柳公权（书法）；吴道子、阎立本（绘画）；鉴真东渡、玄奘西行。\n材料二：唐朝农业有曲辕犁、筒车；手工业发达；商业繁荣。\n材料三：唐蕃和亲促进民族交融。A诗反映开元盛世，B诗反映社会矛盾。",
         questions: [
-          { q: "任务一(1) 按要求把人物序号填写在表格内相应位置。", a: "诗人：李白、杜甫；书法家：颜真卿、柳公权；画家：吴道子、阎立本；对外交往的使者：鉴真、玄奘。" },
-          { q: "(2) 图1、图2、图3分别从哪几个角度反映了唐朝经济的繁荣？图4展现了什么主题？", a: "图1：农业生产（农业工具改进）；图2：手工业（制陶工艺）；图3：货币经济（金属货币铸造/商业发展）。图4体现了民族交融（唐蕃和亲）的主题。" },
-          { q: "(3) A、B两首诗反映的历史现象。", a: "A诗反映开元盛世繁荣景象（人口增多、粮食丰收、国库充裕）。B诗反映宫市制度对百姓的掠夺和剥削。" },
-          { q: "(4) 评价隋炀帝和武则天。说说我们应该怎样评价历史人物。", a: "评价历史人物要全面、客观、辩证，放在特定历史背景下，看其对历史发展和社会进步的贡献。" }
+          { q: "任务一(1) 按要求把人物序号填写在表格内相应位置。", a: "诗人：李白、杜甫；书法家：颜真卿、柳公权；画家：吴道子、阎立本；对外交往：鉴真、玄奘。" },
+          { q: "(2) 图1、图2、图3分别从哪几个角度反映了唐朝经济的繁荣？图4展现了什么主题？", a: "图1：农业；图2：手工业；图3：商业。图4：民族交融（唐蕃和亲）。" },
+          { q: "(3) A、B两首诗反映的历史现象。", a: "A：开元盛世（繁荣景象）；B：宫市制度（百姓受剥削）。" },
+          { q: "(4) 评价隋炀帝和武则天。说说我们应该怎样评价历史人物。", a: "全面客观辩证，放在特定历史背景下看其对历史进步的贡献。" }
         ]
       }
-    ],
-  
+    ]
   },
   {
     period: "辽宋夏金元时期",
@@ -426,44 +427,43 @@ const KNOWLEDGE = [
     ],
     shortAnswer: [
       {
-        num: "26",
-        title: "民族关系",
+        num: "26", title: "民族关系",
+        materials: "材料一：辽宋夏金时期，辽（契丹）在北方，北宋在中原，西夏（党项）在西北。\n材料二：各民族文化双向交流，相互吸收。\n材料三：边疆民族通过学习中原文�不断融入中华民族大家庭。",
         questions: [
-          { q: "(1) 请写出材料一图中①、②分别代表的政权。结合所学知识，列举两宋时期和少数民族政权阶段性友好的事例。", a: "①辽 ②西夏。友好事例：宋辽澶渊之盟后保持和平局面；宋夏和议；边境榷场贸易（边境互市）。" },
-          { q: "(2) 根据材料二，指出辽宋西夏时期的民族文化交往呈现出的特点。并结合所学，概括这一时期的历史特征。", a: "特点：相互吸收（汉族与少数民族文化双向交流）。历史特征：民族交融进一步加强，民族政权并立，经济重心南移完成。" },
-          { q: "(3) 材料三认为边疆民族与中国的历史之间是什么关系？结合所学知识，分析边疆民族不断融入发展的共同做法有哪些。", a: "关系：边疆民族不断融入发展是中国历史的重要组成部分。共同做法：学习中原先进文化和技术；推行汉法（改革旧俗）；与中原政权保持经济文化交流。" }
+          { q: "(1) 请写出材料一图中\u2460、\u2461分别代表的政权。结合所学知识，列举两宋时期和少数民族政权阶段性友好的事例。", a: "\u2460辽 \u2461西夏。澶渊之盟、宋夏和议、边境榷场贸易。" },
+          { q: "(2) 根据材料二，指出辽宋西夏时期的民族文化交往呈现出的特点。并结合所学，概括这一时期的历史特征。", a: "特点：相互吸收（双向交流）。特征：民族交融加强，政权并立，经济重心南移完成。" },
+          { q: "(3) 材料三认为边疆民族与中国的历史之间是什么关系？结合所学知识，分析边疆民族不断融入发展的共同做法有哪些。", a: "关系：边疆民族不断融入是中国历史的重要组成部分。做法：学习中原文化技术；推行汉法；保持经济文化交流。" }
         ]
       },
       {
-        num: "27",
-        title: "宋元时期海外贸易",
+        num: "27", title: "宋元时期海外贸易",
+        materials: "材料一：宋朝设市舶司管理海外贸易，出海须登记领公凭，对蕃商依法征税。高丽欢迎宋朝商人贩书，阿拉伯商人来华。\n材料二：元朝政府提供船只本金支持贸易，制定《市舶则法》，贸易范围远达非洲东海岸。",
         questions: [
-          { q: "(1) 将材料一的史实与以下观点相对应。A: 宋代重视对海外贸易的管理；B: 贸易促进中外文化交流。", a: "A对应：出海贸易须到政府登记领取公凭；宋朝要求对蕃商依法征税。B对应：高丽欢迎宋朝商人贩运书籍；阿拉伯商人兴建融合风格的建筑群。" },
-          { q: "(2) 根据材料二，概括元代海外贸易的特点。", a: "特点：贸易范围广（远达非洲）；政府积极参与（提供船只和本金、制定市舶则法）；贸易规模远超前代；市舶机构完善。" },
-          { q: "(3) 结合所学知识，从材料中提取信息，自拟一个论题并展开论述。", a: "示例论题：宋元时期海外贸易繁荣推动了中外文明交流。论述：宋元政府重视海外贸易管理（市舶司、市舶则法），航海技术进步（指南针、水密隔舱），促进了中外经济文化交流（瓷器、茶叶、丝绸外销，阿拉伯商人来华），推动了世界文明发展。" }
+          { q: "(1) 将材料一的史实与以下观点相对应。A:宋代重视对海外贸易的管理；B:贸易促进中外文化交流。", a: "A对应：登记领公凭、依法征税。B对应：高丽欢迎贩书、阿拉伯商人建融合建筑。" },
+          { q: "(2) 根据材料二，概括元代海外贸易的特点。", a: "范围广（远达非洲）、政府积极参与、规模大、机构完善。" },
+          { q: "(3) 结合所学知识，从材料中提取信息，自拟一个论题并展开论述。", a: "示例：宋元海外贸易繁荣推动中外交流。论述：政府重视管理、航海技术进步，促进经济文化交流。" }
         ]
       },
       {
-        num: "28",
-        title: "经济重心南移与宋代城市",
+        num: "28", title: "经济重心南移与宋代城市",
+        materials: "材料一：南宋\u201c苏湖熟，天下足\u201d，经济重心南移完成。南方水稻面积扩大，棉花推广。\n材料二：《清明上河图》描绘北宋东京（开封）的繁华景象，张择端作。\n材料三：东京\u201c白昼通夜，骈阗如此\u201d，有夜市和早市。",
         questions: [
-          { q: "(1) 根据材料一，指出经济重心南移完成的时间。结合所学知识，指出经济重心南移完成在农业方面的表现有哪些。", a: "南宋时期。表现：南方水稻种植面积扩大，产量提高（苏湖熟，天下足）；棉花等经济作物种植推广。" },
-          { q: "(2) 材料二是研究哪一朝代商业活动和城市生活风貌的重要资料？该作品的作者是谁？", a: "北宋；张择端。" },
-          { q: "(3) 东京城内，娱乐兼营商业的场所被称为什么？材料三反映了宋代城市经商时间不再受限制，出现了什么？", a: "瓦子（瓦舍）；出现了夜市和早市（白昼通夜、买卖昼夜不绝）。" },
-          { q: "(4) 根据上述材料和问题，谈谈你对宋代城市生活的认识。", a: "宋代城市商品经济繁荣，市民生活丰富多彩，突破了时间和空间限制，体现了城市功能的多元化。" }
+          { q: "(1) 根据材料一，指出经济重心南移完成的时间。结合所学知识，指出经济重心南移完成在农业方面的表现有哪些。", a: "南宋时期。水稻面积扩大、产量提高（苏湖熟天下足），经济作物推广。" },
+          { q: "(2) 材料二是研究哪一朝代商业活动和城市生活风貌的重要资料？该作品的作者是谁？", a: "北宋《清明上河图》；张择端。" },
+          { q: "(3) 东京城内，娱乐兼营商业的场所被称为什么？材料三反映了宋代城市经商时间不再受限制，出现了什么？", a: "瓦子（瓦舍）。出现了夜市和早市。" },
+          { q: "(4) 根据上述材料和问题，谈谈你对宋代城市生活的认识。", a: "商品经济繁荣，市民生活丰富，突破时空限制，功能多元化。" }
         ]
       },
       {
-        num: "29",
-        title: "宋元科技",
+        num: "29", title: "宋元科技",
+        materials: "材料一：北宋毕昇发明活字印刷术，\u201c若印数十百千本则极为神速\u201d。\n材料二：古人用天然磁石制成司南，北宋时指南针用于航海。\n材料三：印刷术、指南针、火药是宋元三大发明，对世界影响深远。",
         questions: [
-          { q: "(1) 材料一指的是哪种印刷技术？其发明者是谁？此印刷技术的优点是什么？", a: "活字印刷术；毕昇；优点：省时省力、效率高、可重复使用（若印数十百千本则极为神速）。" },
+          { q: "(1) 材料一指的是哪种印刷技术？其发明者是谁？此印刷技术的优点是什么？", a: "活字印刷术；毕昇；省时省力、效率高、可重复使用。" },
           { q: "(2) 我国古人用天然磁石制成的指南工具称为什么？指南针最早用于航海是在哪个朝代？", a: "司南；北宋。" },
-          { q: "(3) 根据材料三，任选其中一项发明，概括它是如何改变整个世界面貌和状态的。", a: "示例——印刷术：降低了制作书籍的成本和难度，促进了文化知识的传播和普及，推动了欧洲文艺复兴和宗教改革，加速了世界文明进程。或——指南针：促进了世界远洋航海技术的发展，为欧洲新航路开辟提供了重要条件，使世界开始连为一个整体。" }
+          { q: "(3) 根据材料三，任选其中一项发明，概括它是如何改变整个世界面貌和状态的。", a: "印刷术：降低成本普及知识，推动文艺复兴和宗教改革，加速文明进程。" }
         ]
       }
-    ],
-  
+    ]
   },
   {
     period: "明清时期",
@@ -554,112 +554,54 @@ const KNOWLEDGE = [
     ],
     shortAnswer: [
       {
-        num: "26",
-        title: "君主专制中央集权",
+        num: "26", title: "君主专制中央集权",
+        materials: "材料一：秦始皇创皇帝制度，设三公（丞相、太尉、御史大夫）。\n材料二：朱元璋废丞相权分六部，设锦衣卫。\n材料三：雍正设军机处，军机大臣跪受笔录。\n材料四：从秦到清，皇权不断强化。",
         questions: [
           { q: "(1) 根据材料一，回答秦始皇为了总揽大权开创了什么制度？结合所学知识，三公中负责监察百官的是什么官职？", a: "皇帝制度（君主专制中央集权制度）；御史大夫。" },
           { q: "(2) 材料二中朱元璋进行的重大改组是指什么？他还设立了哪一个特务机构？", a: "废除丞相制度，权分六部；锦衣卫。" },
-          { q: "(3) 材料三中导游所说的偏房指的是哪一机构？这一机构有什么作用？", a: "军机处；军机处辅助皇帝处理政务，跪受笔录，传达皇帝旨意，使君主专制达到顶峰。" },
+          { q: "(3) 材料三中导游所说的偏房指的是哪一机构？这一机构有什么作用？", a: "军机处；辅助皇帝处理政务，传达圣旨，使君主专制达顶峰。" },
           { q: "(4) 以上材料表明中国古代皇权发展的基本趋势是什么？", a: "皇权不断强化（君主专制不断加强）。" }
         ]
       },
       {
-        num: "27",
-        title: "明清统一多民族国家",
+        num: "27", title: "明清统一多民族国家",
+        materials: "材料一：清代苏州商业繁荣，手工业发达。\n材料二：五世达赖觐见顺治帝；举子看榜图。\n材料三：康熙三征噶尔丹；乾隆定准噶尔、大/小和卓叛乱，设伊犁将军；册封达赖班禅，设驻藏大臣。",
         questions: [
-          { q: "(1) 图片中描绘了清代哪一城市的繁荣景象？根据材料及所学知识，概括这一地区的经济发展状况，并分析这种状况出现的原因。", a: "苏州。经济发展状况：商业繁荣（店铺林立、行业众多）、手工业发达（丝绸、棉花等行业活跃）。原因：交通便利、商品经济发达、社会相对稳定。" },
-          { q: "(2) 图1中的五世达赖来自哪一地区？清朝为加强对该地区的管辖还采取了哪些措施？", a: "西藏地区。措施：册封达赖、班禅；设置驻藏大臣；设立金瓶掣签制度。" },
-          { q: "(3) 图2是举子看榜图。明朝举子最擅长写什么文章？这种文章有什么危害？", a: "八股文。危害：内容空洞、形式死板，严重禁锢知识分子的思想创新，阻碍了科技文化的发展。" },
-          { q: "(4) 根据材料，分析噶尔丹的分裂阴谋不能得逞的主要原因。", a: "康熙帝三次亲征，坚决镇压；维护国家统一是民心所向。" }
+          { q: "(1) 图片中描绘了清代哪一城市的繁荣景象？根据材料及所学知识，概括这一地区的经济发展状况，并分析这种状况出现的原因。", a: "苏州。状况：商业繁荣、手工业发达。原因：交通便利、商品经济发达、社会稳定。" },
+          { q: "(2) 图1中的五世达赖来自哪一地区？清朝为加强对该地区的管辖还采取了哪些措施？", a: "西藏。册封达赖班禅、设驻藏大臣、金瓶掣签制度。" },
+          { q: "(3) 图2是举子看榜图。明朝举子最擅长写什么文章？这种文章有什么危害？", a: "八股文。禁锢思想创新，阻碍科技文化发展。" },
+          { q: "(4) 根据材料，分析噶尔丹的分裂阴谋不能得逞的主要原因。", a: "康熙三次亲征镇压；维护统一是民心所向。" }
         ]
       },
       {
-        num: "28",
-        title: "明清经路边疆（项目化学习）",
+        num: "28", title: "明清经路边疆（项目化学习）",
+        materials: "材料一：\u2460荷兰投降书 \u2461驻藏大臣令牌 \u2462神威无敌大将军铜炮 \u2463伊犁将军府 \u2464戚氏军刀 \u2465达赖班禅金印\n材料二：展板分类：反侵略卫领土、封首领治西藏、设机构定边疆。",
         questions: [
-          { q: "任务一(1) 补充横线处信息：①荷兰投降书 ②驻藏大臣令牌 ③神威无敌大将军铜炮 ④新疆伊犁将军府 ⑤戚氏军刀 ⑥达赖、班禅金印", a: "A：雅克萨之战 B：不畏强暴、保家卫国 D：新疆地区（西北边疆） E：戚继光抗倭 F：西藏" },
-          { q: "任务二(2) 将文物序号填入对应展板，写一句结语。", a: "展板一（反侵略卫领土）：①③⑤。展板二（封首领治西藏）：②⑥。展板三（设机构定边疆）：④。结语示例：清朝通过军事反击、政治册封、设立机构等多种方式，有力地维护了国家统一和边疆稳定。" }
+          { q: "任务一(1) 补充横线处信息。", a: "A：雅克萨之战 B：保家卫国 D：新疆 E：戚继光抗倭 F：西藏" },
+          { q: "任务二(2) 将文物序号填入对应展板，写一句结语。", a: "展板一（反侵略）：\u2460\u2462\u2464；展板二（治西藏）：\u2461\u2465；展板三（定边疆）：\u2463。结语：清廷通过军事反击、政治册封、设立机构等维护统一。" }
         ]
       },
       {
-        num: "29",
-        title: "康乾盛世",
+        num: "29", title: "康乾盛世",
+        materials: "材料一：清前期耕地扩大，高产作物推广，手工业、商业繁荣，经济总量居世界首位。\n材料二：《耕织图》反映农业生产。\n材料三：有学者认为清在科技、社会发展上落后西方，非真正\u201c盛世\u201d。",
         questions: [
-          { q: "(1) 阅读材料一并结合所学知识，指出清朝前期经济发展的表现。", a: "农业：耕地面积扩大，高产作物推广，粮食产量提高；手工业：行业增多，规模扩大，技术提高；商业：商业发达，城市繁荣，商帮（晋商、徽商）活跃；经济总量居世界首位。" },
-          { q: "(2) 结合所学知识，说明材料二对研究清朝社会经济发展的史料价值。", a: "耕织图是当时社会生产的真实写照，是研究清朝前期经济发展的第一手史料，直观反映了当时的农业生产技术。" },
-          { q: "(3) 史学界关于康乾盛世的说法存在不同意见，请任选材料一、材料三中的一种观点进行论证。", a: "示例一（赞同盛世说）：清朝前期农业、手工业、贸易空前发展，经济总量居世界首位；国家统一、社会稳定，出现了康乾盛世局面。示例二（反对盛世说）：横向比较，清朝在科技、社会发展上已落后于西方；实行闭关锁国政策、大兴文字狱等，精神风貌和思想文化活力不足。" }
+          { q: "(1) 阅读材料一并结合所学知识，指出清朝前期经济发展的表现。", a: "农业：耕地扩大、高产推广、产量提高；手工业：行业增多、规模扩大；商业：发达繁荣、商帮活跃；经济总量世界首位。" },
+          { q: "(2) 结合所学知识，说明材料二对研究清朝社会经济发展的史料价值。", a: "当时社会生产的真实写照，研究清前期经济的第一手史料。" },
+          { q: "(3) 史学界关于康乾盛世的说法存在不同意见，请任选材料一、材料三中的一种观点进行论证。", a: "示例一（赞同）：农业手工业贸易空前发展，统一稳定。示例二（反对）：科技落后西方，闭关锁国、文字狱制约活力。" }
         ]
       },
       {
-        num: "26",
-        title: "民族独立与国家统一（阶段调研）",
+        num: "26", title: "民族独立与国家统一（阶段调研）",
+        materials: "材料一：文成公主入藏、长庆会盟。\n材料二：元设宣政院、宣慰使司都元帅府管理西藏。\n材料三：郑成功收复台湾。\n材料四：清设伊犁将军管辖新疆。",
         questions: [
-          { q: "(1) 根据材料一，指出唐朝民族交往的两个事件。从中体现出唐朝采取了怎样的民族政策？", a: "文成公主入藏、长庆会盟。民族政策：开明、友好、平等的民族政策。" },
-          { q: "(2) 元朝时，政府设置什么机构加强中央对西藏的有效管辖？", a: "宣慰使司都元帅府（或宣政院辖区）。" },
-          { q: "(3) 根据材料三中的图片和诗句，指出图中人物是谁。其主要功绩是什么？", a: "郑成功；收复台湾（从荷兰殖民者手中收复台湾）。" },
+          { q: "(1) 根据材料一，指出唐朝民族交往的两个事件。从中体现出唐朝采取了怎样的民族政策？", a: "文成公主入藏、长庆会盟。开明平等的民族政策。" },
+          { q: "(2) 元朝时，政府设置什么机构加强中央对西藏的有效管辖？", a: "宣慰使司都元帅府（宣政院辖区）。" },
+          { q: "(3) 根据材料三中的图片和诗句，指出图中人物是谁。其主要功绩是什么？", a: "郑成功；收复台湾（从荷兰殖民者手中）。" },
           { q: "(4) 清政府设置什么官职加强对新疆地区的管辖？", a: "伊犁将军。" },
-          { q: "(5) 综合以上材料及所学知识，请你谈谈对国家统一的认识。", a: "示例：国家统一是历史发展的必然趋势；各民族共同缔造了统一的多民族国家；维护国家统一是每个公民的责任。" }
-        ]
-      },
-      {
-        num: "27",
-        title: "抗击侵略与边疆治理（阶段调研）",
-        questions: [
-          { q: "(1) 结合所学知识，指出戚继光为何受到人民怀念和景仰？材料一中的诗句抒发了戚继光怎样的情怀与抱负？", a: "戚继光率军抗倭，基本肃清了东南沿海的倭患，维护了国家安全和人民生命财产。诗句抒发了戚继光保家卫国、忠义报国的爱国情怀和勇往直前的英雄气概。" },
-          { q: "(2) 根据材料二，归纳郑成功对于台湾的回归与开发做出了哪些重大贡献。", a: "驱逐荷兰殖民者，收复台湾；设置府县，委派官员治理；发展农业生产，推广先进耕作技术。" },
-          { q: "(3) 根据材料三并结合所学知识，概括清朝治理边疆的政策有哪些（至少两项）？这些政策取得了什么样的效果？", a: "政策：中央设理藩院管理民族事务；在边疆设行政机构（如伊犁将军、驻藏大臣）；实行册封制度（达赖、班禅）；平定叛乱（平定噶尔丹、大小和卓叛乱）。效果：加强了边疆与内地的联系；巩固了统一多民族国家；维护了边疆稳定。" }
-        ]
-      },
-      {
-        num: "28",
-        title: "人物·事件·社会（阶段调研）",
-        questions: [
-          { q: "任务一(1) 在上面两组中各选一个人物，简介其所承载的历史价值。", a: "示例：第一组选唐太宗——开创贞观之治，为唐朝盛世奠定基础。第二组选戚继光——抗倭英雄，维护了国家主权和人民安全。" },
-          { q: "任务二(2) 如何评价①中的事件？谈谈你对②中梁启超的话的理解。", a: "评价澶渊之盟：一方面使宋辽之间保持了长期和平局面，有利于经济文化交流；另一方面宋朝需送岁币，加重了人民负担。郑和之后，再无郑和：郑和下西洋是世界航海史上的壮举，但后来明朝实行海禁政策，再没有进行大规模远洋航海，反映了从开放走向封闭的趋势。" },
-          { q: "任务三(3) 从A到B再到C，对外政策发生了什么变化？这对中国历史发展产生了什么影响？", a: "变化：从开放（鼓励对外贸易）到海禁再到迁海令（严格封锁），对外政策日益封闭保守。影响：限制了中外经济文化交流，导致中国逐渐落后于世界潮流。" },
-          { q: "任务四(4) 以人物·事件·社会为题写一篇120字左右的短文。", a: "示例：历史是由人物和事件共同书写的。唐太宗的贞观之治、郑和的七下西洋、戚继光的抗倭斗争……这些人物和事件共同构成了波澜壮阔的历史画卷，推动了社会进步和国家发展。" }
-        ]
-      },
-      {
-        num: "29",
-        title: "中华文明（阶段调研）",
-        questions: [
-          { q: "(1) 根据材料一，概括活字印刷术发展与传播的特点。结合所学知识，说明活字印刷术发展与传播的影响。", a: "特点：发明时间早（比欧洲早400年）；技术不断改进（泥活字→木活字→铜活字）；传播范围广（经丝绸之路传到波斯再到欧洲）。影响：促进了文化传播和知识普及，推动了世界文明进步。" },
-          { q: "(2) 判断表述（A、B、C三句话判断正误）。", a: "A-√ B-√ C-○（C项材料二未涉及）" },
-          { q: "(3) 根据材料二，指出元代文化的发展趋势。结合所学知识，列举一例元杂剧的代表作。", a: "文化通俗化（俗文化盛行）。代表作：关汉卿《窦娥冤》。" },
-          { q: "(4) 根据材料三，解释中国热的含义。根据材料三并结合所学知识，概括中国热出现的原因。", a: "中国热：16-18世纪欧洲知识分子歌颂、赞美、崇尚中华文明的现象。原因：西方传教士翻译中国经典；中国文化的独特魅力；欧洲启蒙思想家对东方文明的向往。" },
-          { q: "(5) 综上所述，谈谈你对中华文明的认识。", a: "中华文明博大精深、源远流长，对世界文明发展作出了重要贡献。" }
-        ]
-      },
-      {
-        num: "17",
-        title: "社会治理（海淀期末）",
-        questions: [
-          { q: "(1) 依据材料一，指出宋朝完善科举制度的措施，分析其影响。", a: "措施：确定殿试制度，皇帝直接控制科举选官；三级考试制度（州试、省试、殿试）确立；禁止考生称主考官为恩师，考生只能为天子门生。影响：加强了中央集权，巩固了皇权；促进了教育发展；选官程序更加严格规范。" },
-          { q: "(2) 依据材料二，概括南宋临安城出现的社会现象，结合所学分析其原因。", a: "社会现象：学校数量多、类型多，读书风气盛行。原因：科举制度发展；重视教育；活字印刷术的使用使书籍普及。" },
-          { q: "(3) 作者和译者讨论的话题是：______，指出译者与作者的观点有何不同。", a: "话题：唐朝的医疗。不同：作者认为阿拉伯人的记载只是美妙的传说（未找到证据）；译者基于唐朝政府档案记载（唐玄宗《广济方》诏书），认为阿拉伯人记载真实可信。" }
-        ]
-      },
-      {
-        num: "18",
-        title: "经济与社会发展（海淀期末）",
-        questions: [
-          { q: "(1) 依据材料一，概括唐朝长安城商业的特点。", a: "特点：商业繁荣；贸易集中在东市和西市（固定在特定市场）；店铺数量多（数千家）；行业种类丰富（200多行）；中外贸易繁盛（西域商人云集）。" },
-          { q: "(2) 依据材料二，概括黄道婆的贡献，结合所学分析其影响。", a: "贡献：传播棉纺织技术、革新棉纺织工具。影响：提高了江南地区棉纺织业水平；使松江逐渐成为全国棉纺织业中心。" },
-          { q: "(3) 依据材料三，指出明清时期社会发展的新现象，任选一个分析其出现的原因。", a: "A.农产品商品化——原因：农业发展、高产作物推广、商品经济繁荣。B.对外经贸发展——原因：丝织品大量出口、白银流入。C.市民文学发展——原因：商品经济繁荣、市民阶层壮大。" }
-        ]
-      },
-      {
-        num: "19",
-        title: "综合题（海淀期末）",
-        questions: [
-          { q: "(1) 按历史时期把材料一中的史料序号填入表中。", a: "隋唐时期：②③；明清时期：①④" },
-          { q: "(2) 将四张邮票所反映的史事按时间先后顺序排列，并参照示例撰写解说词。", a: "顺序：③→①→②→④。解说词示例：贞观初年，玄奘西行前往天竺取经，经过4年长途跋涉到达天竺。十多年后，玄奘携带大量佛经回到长安，根据其口述由弟子记录成《大唐西域记》，是研究中外交流史的珍贵文献。" },
-          { q: "(3) 回答问题，概括清朝政府采取这些措施的影响。", a: "A（客观叙事）：①②④；B（历史评论）：③⑤。影响：明确了主权国家疆域；保证了统一多民族国家的政令统一；加强了中央对边疆地区的管辖。" }
+          { q: "(5) 综合以上材料及所学知识，请你谈谈对国家统一的认识。", a: "国家统一是历史发展趋势；各民族共同缔造统一多民族国家；维护统一是每个公民的责任。" }
         ]
       }
-    ],
-  
+    ]
   }
 ];
 
@@ -713,61 +655,50 @@ function buildPage() {
   });
   
   
-  // Add Short Answer sections
-  html += `<div class="sa-section" id="sa-main">`;
+  // Short Answer sections (not connected to hide mode)
+  html += '<div class="sa-section" id="sa-main">';
   KNOWLEDGE.forEach(period => {
     if (period.shortAnswer && period.shortAnswer.length > 0) {
-      html += `<div class="sa-title">📝 ${period.period} 简答题 <span class="sa-badge">${period.shortAnswer.length}题组</span></div>`;
+      html += '<div class="sa-section-title">📝 ' + period.period + ' 简答题 <span class="sa-badge">' + period.shortAnswer.length + '题组</span></div>';
       
       period.shortAnswer.forEach(sa => {
-        html += `<div class="sa-group">`;
-        html += `<div class="sa-group-header" onclick="toggleSA(this)">`;
-        html += `<div class="sa-num">${sa.num}</div>`;
-        html += `<div class="sa-label">${sa.title}</div>`;
-        html += `<span class="sa-expand">▾</span>`;
-        html += `</div>`;
-        html += `<div class="sa-group-body">`;
-        sa.questions.forEach(qa => {
-          html += `<div class="sa-q-item">`;
-          html += `<div class="sa-q"><span class="sa-q-icon">📝</span>${qa.q}</div>`;
-          html += `<div class="sa-a"><span class="sa-a-label">答：</span><span class="sa-a-text">${qa.a}</span></div>`;
-          html += `</div>`;
+        if (sa.materials) {
+          var matId = 'mat-' + period.id + '-' + sa.num;
+          html += '<div class="sa-mat-btn" onclick="openSAMat(&#39;' + matId + '&#39;)">📄 查看材料</div>';
+        }
+        
+        html += '<div class="sa-group">';
+        html += '<div class="sa-group-title"><span class="sa-num">' + sa.num + '</span>' + sa.title + '</div>';
+        
+        sa.questions.forEach(function(qa, qi) {
+          var qId = 'sa-q-' + period.id + '-' + sa.num + '-' + qi;
+          html += '<div class="sa-q-item" onclick="toggleSAAnswer(&#39;' + qId + '&#39;)">';
+          html += '<div class="sa-q"><span class="sa-q-icon">📝</span>' + qa.q + '<span class="sa-expand-icon">▾</span></div>';
+          html += '<div class="sa-a-wrap" id="' + qId + '"><span class="sa-a-label">答：</span>' + qa.a + '</div>';
+          html += '</div>';
         });
-        html += `</div>`;
-        html += `</div>`;
+        
+        html += '</div>';
       });
     }
   });
-  html += `</div>`;
-
+  html += '</div>';
+  
 app.innerHTML = html;
-  initSA();
 }
 
 buildPage();
 
-// ====== 简答题功能 ======
-function toggleSA(header) {
-  const body = header.nextElementSibling;
-  const expand = header.querySelector('.sa-expand');
-  body.classList.toggle('show');
-  expand.classList.toggle('open');
-}
-
-function initSA() {
-  if (hideMode) applyHideMode();
-}
+// ====== 简答题 ======
 
 function scrollToShortAnswer() {
-  const btn = document.getElementById('saToggleBtn');
-  const el = document.querySelector('.sa-section');
+  var btn = document.getElementById('saToggleBtn');
+  var el = document.querySelector('.sa-section');
   if (el) {
     el.scrollIntoView({ behavior: 'smooth' });
-    btn.classList.add('active');
-    setTimeout(() => btn.classList.remove('active'), 2000);
+    if (btn) { btn.classList.add('active'); setTimeout(function() { btn.classList.remove('active'); }, 2000); }
   }
 }
-
 
 
 // ==================== INTERACTIONS ====================
@@ -928,6 +859,45 @@ function initExamPager() {
   container.appendChild(pager);
 }
 
+
+// ====== 简答题功能（独立，不与隐藏答案关联）=======
+function toggleSAAnswer(id) {
+  var el = document.getElementById(id);
+  var icon = el.parentElement.querySelector('.sa-expand-icon');
+  if (icon) icon.classList.toggle('open');
+  el.classList.toggle('show');
+}
+
+function openSAMat(matId) {
+  var found = null;
+  KNOWLEDGE.forEach(function(period) {
+    if (period.shortAnswer) period.shortAnswer.forEach(function(sa) {
+      var id = 'mat-' + period.id + '-' + sa.num;
+      if (id === matId && sa.materials) found = {title: sa.title, text: sa.materials, period: period.period};
+    });
+  });
+  if (!found) return;
+  document.getElementById('saMatTitle').textContent = found.period + ' · ' + found.title;
+  var body = document.getElementById('saMatBody');
+  var html = '';
+  var blocks = found.text.split('材料');
+  for (var i = 1; i < blocks.length; i++) {
+    html += '<div class="mat-block"><div class="mat-label">材料' + toChineseNum(i) + '</div><div>' + blocks[i].trim() + '</div></div>';
+  }
+  body.innerHTML = html;
+  document.getElementById('saMatOverlay').classList.add('show');
+}
+
+function toChineseNum(n) {
+  var nums = ['', '一', '二', '三', '四', '五', '六'];
+  return nums[n] || n;
+}
+
+function closeSAMat() {
+  document.getElementById('saMatOverlay').classList.remove('show');
+}
+
+
 // ====== 隐藏答案模式 ======
 let hideMode = false;
 
@@ -974,5 +944,16 @@ document.addEventListener('keydown', e => {
 
 console.log('✅ 历史知识点页面已加载！');
 </script>
+<!-- 简答题材料弹窗 -->
+<div class="sa-mat-overlay" id="saMatOverlay" onclick="if(event.target===this)closeSAMat()">
+  <div class="sa-mat-modal">
+    <div class="sa-mat-header">
+      <h3 id="saMatTitle">材料</h3>
+      <button class="sa-mat-close" onclick="closeSAMat()">✕</button>
+    </div>
+    <div class="sa-mat-body" id="saMatBody"></div>
+  </div>
+</div>
+
 </body>
 </html>
