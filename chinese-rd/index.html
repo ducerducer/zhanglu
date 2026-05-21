@@ -2,445 +2,619 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>阅读理解 · 语文练习</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>葵花之最 - 语文阅读理解练习</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#F5F5F5;color:#333;font-family:-apple-system,'PingFang SC','Noto Sans SC',sans-serif;line-height:1.8;min-height:100vh}
-header{background:#1565C0;color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-header h1{font-size:20px;font-weight:600}
-.header-actions{display:flex;gap:10px;align-items:center}
-.header-btn{background:rgba(255,255,255,.2);color:#fff;border:none;padding:6px 14px;border-radius:16px;font-size:13px;cursor:pointer;transition:background .2s}
-.header-btn:hover{background:rgba(255,255,255,.35)}
-.header-btn.danger{background:#e53935}
-.header-btn.danger:hover{background:#c62828}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f0eb; color: #333; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
-.score-bar{display:none;background:#E3F2FD;padding:14px 24px;margin:0;border-bottom:2px solid #1565C0}
-.score-bar.show{display:block}
-.score-bar .total{font-size:18px;font-weight:600;color:#1565C0}
-.score-bar .stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
-.score-bar .stat{background:#fff;padding:4px 12px;border-radius:12px;font-size:13px;border:1px solid #BBDEFB}
-.score-bar .stat.weak{background:#FFEBEE;border-color:#EF9A9A;color:#C62828}
-.score-bar .stat-label{color:#666}
-.stat strong{margin:0 2px}
+/* Nav */
+.nav { flex-shrink: 0; z-index: 100; background: #2d5a27; color: #fff; display: flex; align-items: center; padding: 12px 16px; gap: 8px; }
+.nav-title { font-size: 18px; font-weight: 700; flex: 1; }
+.nav-btn { background: rgba(255,255,255,0.15); border: none; color: #fff; padding: 6px 14px; border-radius: 16px; font-size: 14px; cursor: pointer; }
+.nav-btn.active { background: rgba(255,255,255,0.3); }
+.nav-btn:hover { background: rgba(255,255,255,0.25); }
 
-.container{max-width:800px;margin:0 auto;padding:20px 16px 80px}
+/* Pages */
+.page { display: none; height: 0; flex: 1; overflow: hidden; }
+.page.active { display: flex; flex-direction: column; }
 
-.article-box{background:#fff;border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
-.article-box h2{font-size:16px;color:#1565C0;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #E3F2FD}
-.article-content{font-size:15px;color:#444;text-indent:2em;line-height:2}
+/* Article Panel (top half) - resizable */
+.article-panel { background: #fff; overflow: hidden; display: flex; flex-direction: column; }
+.article-header { padding: 12px 16px 4px; flex-shrink: 0; }
+.article-title { font-size: 20px; font-weight: 700; text-align: center; }
+.article-author { text-align: center; color: #888; font-size: 13px; }
+.article-scroll { flex: 1; overflow-y: auto; padding: 0 16px 12px; }
+.article-text { line-height: 1.8; font-size: 15px; padding-bottom: 8px; }
+.article-text p { margin-bottom: 10px; }
 
-.question-group{margin-bottom:24px}
-.question-group h3{font-size:14px;color:#666;margin-bottom:10px;padding-left:10px;border-left:3px solid #1565C0}
+/* Drag handle */
+.drag-handle { flex-shrink: 0; height: 16px; min-height: 16px; background: #e8e0d8; cursor: row-resize; display: flex; align-items: center; justify-content: center; user-select: none; -webkit-tap-highlight-color: transparent; }
+.drag-handle::after { content: "⠿"; color: #bbb; font-size: 11px; letter-spacing: 4px; }
+.drag-handle:active, .drag-handle:hover { background: #d5ccc2; }
+/* Bottom safe area for phones */
+.questions-panel { padding-bottom: max(24px, env(safe-area-inset-bottom, 16px)); }
 
-.q-card{background:#fff;border-radius:10px;padding:16px 20px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.06);transition:box-shadow .2s}
-.q-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.q-card .q-stem{font-size:15px;margin-bottom:10px;line-height:1.7}
-.q-card .q-number{color:#1565C0;font-weight:600;margin-right:4px}
+/* Questions Panel (bottom half) */
+.questions-panel { flex: 1; overflow-y: auto; padding: 12px 16px 24px; }
+.question-card { background: #fff; border-radius: 12px; padding: 14px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 12px; border-left: 4px solid #2d5a27; }
+.question-label { font-weight: 700; color: #2d5a27; font-size: 14px; margin-bottom: 6px; }
+.question-text { font-size: 14px; line-height: 1.7; margin-bottom: 8px; }
+.question-subtext { color: #555; font-size: 13px; padding-left: 8px; border-left: 3px solid #ddd; margin-bottom: 8px; line-height: 1.6; }
 
-.q-card .options{display:flex;flex-direction:column;gap:4px}
-.q-card .options label{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:8px;cursor:pointer;transition:background .15s;font-size:14px}
-.q-card .options label:hover{background:#F5F5F5}
-.q-card .options input[type="radio"]{accent-color:#1565C0;width:16px;height:16px}
+/* Foldable answer */
+.answer-toggle { margin-bottom: 8px; }
+.answer-toggle summary { font-size: 13px; color: #2d5a27; cursor: pointer; padding: 4px 0; font-weight: 600; user-select: none; }
+.answer-toggle[open] summary { margin-bottom: 6px; }
+.answer-content { background: #f0f7ee; border-radius: 8px; padding: 10px 12px; font-size: 14px; line-height: 1.6; color: #333; }
+.answer-content table { width: 100%; border-collapse: collapse; margin-top: 4px; font-size: 13px; }
+.answer-content th { background: #2d5a27; color: #fff; padding: 5px 6px; text-align: left; }
+.answer-content td { padding: 4px 6px; border-bottom: 1px solid #ddd; font-size: 13px; }
+.answer-content .text { font-size: 14px; line-height: 1.6; }
 
-.q-card.submitted .correct{background:#E8F5E9!important;color:#2E7D32}
-.q-card.submitted .wrong{background:#FFEBEE!important;color:#C62828}
-.q-card.submitted .options label{cursor:default}
-.q-card.submitted .options label:hover{background:transparent}
+/* Input */
+.input-area textarea { width: 100%; min-height: 56px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; font-family: inherit; resize: vertical; line-height: 1.6; }
+.input-area textarea:focus { outline: none; border-color: #2d5a27; }
 
-.q-card .result-tag{display:inline-block;padding:2px 10px;border-radius:10px;font-size:12px;font-weight:600;margin-top:8px}
-.q-card .result-tag.correct{background:#E8F5E9;color:#2E7D32}
-.q-card .result-tag.wrong{background:#FFEBEE;color:#C62828}
+/* Actions */
+.action-row { display: flex; gap: 8px; margin-top: 8px; align-items: center; }
+.analyze-btn { background: #2d5a27; color: #fff; border: none; padding: 8px 20px; border-radius: 20px; font-size: 14px; cursor: pointer; flex-shrink: 0; }
+.analyze-btn:hover { background: #3a7a33; }
+.analyze-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.status-text { font-size: 13px; color: #888; }
 
-/* 简答题 */
-.q-card textarea{width:100%;min-height:80px;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;font-family:inherit;line-height:1.6;resize:vertical;transition:border .2s}
-.q-card textarea:focus{outline:none;border-color:#1565C0;box-shadow:0 0 0 2px rgba(21,101,192,.15)}
-.q-card .ref-answer{display:none;margin-top:8px;padding:10px 14px;background:#FFF8E1;border-radius:8px;font-size:14px;color:#795548;border-left:3px solid #FFC107}
-.q-card .ref-answer.show{display:block}
-.q-card .ref-answer .label{font-weight:600;color:#F57F17}
+/* Analysis Result */
+.analysis-result { display: none; background: #fffbe6; border-radius: 10px; padding: 12px; margin-top: 10px; border: 1px solid #f0dca0; }
+.analysis-result.visible { display: block; }
+.analysis-section { margin-bottom: 8px; }
+.analysis-section:last-child { margin-bottom: 0; }
+.analysis-section .section-label { font-weight: 700; font-size: 14px; display: block; margin-bottom: 3px; }
+.analysis-section .section-label.miss { color: #c0392b; }
+.analysis-section .section-label.reason { color: #d35400; }
+.analysis-section .section-label.suggest { color: #27ae60; }
+.analysis-section .section-content { font-size: 14px; line-height: 1.6; padding-left: 2px; }
+.analysis-section .section-content p { margin-bottom: 4px; }
 
-.submit-area{text-align:center;padding:20px 0}
-.btn-submit{background:#1565C0;color:#fff;border:none;padding:12px 48px;border-radius:24px;font-size:16px;font-weight:600;cursor:pointer;transition:background .2s,transform .15s}
-.btn-submit:hover{background:#0D47A1;transform:translateY(-1px)}
-.btn-submit:active{transform:translateY(0)}
-.btn-submit:disabled{background:#90CAF9;cursor:not-allowed;transform:none}
+/* Error Book */
+.err-book { background: #fff; border-radius: 12px; padding: 16px 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.err-entry { border: 1px solid #e8e0d8; border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+.err-entry:last-child { margin-bottom: 0; }
+.err-entry .meta { font-size: 13px; color: #888; margin-bottom: 4px; }
+.err-entry .q-text { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+.err-entry .analysis-summary { font-size: 13px; line-height: 1.6; color: #555; }
+.empty-state { text-align: center; color: #aaa; padding: 40px 0; font-size: 15px; }
+.summary-btn { background: #8e44ad; color: #fff; border: none; padding: 10px 24px; border-radius: 20px; font-size: 15px; cursor: pointer; margin: 10px 0; display: block; width: 100%; }
+.summary-btn:hover { background: #9b59b6; }
+.summary-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.overall-analysis { display: none; background: #f3ecfa; border-radius: 10px; padding: 16px; margin-top: 12px; border: 1px solid #d5c0e8; line-height: 1.8; font-size: 14px; white-space: pre-wrap; }
+.overall-analysis.visible { display: block; }
+.delete-entry { float: right; color: #e74c3c; font-size: 18px; cursor: pointer; background: none; border: none; padding: 2px 6px; }
 
-/* 错题本模态框 */
-.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:200;justify-content:center;align-items:flex-start;overflow-y:auto;padding:40px 16px}
-.modal-overlay.show{display:flex}
-.modal-box{background:#fff;border-radius:12px;width:100%;max-width:600px;margin:auto;padding:24px;box-shadow:0 8px 32px rgba(0,0,0,.2);position:relative}
-.modal-box h2{font-size:18px;color:#333;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #E3F2FD}
-.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;font-size:24px;color:#999;cursor:pointer;padding:4px 8px;line-height:1}
-.modal-close:hover{color:#333}
+/* Loading */
+.loading { display: inline-block; width: 14px; height: 14px; border: 2px solid #ddd; border-top-color: #2d5a27; border-radius: 50%; animation: spin 0.6s linear infinite; vertical-align: middle; margin-right: 4px; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-.error-item{padding:12px 0;border-bottom:1px solid #f0f0f0}
-.error-item:last-child{border-bottom:none}
-.error-item .e-q{font-size:14px;margin-bottom:4px;color:#555}
-.error-item .e-detail{font-size:13px;color:#999;display:flex;gap:16px;flex-wrap:wrap}
-.error-item .e-detail .wrong-ans{color:#C62828}
-.error-item .e-detail .right-ans{color:#2E7D32}
-.error-date{font-size:12px;color:#bbb}
-.empty-errors{text-align:center;padding:30px;color:#999;font-size:14px}
+.point-badge { display: inline-block; font-size: 12px; color: #888; margin-left: 4px; }
 
-.no-print{user-select:none}
-@media print{header,.btn-submit,.header-actions{display:none!important}}
-@media(max-width:600px){
-  header{padding:14px 16px}
-  header h1{font-size:17px}
-  .container{padding:12px 10px 60px}
-  .article-box{padding:16px}
-  .q-card{padding:12px 14px}
-  .q-card .q-stem{font-size:14px}
-  .q-card .options label{font-size:13px;padding:5px 8px}
-  .score-bar{padding:12px 16px}
-  .score-bar .total{font-size:16px}
+/* Mobile adjust */
+@media (max-width: 480px) {
+  .questions-panel { padding: 8px 10px 16px; }
+  .question-card { padding: 10px 12px; }
+  .article-scroll { padding: 0 10px 8px; }
+  .article-header { padding: 8px 10px 2px; }
+}
+
+@media (max-width: 360px) {
+  .article-text { font-size: 14px; line-height: 1.7; }
+  .question-text { font-size: 13px; }
 }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>📖 阅读理解 · 语文练习</h1>
-  <div class="header-actions">
-    <button class="header-btn" onclick="toggleErrorBook()">📕 错题本</button>
-    <button class="header-btn" onclick="showAdmin()">⚙ 出题</button>
-  </div>
-</header>
-
-<div class="score-bar" id="scoreBar">
-  <div class="total" id="totalScore">总分：0/0</div>
-  <div class="stats" id="statDetails"></div>
+<div class="nav">
+  <span class="nav-title">🌻 葵花之最 · 阅读理解</span>
+  <button class="nav-btn active" id="navArticleBtn" onclick="showPage('article')">练习</button>
+  <button class="nav-btn" id="navErrBtn" onclick="showPage('errbook')">错题本</button>
 </div>
 
-<div class="container" id="app"></div>
-
-<div class="modal-overlay" id="errorModal">
-  <div class="modal-box">
-    <button class="modal-close" onclick="toggleErrorBook()">✕</button>
-    <h2>📕 错题本</h2>
-    <div id="errorList"></div>
-    <div style="text-align:right;margin-top:12px">
-      <button class="header-btn danger" onclick="clearErrors()">清空错题本</button>
+<!-- Practice Page -->
+<div class="page active" id="pageArticle">
+  <div class="article-panel" id="articlePanel">
+    <div class="article-header">
+      <div class="article-title">葵花之最</div>
+      <div class="article-author">毕淑敏</div>
+    </div>
+    <div class="article-scroll" id="articleScroll">
+      <div class="article-text" id="articleText"></div>
     </div>
   </div>
+  <div class="drag-handle" id="dragHandle"></div>
+  <div class="questions-panel" id="questionsPanel">
+    <div id="questionsContainer"></div>
+  </div>
 </div>
 
-<div class="modal-overlay" id="adminModal">
-  <div class="modal-box" style="max-width:700px">
-    <button class="modal-close" onclick="closeAdmin()">✕</button>
-    <h2>⚙ 管理题目</h2>
-    <p style="color:#666;font-size:13px;margin-bottom:12px">直接修改下方题目 JSON，点击"更新"生效。</p>
-    <textarea id="adminEditor" style="width:100%;min-height:400px;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:13px;font-family:monospace;line-height:1.5;resize:vertical"></textarea>
-    <div style="text-align:right;margin-top:10px;display:flex;gap:10px;justify-content:flex-end">
-      <button class="header-btn" onclick="closeAdmin()">取消</button>
-      <button class="btn-submit" style="padding:8px 24px;font-size:14px" onclick="saveAdmin()">更新</button>
+<!-- Error Book Page -->
+<div class="page" id="pageErrbook">
+  <div style="overflow-y:auto;flex:1;padding:12px 16px 24px;">
+    <div class="err-book">
+      <h2 style="font-size:18px;margin-bottom:8px;">📖 错题本</h2>
+      <p style="font-size:13px;color:#888;margin-bottom:10px;" id="errCountText">共 0 条分析记录</p>
+      <button class="summary-btn" id="summaryBtn" onclick="generateOverallSummary()">🧠 根据错题本生成总结</button>
+      <div id="errEntries"></div>
+      <div class="overall-analysis" id="overallAnalysis"></div>
     </div>
   </div>
 </div>
 
 <script>
-// ====== 题目数据（可修改） ======
-// 格式：每个 passage 包含文章 + 题目列表
-// type: "choice" = 选择题, "essay" = 简答题
-const DATA = [
+// ========== DATA ==========
+const ARTICLE_PARAGRAPHS = [
+  "①昆仑山其实只有一个季节——冬天，春、夏、秋三季都混杂在漫长寒冷的日子里被称为春天，这是我们这些小女兵从平原家中带来的习惯。",
+  "②快到\"五一\"节了，冰封的道路渐渐开通，春节慰问品运到了。五颜六色来自五湖四海的慰问袋最受欢迎。",
+  "③突然闻到一股奇异的清香。那是一个小白口袋，打开一看，是一袋葵花子，颗颗像小炮弹一样结实饱满，饱满得可爱。我们每人抢了一把，一尝，竟是生的。葵花子中埋着一封信：\"敬爱的解放军叔叔们……\"署名是从广东省湛江市第二小学发出的。",
+  "④昆仑山上种葵花，多美妙的想法！每当葵花开放的时候，我们将有一条金色的国境线。",
+  "⑤这根本不可能！昆仑山是世界第三极，雪线上连草都不长，还能开花？！",
+  "⑥我们都不把它作声张，只听见屋外风在嘶鸣，大家决定由我给孩子们回一封信，就说葵花子是解放军阿姨们的\"风花雪月\"，只是这里很冷很冷……",
+  "⑦昆仑山收到的，只是雪。",
+  "⑧把花籽儿泡好，却终于没有发出。我们大着胆子，把葵花子种在院子里。人们倒说话了，昨天天气预报，晚上有暴风雪。",
+  "⑨种子发芽了，先探出两片嫩黄的叶子，像试探风向的小手掌，肥厚而天真。然后，舒展腰肢，把身后的土地生机盎然地长起来。",
+  "⑩然而，我们高兴得太早了。不知道是上个冬天最迟，还是下个冬天最早的一股冷风，冻死了绝大部分葵花。",
+  "⑪奇迹般地保存下一棵幼苗，它并不是最强壮的，也许因为旁边有一块大石头。受到启发，我们用石头将葵花围起了一圈不透风的篱笆。",
+  "⑫这株幸运的葵花，一往情深地看着太阳，勇敢地展开桃形的枝叶。茎上纤巧的绒毛，像蜜蜂翅膀一样，在寒风中抖个不停。也许它感到了昆仑山喜怒无常的威严，急匆匆地压缩了自己的生命历程；才长到一尺高，就萌发出了粗大的花蕾，压得最高处的茎叶微微下垂，好像惭愧自己为什么不长得更高一些。",
+  "⑬那一年没有秋天，寒凝一切的风雪，毫无先兆地骤然降临。早晨起来，天地一片苍茫，我们几乎是跌跌撞撞地扑向葵花。石围墙也被吹得四散飘去，向日葵却凝然不动地站立在那里，在冰雕玉琢的莹白之中，保持着凄清的翠绿。叶片傲然舒展，像一面玻璃做的旗，发出环珮般的叮当之声。最不可思议的是，在它生命的最后一刻，居然绽开一朵明艳的花。那花盘只有五分硬币那么大，薄而平整，冰雪凝在其上，像一块光滑的表蒙子；刚分裂出的葵花子还未成熟，像丝丝缕缕的优质蛋白弯曲着，沁出极轻淡的黄色。最令人警醒的是花盘四周伸出的焦黑的黄色花瓣，箭头一般怒放着，像一颗永不泯灭的星。葵花身上的冰花越结越厚，最后，凝固成一个方柱形的冰晶。",
+  "⑭我不知道它是不是世界上最小的葵花，但我知道它是世界上最高的葵花。"
+];
+
+const QUESTIONS = [
   {
-    title: "阅读下面的文章，完成1-4题。",
-    content: "那是一个春寒料峭的黄昏，饭店里来了一对特殊的客人——一对父子。说他们特殊，是因为父亲是个盲人。他眼睛上蒙着一块灰色的布，摸索着走进店里。\n\n儿子看上去二十来岁，衣着朴素得有点寒酸。他扶父亲坐在桌前，然后大声说：\"爸，你想吃什么？\"\n\n\"给我来碗牛肉面。\"父亲声音不大。\n\n儿子对服务员说：\"来两碗牛肉面。\"\n\n\"只要一碗。\"父亲赶紧纠正，\"我胃口不好，牛肉面吃不完，你吃一碗馄饨吧。\"\n\n\"好，一碗牛肉面，一碗馄饨。\"儿子对服务员说完，又对父亲说，\"爸，你不是最喜欢吃牛肉面吗？\"\n\n父亲笑了笑，没再说什么。\n\n不一会儿，服务员端来一碗牛肉面和一碗馄饨。儿子把牛肉面端到父亲面前，自己端起那碗馄饨。父亲拿起筷子，摸索着夹起一块牛肉，放在儿子碗里。\n\n\"爸，你吃，碗里肉多着呢。\"儿子说着，把牛肉又夹了回去。\n\n两人就这样你推我让，一碗面吃了很久。\n\n吃完后，儿子对服务员说：\"服务员，结账。\"\n\n服务员走过来，儿子把一张皱巴巴的纸币递过去。服务员正要找零，却看见那对父子已经走出了店门。\n\n她打开那张纸币，发现里面包着一张纸条，上面写着：\"这碗牛肉面是给我父亲吃的，他的那碗馄饨里其实没有肉。请把找零的钱给这位盲人父亲，让他以为这碗面很便宜。\"\n\n服务员愣住了。她追了出去，在街角追上那对父子，说：\"大爷，这碗面搞活动，买一送一，这是找您的钱。\"\n\n父亲接过钱，连声道谢。\n\n目送父子俩远去，服务员站在那里，很久没有动。那个春寒料峭的黄昏，因这碗牛肉面，变得格外温暖。",
-    questions: [
-      {
-        id: 1,
-        type: "choice",
-        stem: '文中"春寒料峭"一词的意思是：',
-        options: ["A.春天很寒冷", "B.初春时节乍暖还寒", "C.天气很温暖", "D.春天来了很暖和"],
-        answer: 1
-      },
-      {
-        id: 2,
-        type: "choice",
-        stem: "父亲为什么坚持\"只要一碗\"牛肉面？",
-        options: ["A.他胃口不好吃不下", "B.他想省钱，让儿子吃好的", "C.他不喜欢吃牛肉面", "D.他想让儿子也吃牛肉面"],
-        answer: 1
-      },
-      {
-        id: 3,
-        type: "choice",
-        stem: "儿子在面条里夹肉给父亲，体现了什么？",
-        options: ["A.儿子不爱吃肉", "B.儿子想让父亲多吃点肉", "C.牛肉太多吃不完", "D.馄饨里也有肉"],
-        answer: 1
-      },
-      {
-        id: 4,
-        type: "choice",
-        stem: '服务员追出去说"买一送一"的原因是什么？',
-        options: ["A.店里确实在搞活动", "B.她想帮助这个儿子，不拆穿他的孝心", "C.她怕顾客投诉", "D.她觉得牛肉面太贵"],
-        answer: 1
-      },
-      {
-        id: 5,
-        type: "essay",
-        stem: '文章最后说"那个春寒料峭的黄昏，因这碗牛肉面，变得格外温暖。"请结合全文，谈谈你对这句话的理解。（4分）',
-        refAnswer: "这句话点明了文章主题。\"春寒料峭\"与\"温暖\"形成对比，\"春寒料峭\"既写出了天气的寒冷，也烘托出父子生活的艰难；而\"温暖\"不仅指牛肉面的温度，更指儿子对父亲的孝心、父亲对儿子的疼爱，以及服务员善意的帮助所带来的心灵温暖。这种人间真情，让人在乍暖还寒的黄昏感到格外温暖。"
-      }
-    ]
+    id: "q1",
+    label: "1",
+    point: "3分",
+    text: `请你根据提示，用精简的语言将文中最后一棵葵花的生命轨迹补充完整。`,
+    subtext: `→ 寄到军营 → ①＿＿＿＿ → ②＿＿＿＿ → 发芽生长 → ③＿＿＿＿ → ④＿＿＿＿`,
+    answer: `①种在太阳能下 ②受尽考验（顽强生长） ③繁花怒放 ④凝成冰晶（或：在风雪中绽放）`,
+    answerNote: "（答案要点：①种在太阳能下 ②受尽考验 ③繁花怒放 ④在风雪中绽放/凝成冰晶）"
+  },
+  {
+    id: "q2a",
+    label: "2①",
+    point: "3分",
+    text: `毕淑敏的散文语言生动且耐人寻味，按要求赏析文中的词句。`,
+    subtext: `从修辞手法的角度赏析第⑨段画横线句子「先探出两片嫩黄的叶子，像试探风向的小手掌，肥厚而天真」的表达效果。`,
+    answer: `运用比喻和拟人的修辞手法，将叶子比作小手掌，同时将葵花发芽后的生长状态人格化，生动形象地写出了葵花发芽后生机勃勃、充满生命力的情景，表达了作者看到葵花子发芽的无比惊喜之情和对葵花的喜爱之情。`
+  },
+  {
+    id: "q2b",
+    label: "2②",
+    point: "3分",
+    text: `文章第⑪段中加点词语「惭愧」具有怎样的表达效果？请简要赏析。`,
+    subtext: `（原句：才长到一尺高，就萌发出了粗大的花蕾，压得最高处的茎叶微微下垂，好像惭愧自己为什么不长得更高一些。）`,
+    answer: `"惭愧"的意思是因为自己有缺点、做错了事或未能尽到责任而感到不安，这里运用拟人的修辞手法，赋予葵花人的心理活动，形象生动地写出了葵花因环境恶劣而长得低矮、茎秆纤细的样子，表现了它在严酷环境中努力生长的坚韧。`
+  },
+  {
+    id: "q3",
+    label: "3",
+    point: "4分",
+    text: `文章多次描写了环境的恶劣，这样写有何妙处？请结合文章进行分析。`,
+    answer: `①交代故事发生的背景——昆仑山自然环境极其恶劣，增加了文章的真实性；②为葵花子在昆仑山下顽强发芽生长做铺垫，形成环境之恶劣与生命之顽强的强烈对比；③侧面烘托出驻扎在昆仑山的解放军战士们在艰苦恶劣的环境中不屈不挠、乐观顽强的精神；④深化文章主题，表达了对在逆境中顽强拼搏、无私奉献精神的赞美。`
+  },
+  {
+    id: "q4",
+    label: "4",
+    point: "6分",
+    text: `借助花木来表达情志是中国文学的一个传统，请回忆本册课本中运用了托物言志手法的课文，联系花与人，完成下面的表格。`,
+    subtext: `请填写下面表格中的空白处：`,
+    answerRows: [
+      { work: "《爱莲说》", flower: "莲花", trait: "出淤泥而不染，濯清涟而不妖", zhi: "表达作者不与世俗同流合污、洁身自好的君子之志" },
+      { work: "《葵花之最》", flower: "昆仑山上最高的葵花", trait: "在严寒的环境中奋力生长、开花", zhi: "歌颂纯洁心灵和默默奉献的美好品质，赞美不屈不挠、乐观顽强的精神" }
+    ],
+    answer: `《爱莲说》——莲花——出淤泥而不染——洁身自好\n《葵花之最》——昆仑山上最高的葵花——严寒中奋力生长——赞美不屈不挠、默默奉献的精神`
+  },
+  {
+    id: "q5",
+    label: "5",
+    point: "6分",
+    text: `结合现实生活，说说「世界上最高的葵花」给你的启示和感悟，并写下一句你认为合适的名言警句，作为自己的座右铭。`,
+    answer: `示例："世界上最高的葵花"即使在极其艰苦的环境中依然顽强绽放，这启示我在困难面前要保持积极向上的态度。在学习或生活中遇到困难时，不能抱怨外在环境，而要积极想办法，相信自己总会走出困境。\n座右铭示例：①不管多么险峻的高山，总会为不畏艰难的人留下一条攀登的路。②不是因为看到了希望才坚持，而是因为坚持了才看到希望。`
   }
 ];
 
-// ====== 渲染 ======
-function render() {
-  const app = document.getElementById('app');
-  let html = '';
-  
-  DATA.forEach((p, pi) => {
-    html += `<div class="article-box"><h2>${p.title}</h2><div class="article-content">${p.content.replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>')}</div></div>`;
-    
-    html += `<div class="question-group"><h3>📝 根据文章内容回答问题</h3>`;
-    const choiceQs = p.questions.filter(q => q.type === 'choice');
-    const essayQs = p.questions.filter(q => q.type === 'essay');
-    
-    if (choiceQs.length) {
-      choiceQs.forEach(q => {
-        html += `<div class="q-card" data-qid="${q.id}">
-          <div class="q-stem"><span class="q-number">${q.id}.</span>${q.stem}</div>
-          <div class="options">`;
-        q.options.forEach((opt, oi) => {
-          html += `<label><input type="radio" name="q${q.id}" value="${oi}" onchange="checkChoice(${q.id})">${opt}</label>`;
-        });
-        html += `</div><div class="result-tag" id="result${q.id}"></div></div>`;
-      });
-    }
-    
-    if (essayQs.length) {
-      essayQs.forEach(q => {
-        html += `<div class="q-card" data-qid="${q.id}">
-          <div class="q-stem"><span class="q-number">${q.id}.</span>${q.stem}</div>
-          <textarea id="answer${q.id}" placeholder="在此输入你的答案..."></textarea>
-          <div class="ref-answer" id="ref${q.id}"><span class="label">参考答案：</span>${q.refAnswer}</div>
-        </div>`;
-      });
-    }
-    
-    html += `</div>`;
-  });
-  
-  html += `<div class="submit-area"><button class="btn-submit" id="btnSubmit" onclick="submitAll()">提交批改</button></div>`;
-  
-  app.innerHTML = html;
-  resetScoreBar();
+const MAIN_QUESTION_IDS = ["q1","q2a","q2b","q3","q4","q5"];
+
+// ========== API CONFIG ==========
+const API_KEY = "YOUR_API_KEY";
+const API_URL = "https://api.deepseek.com/chat/completions";
+const MODEL = "deepseek-v4-pro";
+
+// ========== INIT ==========
+function init() {
+  renderArticle();
+  renderQuestions();
+  renderErrorBook();
+  initDragResize();
+  // Set initial article height
+  setTimeout(setInitialHeight, 50);
 }
 
-// ====== 选择题判分 ======
-function checkChoice(qid) {
-  const selected = document.querySelector(`input[name="q${qid}"]:checked`);
-  const card = document.querySelector(`[data-qid="${qid}"]`);
-  if (!card) return;
-  card.classList.remove('submitted');
-  
-  // Find passage and question
-  for (const p of DATA) {
-    const q = p.questions.find(qq => qq.id === qid);
-    if (q && q.type === 'choice') {
-      const tag = document.getElementById(`result${qid}`);
-      if (selected) {
-        const isCorrect = parseInt(selected.value) === q.answer;
-        tag.textContent = isCorrect ? '✅ 正确' : '❌ 错误';
-        tag.className = `result-tag ${isCorrect ? 'correct' : 'wrong'}`;
-      } else {
-        tag.textContent = '';
-        tag.className = 'result-tag';
-      }
-      break;
-    }
+function setInitialHeight() {
+  const page = document.getElementById("pageArticle");
+  const articlePanel = document.getElementById("articlePanel");
+  const pageH = page.offsetHeight;
+  // Start with ~40% of the page for article, with a sane min/max
+  let h = Math.max(120, Math.min(pageH - 160, Math.round(pageH * 0.4)));
+  articlePanel.style.height = h + "px";
+}
+
+function renderArticle() {
+  const el = document.getElementById("articleText");
+  el.innerHTML = ARTICLE_PARAGRAPHS.map(p => `<p>${p}</p>`).join("");
+}
+
+function renderQuestions() {
+  const container = document.getElementById("questionsContainer");
+  container.innerHTML = QUESTIONS.map((q, idx) => {
+    const tableHTML = q.answerRows
+      ? `<table><thead><tr><th>作品</th><th>所托花木</th><th>特征</th><th>所言情志</th></tr></thead><tbody>` +
+        q.answerRows.map(r =>
+          `<tr><td>${r.work}</td><td>${r.flower}</td><td>${r.trait}</td><td>${r.zhi}</td></tr>`
+        ).join("") + `</tbody></table>`
+      : `<div class="text">${q.answer}</div>`;
+
+    return `
+      <div class="question-card" id="card_${q.id}">
+        <div class="question-label">第${q.label}题 <span class="point-badge">${q.point}</span></div>
+        <div class="question-text">${q.text}</div>
+        ${q.subtext ? `<div class="question-subtext">${q.subtext}</div>` : ""}
+
+        <details class="answer-toggle">
+          <summary>✅ 查看正确答案</summary>
+          <div class="answer-content">${tableHTML}</div>
+        </details>
+
+        <div class="input-area">
+          <textarea id="input_${q.id}" placeholder="在此输入孩子的答案……" oninput="onTyping('${q.id}')">${loadDraft(q.id)}</textarea>
+        </div>
+        <div class="action-row">
+          <button class="analyze-btn" id="btn_${q.id}" onclick="analyze('${q.id}', ${idx})">🔍 AI 分析</button>
+          <span class="status-text" id="status_${q.id}"></span>
+        </div>
+        <div class="analysis-result" id="result_${q.id}"></div>
+      </div>
+    `;
+  }).join("");
+}
+
+function loadDraft(qId) {
+  try { return localStorage.getItem("draft_" + qId) || ""; } catch(e) { return ""; }
+}
+
+function onTyping(qId) {
+  try { localStorage.setItem("draft_" + qId, document.getElementById("input_" + qId).value); } catch(e) {}
+}
+
+// ========== DRAG RESIZE ==========
+function initDragResize() {
+  const handle = document.getElementById("dragHandle");
+  const articlePanel = document.getElementById("articlePanel");
+  const page = document.getElementById("pageArticle");
+  let startY, startH;
+
+  function onStart(e) {
+    e.preventDefault();
+    startY = e.type.startsWith("touch") ? e.touches[0].clientY : e.clientY;
+    startH = articlePanel.offsetHeight;
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseup", onEnd);
+    document.addEventListener("touchmove", onMove, { passive: false });
+    document.addEventListener("touchend", onEnd);
   }
-}
 
-// ====== 全部提交 ======
-function submitAll() {
-  const btn = document.getElementById('btnSubmit');
-  btn.disabled = true;
-  btn.textContent = '批改中...';
-  
-  let total = 0, correct = 0;
-  const errors = [];
-  
-  // 遍历所有选择题
-  for (const p of DATA) {
-    for (const q of p.questions) {
-      if (q.type === 'choice') {
-        total++;
-        const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
-        const card = document.querySelector(`[data-qid="${q.id}"]`);
-        const tag = document.getElementById(`result${q.id}`);
-        
-        if (selected) {
-          const isCorrect = parseInt(selected.value) === q.answer;
-          if (isCorrect) correct++;
-          else {
-            errors.push({ id: q.id, stem: q.stem, yourAnswer: q.options[parseInt(selected.value)], correctAnswer: q.options[q.answer] });
-          }
-          tag.textContent = isCorrect ? '✅ 正确' : '❌ 错误';
-          tag.className = `result-tag ${isCorrect ? 'correct' : 'wrong'}`;
-          if (card) {
-            // Highlight correct/wrong on options
-            card.classList.add('submitted');
-            const labels = card.querySelectorAll('.options label');
-            labels.forEach((l, i) => {
-              if (i === q.answer) l.classList.add('correct');
-              if (i === parseInt(selected.value) && !isCorrect) l.classList.add('wrong');
-            });
-          }
-        } else {
-          // 未作答算错
-          errors.push({ id: q.id, stem: q.stem, yourAnswer: '（未作答）', correctAnswer: q.options[q.answer] });
-          tag.textContent = '❌ 未作答';
-          tag.className = 'result-tag wrong';
-        }
-      } else if (q.type === 'essay') {
-        // 简答题：展示参考答案
-        const ref = document.getElementById(`ref${q.id}`);
-        if (ref) ref.classList.add('show');
-      }
-    }
+  function onMove(e) {
+    e.preventDefault();
+    const clientY = e.type.startsWith("touch") ? e.touches[0].clientY : e.clientY;
+    const delta = clientY - startY;
+    const pageH = page.offsetHeight;
+    const minH = 80;
+    const maxH = pageH - 120;
+    let newH = Math.max(minH, Math.min(maxH, startH + delta));
+    articlePanel.style.height = newH + "px";
   }
-  
-  // 存错题
-  if (errors.length) saveErrors(errors);
-  
-  // 显示成绩
-  showScore(correct, total);
-  
-  btn.disabled = false;
-  btn.textContent = '重新批改';
-  btn.onclick = resetAll;
+
+  function onEnd() {
+    document.removeEventListener("mousemove", onMove);
+    document.removeEventListener("mouseup", onEnd);
+    document.removeEventListener("touchmove", onMove);
+    document.removeEventListener("touchend", onEnd);
+  }
+
+  handle.addEventListener("mousedown", onStart);
+  handle.addEventListener("touchstart", onStart, { passive: true });
 }
 
-// ====== 成绩显示 ======
-function showScore(correct, total) {
-  const bar = document.getElementById('scoreBar');
-  bar.classList.add('show');
-  document.getElementById('totalScore').textContent = `总分：${correct}/${total}`;
-  
-  const stats = document.getElementById('statDetails');
-  const pct = total > 0 ? Math.round(correct/total*100) : 0;
-  stats.innerHTML = `<div class="stat"><span class="stat-label">正确率：</span><strong>${pct}%</strong></div>
-    <div class="stat ${pct < 60 ? 'weak' : ''}"><span class="stat-label">阅读理解：</span><strong>${correct}/${total}</strong> ${pct < 60 ? '⚠️ 薄弱' : '✅'}</div>`;
-}
-
-function resetScoreBar() {
-  const bar = document.getElementById('scoreBar');
-  bar.classList.remove('show');
-}
-
-// ====== 重置 ======
-function resetAll() {
-  const btn = document.getElementById('btnSubmit');
-  btn.disabled = false;
-  btn.textContent = '提交批改';
-  btn.onclick = submitAll;
-  
-  // 清除选中和结果
-  document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
-  document.querySelectorAll('.q-card.submitted').forEach(c => c.classList.remove('submitted'));
-  document.querySelectorAll('.options label').forEach(l => { l.classList.remove('correct','wrong'); });
-  document.querySelectorAll('.result-tag').forEach(t => { t.textContent = ''; t.className = 'result-tag'; });
-  
-  // 隐藏参考答案
-  document.querySelectorAll('.ref-answer').forEach(r => r.classList.remove('show'));
-  
-  // 清空简答
-  document.querySelectorAll('textarea').forEach(t => t.value = '');
-  
-  resetScoreBar();
-}
-
-// ====== 错题本（localStorage） ======
-function saveErrors(newErrors) {
-  let all = JSON.parse(localStorage.getItem('rdErrors') || '[]');
-  const now = new Date().toLocaleString('zh-CN');
-  newErrors.forEach(e => {
-    all.push({ ...e, time: now });
-  });
-  localStorage.setItem('rdErrors', JSON.stringify(all));
-}
-
-function toggleErrorBook() {
-  const modal = document.getElementById('errorModal');
-  modal.classList.toggle('show');
-  if (modal.classList.contains('show')) renderErrorBook();
-}
-
-function renderErrorBook() {
-  const list = document.getElementById('errorList');
-  const all = JSON.parse(localStorage.getItem('rdErrors') || '[]');
-  
-  if (!all.length) {
-    list.innerHTML = '<div class="empty-errors">📝 暂无错题记录，加油！</div>';
+// ========== AI ANALYSIS ==========
+function analyze(qId, qIdx) {
+  const q = QUESTIONS[qIdx];
+  const studentAnswer = document.getElementById("input_" + qId).value.trim();
+  if (!studentAnswer) {
+    document.getElementById("status_" + qId).textContent = "⚠️ 请先输入答案";
     return;
   }
-  
-  const grouped = {};
-  all.forEach(e => {
-    const key = e.time.substring(0, 10);
-    if (!grouped[key]) grouped[key] = [];
-    grouped[key].push(e);
+
+  const btn = document.getElementById("btn_" + qId);
+  const status = document.getElementById("status_" + qId);
+  const resultDiv = document.getElementById("result_" + qId);
+
+  btn.disabled = true;
+  status.innerHTML = '<span class="loading"></span> AI 分析中……';
+  resultDiv.classList.remove("visible");
+
+  const questionFullText = q.text + (q.subtext ? "\n" + q.subtext : "");
+  const answerText = q.answerRows
+    ? q.answerRows.map(r => `${r.work}: 花木=${r.flower}, 特征=${r.trait}, 情志=${r.zhi}`).join("\n")
+    : q.answer;
+
+  const systemPrompt = `你是一位经验丰富的初中语文教师。你要对学生的阅读理解答案进行精准分析。
+
+你将收到：一道语文阅读题 + 正确答案 + 学生的回答。
+
+请按照以下三点进行分析（这个分析将存入错题本，以后会根据所有错题本记录来总结学生的语文能力薄弱环节）：
+
+【缺失点】学生哪些答案要点没有答出来？对比正确答案，逐点指出。
+
+【原因分析】学生没答出来的根本原因是什么？可能是：漏掉了某个答案点、没有理解文章深层含义或作者意图、审题不清、答题技巧不足、表达不完整等。请具体分析。
+
+【改进建议】针对这道题，告诉学生下次遇到同类题目时具体怎么做才能答对。建议要具体、可操作。
+
+注意：语气对事不对人，以鼓励为主。不要在分析中透露这是给家长看的。`;
+
+  const userMessage = `## 文章
+《葵花之最》（毕淑敏）
+
+## 题目
+${questionFullText}
+
+## 正确答案
+${answerText}
+
+## 学生的回答
+${studentAnswer}
+
+请按【缺失点】【原因分析】【改进建议】三点给出分析。`;
+
+  fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + API_KEY
+    },
+    body: JSON.stringify({
+      model: MODEL,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userMessage }
+      ],
+      temperature: 0.3,
+      max_tokens: 2000
+    })
+  })
+  .then(r => r.json())
+  .then(data => {
+    btn.disabled = false;
+    if (data.error) {
+      status.textContent = "❌ API 错误：" + (data.error.message || JSON.stringify(data.error));
+      return;
+    }
+    const analysisText = data.choices?.[0]?.message?.content || "分析失败，未收到有效回复";
+    status.textContent = "✅ 分析完成";
+    displayAnalysis(qId, analysisText, q, studentAnswer, answerText);
+    saveToErrorBook(qId, q, studentAnswer, answerText, analysisText);
+    renderErrorBook();
+  })
+  .catch(err => {
+    btn.disabled = false;
+    status.textContent = "❌ 请求失败：" + err.message;
   });
-  
-  let html = '';
-  Object.keys(grouped).reverse().forEach(date => {
-    html += `<div style="margin-bottom:12px"><div style="font-size:12px;color:#999;margin-bottom:6px">📅 ${date}</div>`;
-    grouped[date].forEach(e => {
-      html += `<div class="error-item">
-        <div class="e-q">${e.id}. ${e.stem}</div>
-        <div class="e-detail">
-          <span>你的答案：<span class="wrong-ans">${e.yourAnswer}</span></span>
-          <span>正确答案：<span class="right-ans">${e.correctAnswer}</span></span>
-        </div>
-      </div>`;
-    });
-    html += `</div>`;
-  });
-  
-  list.innerHTML = html;
 }
 
-function clearErrors() {
-  if (!confirm('确定要清空所有错题记录吗？')) return;
-  localStorage.removeItem('rdErrors');
+function displayAnalysis(qId, text) {
+  const div = document.getElementById("result_" + qId);
+  div.innerHTML = "";
+
+  let missContent = "", reasonContent = "", suggestContent = "";
+
+  const missMatch = text.match(/【缺失点】([\s\S]*?)(?=【原因分析】|【改进建议】|$)/);
+  const reasonMatch = text.match(/【原因分析】([\s\S]*?)(?=【缺失点】|【改进建议】|$)/);
+  const suggestMatch = text.match(/【改进建议】([\s\S]*?)(?=【缺失点】|【原因分析】|$)/);
+
+  if (missMatch) missContent = missMatch[1].trim();
+  if (reasonMatch) reasonContent = reasonMatch[1].trim();
+  if (suggestMatch) suggestContent = suggestMatch[1].trim();
+
+  if (!missContent && !reasonContent && !suggestContent) {
+    const lines = text.split("\n");
+    let currentSection = "";
+    for (const line of lines) {
+      const t = line.trim();
+      if (/缺失/.test(t)) { currentSection = "miss"; continue; }
+      if (/原因|为什么/.test(t)) { currentSection = "reason"; continue; }
+      if (/建议|改进|怎么做/.test(t)) { currentSection = "suggest"; continue; }
+      if (currentSection === "miss") missContent += t + "\n";
+      else if (currentSection === "reason") reasonContent += t + "\n";
+      else if (currentSection === "suggest") suggestContent += t + "\n";
+    }
+  }
+
+  if (!missContent && !reasonContent && !suggestContent) {
+    div.innerHTML = `<div style="font-size:14px;line-height:1.8;white-space:pre-wrap;">${escapeHtml(text)}</div>`;
+    div.classList.add("visible");
+    return;
+  }
+
+  if (missContent) {
+    div.innerHTML += `<div class="analysis-section"><span class="section-label miss">❌ 缺失点</span><div class="section-content">${formatText(missContent)}</div></div>`;
+  }
+  if (reasonContent) {
+    div.innerHTML += `<div class="analysis-section"><span class="section-label reason">🤔 原因分析</span><div class="section-content">${formatText(reasonContent)}</div></div>`;
+  }
+  if (suggestContent) {
+    div.innerHTML += `<div class="analysis-section"><span class="section-label suggest">💡 改进建议</span><div class="section-content">${formatText(suggestContent)}</div></div>`;
+  }
+
+  div.classList.add("visible");
+}
+
+function formatText(text) {
+  return text.split("\n").filter(l => l.trim()).map(l => `<p>${l.trim()}</p>`).join("");
+}
+
+function escapeHtml(text) {
+  const d = document.createElement("div");
+  d.textContent = text;
+  return d.innerHTML;
+}
+
+// ========== ERROR BOOK ==========
+function getErrorBook() {
+  try { return JSON.parse(localStorage.getItem("errorBook") || "[]"); } catch(e) { return []; }
+}
+
+function saveToErrorBook(qId, q, studentAnswer, correctAnswer, analysis) {
+  const book = getErrorBook();
+  const existingIdx = book.findIndex(e => e.qId === qId);
+  const entry = {
+    qId, label: q.label,
+    question: q.text + (q.subtext ? " " + q.subtext : ""),
+    correctAnswer, studentAnswer, analysis,
+    timestamp: new Date().toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" })
+  };
+  if (existingIdx >= 0) book[existingIdx] = entry;
+  else book.push(entry);
+  try { localStorage.setItem("errorBook", JSON.stringify(book)); } catch(e) {}
+}
+
+function deleteErrorEntry(qId) {
+  let book = getErrorBook();
+  book = book.filter(e => e.qId !== qId);
+  try { localStorage.setItem("errorBook", JSON.stringify(book)); } catch(e) {}
   renderErrorBook();
 }
 
-// ====== 出题模式 ======
-function showAdmin() {
-  document.getElementById('adminEditor').value = JSON.stringify(DATA, null, 2);
-  document.getElementById('adminModal').classList.add('show');
-}
+function renderErrorBook() {
+  const book = getErrorBook();
+  const container = document.getElementById("errEntries");
+  const countText = document.getElementById("errCountText");
+  countText.textContent = `共 ${book.length} 条分析记录`;
 
-function closeAdmin() {
-  document.getElementById('adminModal').classList.remove('show');
-}
-
-function saveAdmin() {
-  try {
-    const newData = JSON.parse(document.getElementById('adminEditor').value);
-    if (!Array.isArray(newData) || !newData.length) throw '数据必须是非空数组';
-    // Validate structure
-    newData.forEach((p, i) => {
-      if (!p.title || !p.content || !Array.isArray(p.questions)) throw `第${i+1}篇文章数据格式不正确`;
-      p.questions.forEach((q, j) => {
-        if (!q.id || !q.type || !q.stem) throw `第${i+1}篇第${j+1}题缺少必要字段`;
-      });
-    });
-    // Replace DATA and re-render
-    DATA.splice(0, DATA.length, ...newData);
-    closeAdmin();
-    resetAll();
-    render();
-  } catch(e) {
-    alert('数据格式错误：' + e);
+  if (book.length === 0) {
+    container.innerHTML = `<div class="empty-state">📝 暂无分析记录，先做一道题吧</div>`;
+    return;
   }
+
+  container.innerHTML = book.map(e => {
+    let missPreview = "";
+    const m = e.analysis.match(/【缺失点】([\s\S]*?)(?=【原因分析】|【改进建议】|$)/);
+    if (m) missPreview = m[1].trim().substring(0, 120) + (m[1].trim().length > 120 ? "…" : "");
+    const s = e.analysis.match(/【改进建议】([\s\S]*?)(?=【缺失点】|【原因分析】|$)/);
+    const sp = s ? s[1].trim().substring(0, 100) + (s[1].trim().length > 100 ? "…" : "") : "";
+
+    return `
+      <div class="err-entry">
+        <button class="delete-entry" onclick="deleteErrorEntry('${e.qId}')" title="删除">✕</button>
+        <div class="meta">第${e.label}题 · ${e.timestamp}</div>
+        <div class="q-text">${e.question}</div>
+        <div class="analysis-summary">
+          <strong style="color:#c0392b;">缺失点：</strong>${missPreview || "（见详情）"}<br>
+          ${sp ? `<strong style="color:#27ae60;">建议：</strong>${sp}` : ""}
+        </div>
+        <details style="margin-top:6px;font-size:13px;">
+          <summary style="color:#2d5a27;cursor:pointer;">查看完整分析</summary>
+          <div style="margin-top:6px;padding:8px;background:#f9f9f9;border-radius:6px;line-height:1.7;white-space:pre-wrap;">${escapeHtml(e.analysis)}</div>
+        </details>
+      </div>
+    `;
+  }).join("");
 }
 
-// ====== 初始化 ======
-render();
+// ========== OVERALL SUMMARY ==========
+function generateOverallSummary() {
+  const book = getErrorBook();
+  if (book.length === 0) {
+    document.getElementById("overallAnalysis").textContent = "错题本为空，请先做一些题目并分析。";
+    document.getElementById("overallAnalysis").classList.add("visible");
+    return;
+  }
+
+  const btn = document.getElementById("summaryBtn");
+  const resultDiv = document.getElementById("overallAnalysis");
+  btn.disabled = true;
+  btn.textContent = "⏳ 正在分析……";
+  resultDiv.classList.remove("visible");
+
+  const entriesText = book.map((e, i) =>
+    `【记录 ${i+1}】第${e.label}题\n问题：${e.question}\n学生答案：${e.studentAnswer}\n正确答案：${e.correctAnswer}\n分析：\n${e.analysis}`
+  ).join("\n\n---\n\n");
+
+  const systemPrompt = `你是一位经验丰富的初中语文教师。我将给你一份学生历次阅读理解练习的错题本记录，包含每次的题目、正确答案、学生答案以及之前对每道题的分析。
+
+请根据所有记录，做一份全面的总结分析，包括以下方面：
+
+1. **总体评价**：学生的语文阅读理解能力整体处于什么水平？
+2. **常见薄弱环节**：从这些错题中，可以归纳出学生哪些反复出现的问题？（如：审题不清、答案点遗漏、不理解深层含义、答题格式不规范等）
+3. **各能力维度分析**：从"信息提取能力""理解分析能力""鉴赏评价能力""语言表达能力"等维度分析学生的表现。
+4. **具体改进建议**：针对发现的薄弱环节，给出可操作的学习建议。
+5. **下一步学习重点**：建议重点练习哪些题型或能力。
+
+语气要对事不对人，以鼓励为主，不要打击学生信心。给出可操作的、有针对性的建议。`;
+
+  fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + API_KEY
+    },
+    body: JSON.stringify({
+      model: MODEL,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: `以下是我孩子的错题本记录，请根据这些记录做一份全面的总结分析。\n\n${entriesText}` }
+      ],
+      temperature: 0.3,
+      max_tokens: 3000
+    })
+  })
+  .then(r => r.json())
+  .then(data => {
+    btn.disabled = false;
+    btn.textContent = "🧠 根据错题本生成总结";
+    if (data.error) {
+      resultDiv.textContent = "❌ API 错误：" + (data.error.message || JSON.stringify(data.error));
+      resultDiv.classList.add("visible");
+      return;
+    }
+    resultDiv.textContent = data.choices?.[0]?.message?.content || "总结失败";
+    resultDiv.classList.add("visible");
+  })
+  .catch(err => {
+    btn.disabled = false;
+    btn.textContent = "🧠 根据错题本生成总结";
+    resultDiv.textContent = "❌ 请求失败：" + err.message;
+    resultDiv.classList.add("visible");
+  });
+}
+
+// ========== NAVIGATION ==========
+function showPage(page) {
+  document.querySelectorAll(".page").forEach(el => el.classList.remove("active"));
+  document.getElementById("page" + page.charAt(0).toUpperCase() + page.slice(1)).classList.add("active");
+  document.querySelectorAll(".nav-btn").forEach(el => el.classList.remove("active"));
+  document.getElementById("nav" + page.charAt(0).toUpperCase() + page.slice(1) + "Btn").classList.add("active");
+  if (page === "errbook") renderErrorBook();
+}
+
+// ========== START ==========
+document.addEventListener("DOMContentLoaded", init);
 </script>
 </body>
 </html>
