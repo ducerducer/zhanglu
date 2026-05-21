@@ -61,6 +61,12 @@ header h1 .icon{width:32px;height:32px;border-radius:8px;background:#FDE8E4;disp
 .detail-body .exam-q{font-weight:600;color:#2C3E50;margin-bottom:6px;font-size:13.5px;line-height:1.7}
 .detail-body .exam-a{color:#C0392B;font-weight:600;padding:8px 12px;margin-top:8px;background:#FFF5F5;border-radius:6px;font-size:13.5px;line-height:1.6}
 .detail-body .exam-a .label{color:#999;font-weight:400;font-size:12px;margin-right:4px}
+/* Exam answer collapse */
+.exam-card .exam-a{display:none}
+.exam-card .exam-a.show{display:block}
+.exam-card .exam-q{cursor:pointer}
+.exam-card .exam-q:hover{background:rgba(192,57,43,.04);border-radius:4px}
+.exam-card .exam-q .expand-hint{font-size:11px;color:#bbb;margin-left:6px;user-select:none}
 .detail-body .exam-e{color:#666;font-size:13px;line-height:1.7;margin-top:8px;padding:8px 12px;background:#FAF9F5;border-radius:6px;border-left:2px solid #E8D5B0}
 .detail-body .exam-pager{display:flex;align-items:center;justify-content:center;gap:8px;padding:6px 0 10px}
 .detail-body .exam-dot{width:8px;height:8px;border-radius:50%;background:#D0D8E0;cursor:pointer;transition:all .2s}
@@ -835,8 +841,34 @@ function switchModalTab(tab, index) {
   const body = document.getElementById('modalBody');
   body.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
   body.querySelectorAll('.tab-content')[index].style.display = 'block';
-  if (index === 1) setTimeout(initExamPager, 50);
+  if (index === 1) { setTimeout(initExamPager, 50); setTimeout(initExamAns, 100); }
   applyHideMode();
+}
+
+
+function initExamAns() {
+  var container = document.querySelector('.tab-content[data-tab="1"]');
+  if (!container) return;
+  container.querySelectorAll('.exam-card .exam-a').forEach(function(el) {
+    if (!el.classList.contains('initialized')) {
+      el.classList.add('initialized');
+    }
+  });
+  container.querySelectorAll('.exam-card .exam-q').forEach(function(el) {
+    if (!el.getAttribute('data-ans-init')) {
+      el.setAttribute('data-ans-init', '1');
+      el.innerHTML += '<span class="expand-hint">点击查看答案</span>';
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', function(e) {
+        var ans = this.parentElement.querySelector('.exam-a');
+        if (ans) {
+          ans.classList.toggle('show');
+          var hint = this.querySelector('.expand-hint');
+          if (hint) hint.textContent = ans.classList.contains('show') ? '收起答案' : '点击查看答案';
+        }
+      });
+    }
+  });
 }
 
 function initExamPager() {
