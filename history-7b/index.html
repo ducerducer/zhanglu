@@ -33,9 +33,6 @@ header h1 .icon{width:32px;height:32px;border-radius:8px;background:#FDE8E4;disp
 .kp-num{min-width:22px;height:22px;border-radius:50%;background:#F0EBE0;color:#888;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;margin-top:3px}
 .kp-text{flex:1;font-size:14px;line-height:1.7;color:#3D3D3D}
 .kp-text .kw{color:#C0392B;font-weight:600;border-bottom:2px solid rgba(192,57,43,.3);cursor:pointer;padding:0 2px;transition:all .15s}
-.kw-bar{margin:6px 0 0 48px;display:flex;flex-wrap:wrap;gap:4px}
-.kw-bar .kw-inline{font-size:11px;color:#C0392B;background:#FFF5F3;border:1px solid #F0C8C0;border-radius:10px;padding:2px 8px;cursor:pointer;transition:all .2s;white-space:nowrap}
-.kw-bar .kw-inline:hover{background:#FDECE8;border-color:#C0392B}
 .kp-text .kw:hover{background:rgba(192,57,43,.08)}
 .kp-text .kw.active{background:rgba(192,57,43,.12)}
 
@@ -152,14 +149,9 @@ footer{padding:20px;text-align:center;font-size:12px;color:#aaa}
 
 <header>
 <div class="container">
-  <div style="display:flex;width:100%;align-items:center">
-    <h1 style="margin:0;flex:1"><span class="icon">📜</span> 七年级下册·历史知识点</h1>
-    <div class="sa-toggle-btn" id="saToggleBtn" onclick="scrollToShortAnswer()" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#C0392B;cursor:pointer;user-select:none;white-space:nowrap;padding:4px 10px 4px 12px;border-radius:14px;border:1px solid #F0C8C0;background:#FDF5F3">📝 简答题</div>
-  </div>
-  <div style="display:flex;width:100%;align-items:center;margin-top:4px">
-    <div class="period-nav" id="periodNav" style="flex:1"></div>
-    <div class="hide-toggle" id="hideToggle" onclick="toggleHideMode()"><span class="switch"></span><span>隐藏答案</span></div>
-  </div>
+  <h1><span class="icon">📜</span> 七年级下册·历史知识点</h1>
+  <div class="period-nav" id="periodNav"></div>
+  <div class="hide-toggle" id="hideToggle" onclick="toggleHideMode()"><span class="switch"></span><span>隐藏答案</span></div>
 </div>
 </header>
 
@@ -201,10 +193,10 @@ const KNOWLEDGE = [
           { num: 2, text: "隋的统一，结束了长期分裂局面，顺应了民族交融的大趋势，进一步促进了南北方经济、文化的交流和发展。",
             kws: { "民族交融": { tb: "民族交融是魏晋南北朝时期的重要历史特征。自西晋末年起，北方少数民族大量内迁，匈奴、鲜卑、羯、氐、羌等民族与汉族在长期的共同生活中相互影响。北魏孝文帝改革（494年）推行汉化政策：改汉姓、说汉语、穿汉服、与汉族通婚，加速了北方民族融合。隋朝统一后，南北方的联系更加密切，南方的经济文化成果（如先进的农业生产技术）传入北方，北方的政治制度和文化传统也影响了南方。这种交融为隋唐时期文化的大繁荣奠定了基础，也促进了\"中华\"认同的形成。" , exam: "<div class='exam-card'><div class='exam-header'><span class='exam-source'>📝 2024北师大附中期中</span></div><div class='exam-body'><div class='exam-q'>辽宋夏金元是继三国两晋南北朝之后又一个北方少数民族活跃的时期。下列符合辽宋夏金元这一时期的历史特征的是</div><div class='exam-a'><span class='label'>答案：</span><span class='a-text'>B. 多民族交融加强</span></div></div></div>" } }
           },
-          { num: 3, text: "隋朝建立后，发展经济，编订户籍，核实户口，减轻百姓赋役负担，统一币制和度量衡；加强中央集权，修订和减省刑律，简化机构，提高行政效率。隋朝经济迅速恢复和发展，人口数量和垦田面积大幅度增长，成为国力强盛的王朝。",
+          { num: 3, text: "隋朝建立后，发展经济，编订户籍，核实户口，减轻百姓赋役负担，统一币制和度量衡；确立三省六部制，加强中央集权，修订和减省刑律，简化机构，提高行政效率。隋朝经济迅速恢复和发展，人口数量和垦田面积大幅度增长，成为国力强盛的王朝。",
             kws: { "三省六部制": { tb: "三省六部制是隋朝创立的中央官制。三省指中书省（隋称内史省，负责草拟政令）、门下省（负责审核政令）、尚书省（负责执行政令），三省长官均为宰相，互相牵制。六部指尚书省下属的吏、户、礼、兵、刑、工六部，分别管理官员任免、财政税收、礼仪祭祀、军事、司法刑罚和工程建设。三省六部制将相权一分为三，加强了皇权，同时提高了行政效率。这一制度被唐朝继承并完善，成为此后历代王朝中央官制的基本框架，延续了1300多年。" } }
           },
-          { num: 4, text: "为了加强南北交通，巩固隋朝对全国的统治，隋炀帝征发几百万人，从605年起，陆续开凿了一条贯通南北的大运河。大运河以洛阳为中心，北抵涿郡，南至余杭郡，连接了海河、黄河、淮河、长江、钱塘江五大水系，加强了南北地区政治、经济和文化上的交流，有利于国家统一和民族交融。",
+          { num: 4, text: "为了加强南北交通，巩固隋朝对全国的统治，隋炀帝征发几百万人，从605年起，陆续开凿了一条贯通南北的大运河。大运河以洛阳为中心，北抵涿郡，南至余杭郡，连接了海河、黄河、淮河、长江、钱塘江五大水系，加强了南北地区政治、经济和文化上的交流，有利于国家统一和民族交融。鉴真东渡日本，传播了佛教和中国文化。",
             kws: { "大运河": { tb: "隋朝大运河是隋炀帝杨广下令开凿的宏伟水利工程，从605年至610年分多期完成。运河全长约2000多公里，以洛阳为中心，分为永济渠、通济渠、邗沟和江南河四段，北达涿郡（今北京），南至余杭（今杭州），连接了海河、黄河、淮河、长江和钱塘江五大水系。大运河的开凿动用了数百万民夫，给当时人民造成了沉重负担，但客观上加强了南北联系：南方的粮食和物资可以便捷地运往北方，北方的政治军事中心可以更有效地控制南方。大运河成为此后多个朝代的重要运输通道，唐代以后历代均进行了维护和扩建，直至今天仍在发挥作用。" , exam: "<div class='exam-card'><div class='exam-header'><span class='exam-source'>📝 2024海淀期末</span></div><div class='exam-body'><div class='exam-q'>这项工程贯通南北，沟通了海河、黄河、淮河、长江、钱塘江五大水系，促进了南北政治、经济和文化交流，对后世影响深远。这项工程是</div><div class='exam-a'><span class='label'>答案：</span><span class='a-text'>D. 大运河</span></div></div></div>" } }
           },
           { num: 5, text: "隋文帝即位后，废除了前朝的选官制度，依才能取士。隋炀帝时，设置进士科，标志着通过考试选拔人才的科举制创立。",
@@ -255,7 +247,7 @@ const KNOWLEDGE = [
               "阿倍仲麻吕": { tb: "阿倍仲麻吕（698年—770年），日本奈良时代的遣唐留学生，中国名晁衡。他于717年随第八次遣唐使团来到长安，入国子监学习。因学业优秀，考中进士，在唐朝历任校书郎、左补阙、秘书监等官职。他与唐代大诗人李白、王维等交情深厚，互有诗歌赠答。753年，阿倍仲麻吕曾试图回国，但船只在海上遇险，漂流至越南，后辗转返回长安。此后他再未回国，最终在长安去世，终年72岁。唐代宗追封他为潞州大都督。阿倍仲麻吕是中日文化交流史上最重要的代表人物之一。" } ,
           exam: "<div class='exam-card'><div class='exam-header'><span class='exam-source'>第一单元学情调研•单选21</span></div><div class='exam-body'><div class='exam-q'>唐朝时木制帆船从日本来到中国,再现了</div><div class='exam-a'><span class='exam-a-label'>答案：</span><span class='a-text'>C.日本派遣唐使到唐朝学习</span></div></div></div><div class='exam-card'><div class='exam-header'><span class='exam-source'>第一单元学情调研•单选22</span></div><div class='exam-body'><div class='exam-q'>\u2018中国唐朝对外友好往来\u2019板报可选资料</div><div class='exam-a'><span class='exam-a-label'>答案：</span><span class='a-text'>A.①③(玄奘、鉴真)</span></div></div></div>"}
           },
-          { num: 4, text: "鉴真经过六次东渡，最终抵达日本。他主持修建唐招提寺，对中日文化交流做出了卓越贡献。新罗崔致远通过科举考试成为唐朝的官员。贞观初年，玄奘西行前往天竺取经，根据他的口述，由弟子记录成书的《大唐西域记》是研究中外交流史的珍贵文献。中国的造纸术通过大食传播到西方，促进了世界文化的发展。",
+          { num: 4, text: "鉴真经过六次东渡，最终抵达日本。他主持修建唐招提寺，对中日文化交流做出了卓越贡献。新罗崔致远通过科举考试成为唐朝的官员。贞观初年，玄奘西行前往天竺取经，根据他的口述，由弟子记录成书的《大唐西域记》是研究中外交流史的珍贵文献。中国的造纸术通过大食传播到西方，促进了世界文化的发展。鉴真东渡。",
             kws: { "鉴真东渡": { tb: "鉴真（688年—763年）是唐朝著名高僧，扬州大明寺住持。应日本僧人邀请，鉴真决心东渡日本弘扬佛法。从743年第一次东渡开始，到753年第六次成功抵达，历时十年，经历了五次失败：前三次因官府阻拦而未成行，第四次在海上遭遇风暴，第五次漂流到海南岛并导致鉴真双目失明。753年，66岁且失明的鉴真第六次东渡，终于成功抵达日本九州。鉴真在日本传播佛教律宗，主持修建了奈良的唐招提寺，还将唐朝的建筑、雕塑、医药、书法等技艺传授给日本人，被日本称为\"律宗祖师\"和\"日本文化之父\"。763年，鉴真在奈良圆寂。" , exam: "<div class='exam-card'><div class='exam-header'><span class='exam-source'>📝 2024北师大附中期中</span></div><div class='exam-body'><div class='exam-q'>“东瀛有多远？芒履难丈量。袈裟作舟帆，合十忘生死，弘愿心中藏，普度众生……”这是中央电视台播放的一部有关唐朝高僧的电视剧片尾曲。这部电视剧的主人公是</div><div class='exam-a'><span class='label'>答案：</span><span class='a-text'>A. 鉴真</span></div></div></div>" },
               "玄奘西行": { tb: "玄奘（602年—664年）是唐朝著名高僧、翻译家、旅行家。贞观元年（627年，一说是贞观三年），玄奘从长安出发西行，前往佛教发源地天竺（古印度）取经。他穿越戈壁沙漠，翻越葱岭（帕米尔高原），历经艰难险阻到达天竺。玄奘在天竺游学十余年，在那烂陀寺师从戒贤大师学习佛法经典，精通佛教各个流派。645年，玄奘携带大量佛经返回长安，受到唐太宗的隆重接见。此后，他在长安大慈恩寺组织译场，翻译佛经75部、1335卷。由他口述、弟子辩机记录整理的《大唐西域记》，记载了他沿途所经110多个国家和地区的风土人情、地理物产、历史传说等，是研究古代中亚、南亚历史地理的珍贵文献，至今被国际学术界高度重视。" , exam: "<div class='exam-card'><div class='exam-header'><span class='exam-source'>📝 2024二中期中</span></div><div class='exam-body'><div class='exam-q'>下图两位历史人物的活动路线图（玄奘西行、鉴真东渡路线图）反映了</div><div class='exam-a'><span class='label'>答案：</span><span class='a-text'>A. 文明交流互鉴</span></div></div></div>" } }
           },
@@ -333,7 +325,7 @@ const KNOWLEDGE = [
             kws: { "宋代科举改革": { tb: "宋朝对科举制度进行了重大改革：第一，废除了唐代科举中的公荐制度，实行糊名（弥封）和誊录制度，即考生试卷密封姓名，由专人重新抄写后再交考官评阅，以防止舞弊；第二，扩大录取名额，唐代每年仅取二三十人，宋代扩大到数百人；第三，殿试成为定制，皇帝亲自担任主考官，进士成为\"天子门生\"；第四，提高进士的地位，中进士者立即授予官职。这些改革使科举制度更加公平公正，极大地促进了社会阶层的流动，\"朝为田舍郎，暮登天子堂\"成为可能。宋代的科举改革被认为是中国科举制度的成熟和完善阶段。" } ,
           exam: "<div class='exam-card'><div class='exam-header'><span class='exam-source'>海淀期末真卷•非选17(2)</span></div><div class='exam-body'><div class='exam-q'>依据材料二,概括南宋临安城出现的社会现象,分析其原因。</div><div class='exam-a'><span class='exam-a-label'>答案：</span><span class='a-text'>现象:学校数量多,读书风气盛行。原因:科举制发展;重视教育;活字印刷术使用。</span></div></div></div><div class='exam-card'><div class='exam-header'><span class='exam-source'>海淀期末真卷•非选17(1)</span></div><div class='exam-body'><div class='exam-q'>依据材料一,指出宋朝完善科举制度的措施,分析其影响。</div><div class='exam-a'><span class='exam-a-label'>答案：</span><span class='a-text'>措施:确定殿试制度,三级考试制度确立。影响:加强中央集权,促进教育发展。</span></div></div></div>"}
           },
-          { num: 5, text: "1069年，宋神宗任用王安石主持变法。在经济领域实行青苗法、募役法、方田均税法，在军事领域实行保甲法。宋神宗死后，新法几乎全部被废除。",
+          { num: 5, text: "1069年，宋神宗任用王安石主持变法。王安石变法在经济领域实行青苗法、募役法、方田均税法，在军事领域实行保甲法。宋神宗死后，新法几乎全部被废除。",
             kws: { "王安石变法": { tb: "王安石变法（1069年—1085年）是北宋中期一场重要的改革运动。北宋中期面临\"三冗\"（冗官、冗兵、冗费）问题，国家财政困难，社会矛盾尖锐。宋神宗即位后，锐意改革，于1069年任命王安石为参知政事（副宰相），主持变法。主要变法内容包括：经济方面——青苗法（由政府向农民提供低息贷款）、募役法（改差役为雇役，民户出钱雇人服役）、方田均税法（丈量土地，按田亩征税）、市易法（政府调控物价）等；军事方面——保甲法（民兵制度）、置将法（训练军队）等；教育方面——改革科举，专考经义策论。变法增加了政府收入，一定程度上减轻了农民负担，但在执行过程中弊端丛生，遭到保守派强烈反对。1085年宋神宗去世，高太后听政，起用保守派司马光为相，新法几乎全部废除。" , exam: "<div class='exam-card'><div class='exam-header'><span class='exam-source'>📝 2025四中期中</span></div><div class='exam-body'><div class='exam-q'>以下对王安石变法的影响论述正确的是</div><div class='exam-a'><span class='label'>答案：</span><span class='a-text'>C. ①②④（①使政府财政收入大幅度增加 ②兴修了大量水利工程 ④使统治集团内部分裂日益严重）</span></div></div></div>" } }
           },
           { num: 6, text: "宋真宗时期，辽宋议和，签订盟约，史称\"澶渊之盟\"。1044年，北宋与西夏进行和谈，订立和约，元昊向宋称臣，宋给西夏钱物，称为\"岁赐\"。议和后，宋夏关系一直较为稳定。",
@@ -354,7 +346,7 @@ const KNOWLEDGE = [
             kws: { "岳飞": { tb: "岳飞（1103年—1142年），南宋抗金名将，民族英雄。他率领的\"岳家军\"纪律严明，\"冻死不拆屋，饿死不掳掠\"，深受百姓爱戴。1140年，岳飞率军北伐，在郾城大败金军主力，收复郑州、洛阳等地，前锋直抵开封附近的朱仙镇。然而，宋高宗和秦桧担心岳飞势力过大、威胁皇权，同时害怕抗金胜利后迎回被俘的宋钦宗会影响自己的皇位，连发十二道金牌强令岳飞撤军。岳飞被迫班师后，被剥夺兵权，以\"莫须有\"的罪名被杀害于风波亭，年仅39岁。20年后，宋孝宗为岳飞平反昭雪。岳飞精忠报国的精神成为中华民族爱国主义精神的象征，\"精忠报国\"的故事流传至今。" } ,
           exam: "<div class='exam-card'><div class='exam-header'><span class='exam-source'>第二单元学情调研•单选2</span></div><div class='exam-body'><div class='exam-q'>岳飞\u2018靖康耻,犹未雪\u2019和陆游\u2018家祭无忘告乃翁\u2019反映的时代最强音是</div><div class='exam-a'><span class='exam-a-label'>答案：</span><span class='a-text'>D.收复河山,渴望国家统一</span></div></div></div><div class='exam-card'><div class='exam-header'><span class='exam-source'>第二单元学情调研•单选13</span></div><div class='exam-body'><div class='exam-q'>剧本情节急诏促回军、满江红、东窗定毒计,主人公是</div><div class='exam-a'><span class='exam-a-label'>答案：</span><span class='a-text'>C.岳飞</span></div></div></div><div class='exam-card'><div class='exam-header'><span class='exam-source'>阶段学情调研•单选2</span></div><div class='exam-body'><div class='exam-q'>率军北伐取得郾城大捷,\u2018冻死不拆屋\u2019的历史人物是</div><div class='exam-a'><span class='exam-a-label'>答案：</span><span class='a-text'>B.岳飞抗金</span></div></div></div>"}
           },
-          { num: 3, text: "1206年，铁木真完成蒙古草原的统一，建立蒙古政权，他被拥立为大汗，尊称为成吉思汗。1227年，蒙古军队灭西夏。1234年，蒙古灭金。1260年，忽必烈继承汗位；1271年，改国号为大元，1272年定都大都。",
+          { num: 3, text: "1206年，铁木真完成蒙古草原的统一，建立蒙古政权，他被拥立为大汗，尊称为成吉思汗。1227年，蒙古军队灭西夏。1234年，蒙古灭金。1260年，忽必烈继承汗位，标志着元朝建立；1271年，改国号为大元，1272年定都大都。",
             kws: { "成吉思汗": { tb: "成吉思汗（1162年—1227年），名铁木真，蒙古帝国的建立者。他出身于蒙古乞颜部贵族家庭，少年时父亲被毒死，部落离散。铁木真凭借非凡的军事才能和政治智慧，逐步统一了蒙古草原各部。1206年，在斡难河源召开的大会上，铁木真被推举为\"成吉思汗\"（意为\"拥有四海的大汗\"）。他建立了蒙古帝国，创制了蒙古文字，制定了军事、行政制度（千户制）。成吉思汗率蒙古骑兵向四方扩张，征服了中亚、西亚的广大地区。1227年，成吉思汗在进攻西夏时病逝。他的后代继续扩张，建立了横跨欧亚的庞大帝国。" },
               "元朝建立": { tb: "元朝（1271年—1368年）是由蒙古族建立的统一王朝。成吉思汗之孙忽必烈继承汗位后，于1271年采纳刘秉忠的建议，根据《易经》\"大哉乾元\"改国号为\"大元\"，1272年定都大都（今北京）。元朝1279年灭南宋，完成了全国统一，结束了自唐末以来数百年的分裂割据局面。元朝是中国历史上版图最大的朝代，\"北逾阴山，西极流沙，东尽辽左，南越海表\"。元朝实行行省制度，对后世影响深远；在边疆地区设立宣政院管理西藏、设置澎湖巡检司管辖台湾等，加强了对边疆的统治。" , exam: "<div class='exam-card'><div class='exam-header'><span class='exam-source'>📝 2024顺义期末</span></div><div class='exam-body'><div class='exam-q'>以下史事可以出现在忽必烈栏中的有：①统一蒙古草原 ②改国号为大元，定都大都 ③灭南宋完成统一 ④设立厂卫特务机构</div><div class='exam-a'><span class='label'>答案：</span><span class='a-text'>C. ②③</span></div></div></div>" } ,
           exam: "<div class='exam-card'><div class='exam-header'><span class='exam-source'>第二单元学情调研•单选21</span></div><div class='exam-body'><div class='exam-q'>起朔漠并西域,平西夏灭女真,遂下江南而天下为一。建立政权和完成统一的君主分别是</div><div class='exam-a'><span class='exam-a-label'>答案：</span><span class='a-text'>C.成吉思汗 忽必烈</span></div></div></div>"}
@@ -370,10 +362,10 @@ const KNOWLEDGE = [
           { num: 6, text: "元朝在地方设行中书省，简称\"行省\"。行省是中书省临时派出处理地方事务的机构，后转变为常设的地方最高行政机构。行省制度的创立，是我国古代地方行政制度的重大改革，成为我国省制的开端。",
             kws: { "行省制度": { tb: "行省制度是元朝创立的地方行政制度。元朝在中央设中书省，在地方设行中书省（简称\"行省\"），作为中央派出机构管理地方事务。最初行省是临时机构，后逐渐演变为常设的、固定的地方最高行政机构。元朝在全国设立了10个行省：岭北、辽阳、河南江北、陕西、四川、甘肃、云南、江浙、江西、湖广。行省以下设路、府、州、县。行省制度的意义在于：加强了中央对地方的控制，提高了行政效率，是秦汉以来郡县制度的一次重大发展。行省制度被明清两朝继承并完善，奠定了今天中国省制的基础。" , exam: "<div class='exam-card'><div class='exam-header'><span class='exam-source'>📝 2024延庆期末</span></div><div class='exam-body'><div class='exam-q'>某同学梳理北京历史沿革（西周燕国→秦郡县→元隶属于中书省），与元朝相对应的制度是</div><div class='exam-a'><span class='label'>答案：</span><span class='a-text'>D. 行省制</span></div></div></div>" } }
           },
-          { num: 7, text: "元朝统治者在边疆地区采取因地制宜的方式加强统治。东南地区，在澎湖设置巡检司，这是历史上中央政府首次在台湾地区正式建立行政机构；西北地区，设置北庭都元帅府等机构，管理西域军政事务；西藏地区，设立宣慰使司都元帅府，屯驻军队。从此，中央政府对西藏正式行使行政管辖。",
+          { num: 7, text: "元朝统治者在边疆地区采取因地制宜的方式加强统治。东南地区，在澎湖设置巡检司，这是历史上中央政府首次在台湾地区正式建立行政机构；西北地区，设置北庭都元帅府等机构，设置澎湖巡检司，加强对台湾地区的管辖；管理西域军政事务；西藏地区，设立宣慰使司都元帅府，屯驻军队。从此，中央政府对西藏正式行使行政管辖。",
             kws: { "澎湖巡检司": { tb: "澎湖巡检司是元朝在澎湖群岛设立的地方行政机构，隶属于福建行省。这是历史上中央政府首次在台湾及澎湖地区正式建立行政机构，标志着台湾地区正式纳入中国版图。巡检司主要负责管理当地居民、征收赋税、维持治安。这一建制被明清两朝延续，证明了台湾自古以来就是中国领土不可分割的一部分。" , exam: "<div class='exam-card'><div class='exam-header'><span class='exam-source'>📝 2025四中期中</span></div><div class='exam-body'><div class='exam-q'>中央政府首次在台湾地区正式建立的行政机构是</div><div class='exam-a'><span class='label'>答案：</span><span class='a-text'>D. 澎湖巡检司</span></div></div></div>" } }
           },
-          { num: 8, text: "元朝的统治深受中原文化的影响，各族以中原文化为主的文化认同趋向加强。这一时期形成新的民族——回回，它是我国回族的前身。",
+          { num: 8, text: "元朝的统治深受中原文化的影响，各族以中原文化为主的文化认同趋向加强。这一时期回族的形成过程加速，形成新的民族——回回，它是我国回族的前身。",
             kws: { "回族的形成": { tb: "回族是元朝时期形成的新民族。随着蒙古西征，大量中亚、西亚的穆斯林（包括波斯人、阿拉伯人、突厥人等）来到中国，他们被称为\"回回人\"。这些穆斯林与当地的汉、蒙古、维吾尔等民族长期通婚、共同生活，逐渐形成了一个新的民族——回族。回国人擅长商业活动，在元朝社会中具有重要地位，许多人在中央和地方政府中担任要职，如著名政治家赛典赤·赡思丁曾任云南行省平章政事。回族形成是元朝民族融合的典型例证。" } }
           }
         ]
@@ -412,7 +404,7 @@ const KNOWLEDGE = [
             kws: { "沈括与《梦溪笔谈》": { tb: "沈括（1031年—1095年），北宋著名科学家、政治家。他博学多才，在天文、数学、物理、地理、地质、生物、医药、工程技术等多个领域都有重要贡献。他晚年所著的《梦溪笔谈》是一部综合性的科学著作，收录了他在各个领域的观察和研究成果。书中记载了毕昇发明活字印刷术、指南针的多种使用方法、石油的开采利用（他命名\"石油\"）、地磁偏角的发现等。书中还包含了他在数学（\"隙积术\"和\"会圆术\"）、天文学（提出\"十二气历\"）等方面的创见。《梦溪笔谈》被誉为\"中国科学史上的坐标\"。" },
               "郭守敬与《授时历》": { tb: "郭守敬（1231年—1316年），元代著名天文学家、数学家和水利学家。他主持编定的《授时历》于1281年颁行，确定一年为365.2425天，与现行公历（格里高利历）相同，但比公历的制定早了约300年。郭守敬还在全国各地设立了27个天文观测站，进行了大规模的天文测量，其观测精确度在当时世界领先。他创制和改进了简仪、仰仪、圭表等多种天文仪器。郭守敬的水利成就也很突出，曾主持开凿通惠河，解决了大都的漕运问题。" } }
           },
-          { num: 5, text: "宋代杰出的词人有苏轼、李清照、辛弃疾等。南宋陆游是著名的爱国主义诗人。元朝最优秀的杂剧家是关汉卿，代表作是悲剧《窦娥冤》。",
+          { num: 5, text: "宋代杰出的词人有苏轼、李清照、辛弃疾等。南宋陆游是著名的爱国主义诗人。元朝最优秀的杂剧家是关汉卿，关汉卿与《窦娥冤》是其最著名的成就，代表作是悲剧《窦娥冤》。",
             kws: { "苏轼": { tb: "苏轼（1037年—1101年），号东坡居士，北宋著名文学家、书画家。他是宋代文学最高成就的代表，在诗、词、文、书、画等方面都有极高造诣。苏轼开创了豪放派词风，代表作有《念奴娇·赤壁怀古》《水调歌头·明月几时有》等，突破了词为\"艳科\"的传统，将词的表现领域扩大到社会生活的各个方面。苏轼的散文与欧阳修并称\"欧苏\"，为\"唐宋八大家\"之一。他不仅在文学上成就卓著，在书法（\"宋四家\"之首）、绘画（擅长墨竹）等方面也是一代大家。" , exam: "<div class='exam-card'><div class='exam-header'><span class='exam-source'>📝 2024海淀期末</span></div><div class='exam-body'><div class='exam-q'>《东京梦华录》记载：“大抵诸酒肆瓦市，不以风雨寒暑，白昼通夜，骈阗如此。”以上材料表现了</div><div class='exam-a'><span class='label'>答案：</span><span class='a-text'>B. 宋代丰富的市民生活</span></div></div></div>" },
               "李清照": { tb: "李清照（1084年—约1155年），号易安居士，宋代著名女词人。她是婉约派词人的代表，被誉为\"千古第一才女\"。李清照的词以南渡为界分为前后两期：前期词风清新婉丽，多写闺中生活和自然风光（如《如梦令》），反映了她早年优裕的生活；后期国破家亡、流离失所，词风转为凄苦沉郁（如《声声慢》中的\"寻寻觅觅，冷冷清清\"），表达了对家国沦丧的悲愤。她的词在艺术上达到了极高成就，语言优美，意境深远。" },
               "辛弃疾": { tb: "辛弃疾（1140年—1207年），南宋著名爱国词人，是继苏轼之后豪放派词风的又一代表人物。他出生时北方已经沦陷于金朝，少年时曾参加抗金义军。南渡后屡次上书北伐，但始终未能实现抱负。辛弃疾的词慷慨激昂，充满爱国热情和壮志难酬的悲愤，代表作有《永遇乐·京口北固亭怀古》《破阵子·为陈同甫赋壮词以寄之》《青玉案·元夕》等。他与苏轼并称\"苏辛\"，对后世词坛产生了深远影响。" },
@@ -485,7 +477,7 @@ const KNOWLEDGE = [
             kws: { "八股文": { tb: "八股文是明清时期科举考试规定的文章格式。文章由破题、承题、起讲、入手、起股、中股、后股、束股八部分组成，其中\"股\"的部分要求有两两对应的排比句，共八段，故称\"八股文\"。八股文的题目必须出自\"四书\"\"五经\"（儒家经典），内容阐释必须以朱熹的《四书章句集注》为标准，不能有个人发挥。八股文在早期对于规范考试内容、减少阅卷难度方面有一定积极作用，但后期成为束缚士人思想的桎梏。顾炎武曾批评\"八股之害等于焚书\"，认为八股文比秦始皇焚书坑儒的危害更大，因为它扼杀了读书人的独立思考能力和创造力。" } ,
           exam: "<div class='exam-card'><div class='exam-header'><span class='exam-source'>第三单元学情调研•单选20</span></div><div class='exam-body'><div class='exam-q'>明朝科举以八股文为程式,此举</div><div class='exam-a'><span class='exam-a-label'>答案：</span><span class='a-text'>D.严重禁锢知识分子的创新思维</span></div></div></div>"}
           },
-          { num: 4, text: "明成祖派郑和率领船队出使西洋，提高了明朝在国际上的地位和威望。",
+          { num: 4, text: "明成祖派郑和下西洋，率领船队出使西洋，提高了明朝在国际上的地位和威望。",
             kws: { "郑和下西洋": { tb: "郑和下西洋是明朝永乐年间（1405年—1433年）的一次大规模远洋航行活动。郑和（原名马和）是回族宦官，被明成祖赐姓郑。他率领世界上最庞大的船队，先后七次出使西洋（今东南亚、南亚、中东和东非地区），访问了30多个国家和地区。船队规模最大时，有船只200多艘，船员27000多人，最大的宝船长约150米，宽约60米，是当时世界上最大的木制帆船。郑和的航行比哥伦布发现美洲（1492年）早近90年，比达·伽马绕过好望角早近100年。郑和七下西洋促进了中国与亚非各国的经济文化交流，打通了海上丝绸之路，提高了明朝的国际声誉。但明成祖去世后，朝中保守派认为耗费巨大、得不偿失，停止了远洋活动，相关航海资料也被销毁。" , exam: "<div class='exam-card'><div class='exam-header'><span class='exam-source'>📝 2025西城期末</span></div><div class='exam-body'><div class='exam-q'>下侧路线图（航海路线，涉及印度洋、东南亚、非洲东海岸等地）描绘的历史事件是</div><div class='exam-a'><span class='label'>答案：</span><span class='a-text'>D. 郑和下西洋</span></div></div></div>" } }
           },
           { num: 5, text: "明朝派戚继光到东南沿海抗倭，他统领的军队被誉为\"戚家军\"。1561年，他率军在台州九战九捷，平定了浙东地区的倭患。他领导的抗倭战争是一场反侵略的战争，他是我国历史上的民族英雄。",
@@ -506,12 +498,12 @@ const KNOWLEDGE = [
           { num: 2, text: "明朝灭亡后，正当李自成力图推进全国统一的时候，驻守山海关的明军将领吴三桂降清，引清军入关，并与清军联合打败李自成的军队。1644年，清朝统治者进入北京，逐步建立起对全国的统治。",
             kws: { "清军入关": { tb: "清军入关是1644年清朝军队在明朝将领吴三桂的引导下进入山海关、进而占领北京并建立全国统治的历史事件。1644年春，李自成的大顺军攻占北京，明朝灭亡。此时，清朝的摄政王多尔衮率大军正驻守在山海关外。镇守山海关的明朝总兵吴三桂面临两难选择：投降李自成还是对抗大顺。李自成进京后拷掠明朝官员，吴三桂的父亲也遭拷掠，吴三桂一怒之下决定降清。他打开山海关大门，清军与吴三桂的军队联合，在\"一片石\"战役中击败李自成的军队。1644年10月，顺治帝从沈阳迁都北京，清朝正式定鼎中原，逐步建立了对全国的统治。清军入关过程中发生了\"扬州十日\"\"嘉定三屠\"等惨剧，但最终清朝完成了全国统一。" } }
           },
-          { num: 3, text: "1662年，民族英雄郑成功从荷兰殖民者手中收复台湾。1684年，清朝设置台湾府，隶属福建省，加强了中央政府对台湾的管辖。",
+          { num: 3, text: "1662年，民族英雄郑成功收复台湾，从荷兰殖民者手中收复台湾。1684年，台湾府设置，隶属福建省，隶属福建省，加强了中央政府对台湾的管辖。",
             kws: { "郑成功收复台湾": { tb: "郑成功（1624年—1662年），明末清初的民族英雄。清军入关后，郑成功以福建厦门为基地，坚持抗清斗争。为了寻找稳固的后方基地，郑成功率军于1661年横渡台湾海峡，进攻被荷兰殖民者占据的台湾。荷兰殖民者自1624年占领台湾南部（筑热兰遮城），统治台湾达38年。郑成功的军队经过9个月的围城战斗，于1662年2月迫使荷兰总督揆一投降，台湾回归祖国怀抱。郑成功在台湾设立行政机构，推行屯田制度，发展农业生产，传播中华文化。可惜他收复台湾仅几个月后即病逝，年仅39岁。郑成功从荷兰殖民者手中收复台湾的斗争是中华民族反抗外来侵略的伟大胜利，他作为民族英雄被后人永远铭记。" },
               "台湾府设置": { tb: "1683年，清朝派施琅率水师攻占台湾，郑成功的孙子郑克塽投降。1684年，清朝康熙皇帝决定在台湾设立台湾府，下辖台湾、凤山、诸罗三县，隶属福建省。这是台湾在明朝末年被荷兰殖民者占领和在郑氏政权统治后，重新纳入中央政府行政管辖体系。台湾府的设置标志着清朝中央政府开始对台湾行使直接管辖权，有力地加强了台湾与祖国大陆的联系，促进了台湾地区的经济开发和文化发展。" } ,
           exam: "<div class='exam-card'><div class='exam-header'><span class='exam-source'>阶段学情调研•单选20</span></div><div class='exam-body'><div class='exam-q'>出现在\u2018抗击外来侵略英雄谱系\u2019中的是</div><div class='exam-a'><span class='exam-a-label'>答案：</span><span class='a-text'>B.郑成功</span></div></div></div>"}
           },
-          { num: 4, text: "康熙皇帝三次率军亲征，打败噶尔丹。乾隆时期，清军最终平定了准噶尔部。乾隆时期平定了大、小和卓分裂祖国的叛乱。1762年，清朝设置伊犁将军，管辖整个新疆地区军政事务。1689年，中俄双方代表在尼布楚签订第一个边界条约《尼布楚条约》。",
+          { num: 4, text: "康熙皇帝三次率军亲征，打败噶尔丹。乾隆时期，清军最终平定了准噶尔部。乾隆时期平定了大、小和卓分裂祖国的叛乱。1762年，清朝设置伊犁将军，管辖整个新疆地区军政事务。康熙三征噶尔丹，平定了准噶尔部叛乱。1689年，中俄双方代表在尼布楚签订第一个边界条约《尼布楚条约》。",
             kws: { "康熙三征噶尔丹": { tb: "康熙三征噶尔丹是清朝康熙皇帝为维护国家统一、平定准噶尔部首领噶尔丹叛乱的重要军事行动。噶尔丹是漠西蒙古准噶尔部的首领，他统一了漠西蒙古各部后，势力不断扩张，控制了天山南北和青藏高原部分地区，并在沙俄的支持下向东进攻漠北蒙古（喀尔喀蒙古）。康熙皇帝为保护喀尔喀蒙古和维护北部边疆安全，于1690年、1696年、1697年三次御驾亲征。在1696年的昭莫多之战中，清军大败噶尔丹主力。1697年，噶尔丹在逃亡中病死。康熙三征噶尔丹维护了国家的统一和北部边疆的稳定。" },
               "《尼布楚条约》": { tb: "《尼布楚条约》是1689年中俄两国在尼布楚（今俄罗斯涅尔琴斯克）签订的第一个边界条约。17世纪中叶，沙俄不断向东扩张，侵入黑龙江流域。清朝康熙皇帝在平定三藩之乱后，派军于1685年和1686年两次围攻沙俄占据的雅克萨城，击败俄军。在军事胜利的基础上，中俄两国在尼布楚进行谈判。1689年9月7日，双方签订《尼布楚条约》，规定：中俄以额尔古纳河、格尔必齐河和外兴安岭为界，黑龙江以北、外兴安岭以南的土地属于中国。该条约在法律上明确了中俄东部边界，维护了中国的主权和领土完整。条约还规定了两国贸易往来的事宜。这是中国与西方国家签订的第一个平等条约。" ,
           exam: "<div class='exam-card'><div class='exam-header'><span class='exam-source'>阶段学情调研•单选13</span></div><div class='exam-body'><div class='exam-q'>中俄签订《尼布楚条约》之前的自卫战争是</div><div class='exam-a'><span class='exam-a-label'>答案：</span><span class='a-text'>C.雅克萨之战</span></div></div></div>"},
@@ -633,16 +625,14 @@ function buildPage() {
       ch.points.forEach(pt => {
         // Process text to mark keywords
         let text = pt.text;
-        let foundKws = {};
         if (pt.kws) {
           Object.keys(pt.kws).forEach(kw => {
-            if (kw === 'exam' || kw === 'tb') return;
             const idx = text.indexOf(kw);
             if (idx >= 0) {
               const before = text.substring(0, idx);
               const after = text.substring(idx + kw.length);
               text = before + `<span class="kw" data-keyword="${kw}" data-chapter="${ch.id}" data-point="${pt.num}">${kw}</span>` + after;
-              foundKws[kw] = true;
+
             }
           });
         }
@@ -650,19 +640,6 @@ function buildPage() {
         html += `<div class="kp-card"><div class="kp-header" onclick="toggleDetail(this, event)">`;
         html += `<div class="kp-num">${pt.num}</div>`;
         html += `<div class="kp-text">${text}</div>`;
-        // Add kw-bar for keywords not found in text
-        if (pt.kws && Object.keys(foundKws).length < Object.keys(pt.kws).length) {
-          let extra_kws = '';
-          Object.keys(pt.kws).forEach(kw => {
-            if (kw === 'exam' || kw === 'tb') return;
-            if (!foundKws[kw]) {
-              extra_kws += `<span class="kw kw-inline" data-keyword="${kw}" data-chapter="${ch.id}" data-point="${pt.num}">${kw}</span> `;
-            }
-          });
-          if (extra_kws) {
-            html += `<div class="kw-bar">${extra_kws}</div>`;
-          }
-        }
         html += `</div></div>`;
       });
     });
@@ -674,18 +651,18 @@ function buildPage() {
   html += '<div class="sa-section" id="sa-main">';
   KNOWLEDGE.forEach(period => {
     if (period.shortAnswer && period.shortAnswer.length > 0) {
-      html += '<div class="sa-section-title">📝 ' + period.period + ' 简答题 <span class="sa-badge">' + period.shortAnswer.length + '题组</span></div>';
+      html += '<div class="sa-section-title"> 简答题 <span class="sa-badge">' + period.shortAnswer.length + '题组</span></div>';
       period.shortAnswer.forEach(sa => {
         if (sa.materials) {
           var mId = 'mat-' + period.id + '-' + sa.num;
-          html += '<div class="sa-mat-btn" onclick="openSAMat(\'\' + mId + \'\' )">📄 查看材料</div>';
+          html += '<div class="sa-mat-btn" onclick="openSAMat(&#39;' + mId + '&#39;)"> 查看材料</div>';
         }
         html += '<div class="sa-group">';
         html += '<div class="sa-group-title"><span class="sa-num">' + sa.num + '</span>' + sa.title + '</div>';
         sa.questions.forEach(function(qa, qi) {
           var qId = 'sA-' + period.id + '-' + sa.num + '-' + qi;
-          html += '<div class="sa-q-item" onclick="toggleSAAnswer(\'\' + qId + \'\' )">';
-          html += '<div class="sa-q"><span class="sa-q-icon">📝</span>' + qa.q + '<span class="sa-expand-icon">▾</span></div>';
+          html += '<div class="sa-q-item" onclick="toggleSAAnswer(&#39;' + qId + '&#39;)">';
+          html += '<div class="sa-q"><span class="sa-q-icon"></span>' + qa.q + '<span class="sa-expand-icon">▾</span></div>';
           html += '<div class="sa-a-wrap" id="' + qId + '"><span class="sa-a-label">答：</span>' + qa.a + '</div>';
           html += '</div>';
         });
@@ -700,7 +677,6 @@ app.innerHTML = html;
 buildPage();
 
 // ====== Short Answer ======
-
 function scrollToShortAnswer() {
   var btn = document.getElementById('saToggleBtn');
   var el = document.querySelector('.sa-section');
@@ -869,7 +845,7 @@ function initExamPager() {
 }
 
 
-// ====== Short Answer functions (independent) ======
+// ====== Short Answer ======
 function toggleSAAnswer(id) {
   var el = document.getElementById(id);
   if (!el) return;
@@ -877,7 +853,6 @@ function toggleSAAnswer(id) {
   if (icon) icon.classList.toggle('open');
   el.classList.toggle('show');
 }
-
 function openSAMat(mId) {
   var found = null;
   KNOWLEDGE.forEach(function(period) {
@@ -889,23 +864,16 @@ function openSAMat(mId) {
   if (!found) return;
   document.getElementById('saMatTitle').textContent = found.period + ' · ' + found.title;
   var body = document.getElementById('saMatBody');
-  var html = '';
   var blocks = found.text.split('材料');
+  var h = '';
   for (var i = 1; i < blocks.length; i++) {
-    html += '<div class="mat-block"><div class="mat-label">材料' + toChinese(i) + '</div><div>' + blocks[i].trim() + '</div></div>';
+    h += '<div class="mat-block"><div class="mat-label">材料' + toC(i) + '</div><div>' + blocks[i].trim() + '</div></div>';
   }
-  body.innerHTML = html;
+  body.innerHTML = h;
   document.getElementById('saMatOverlay').classList.add('show');
 }
-
-function toChinese(n) {
-  var d = ['', '一', '二', '三', '四', '五', '六'];
-  return d[n] || n;
-}
-
-function closeSAMat() {
-  document.getElementById('saMatOverlay').classList.remove('show');
-}
+function toC(n) { var d = ['','一','二','三','四','五','六']; return d[n]||n; }
+function closeSAMat() { document.getElementById('saMatOverlay').classList.remove('show'); }
 
 
 // ====== 隐藏答案模式 ======
@@ -954,7 +922,6 @@ document.addEventListener('keydown', e => {
 
 console.log('✅ 历史知识点页面已加载！');
 </script>
-<!-- SA material popup -->
 <div class="sa-mat-overlay" id="saMatOverlay" onclick="if(event.target===this)closeSAMat()">
   <div class="sa-mat-modal">
     <div class="sa-mat-header">
