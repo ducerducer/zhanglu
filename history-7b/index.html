@@ -469,8 +469,8 @@ function buildPage() {
       ch.points.forEach(pt => {
         // Process text to mark keywords
         let text = pt.text;
+        let foundKws = {};
         if (pt.kws) {
-          let foundKws = {};
           Object.keys(pt.kws).forEach(kw => {
             const idx = text.indexOf(kw);
             if (idx >= 0) {
