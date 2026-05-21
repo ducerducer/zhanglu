@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>七年级下册生物知识点</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#F0F7F0;color:#2C3E50;font-family:-apple-system,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;line-height:1.8;font-size:15px}
+.container{max-width:1000px;margin:0 auto;padding:0 16px}
+
+/* Header */
+header{position:sticky;top:0;z-index:50;background:rgba(240,247,240,.97);backdrop-filter:blur(8px);border-bottom:2px solid #2E7D32;padding:12px 0}
+header .container{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+header h1{font-size:20px;color:#2E7D32;display:flex;align-items:center;gap:8px}
+header h1 .icon{width:32px;height:32px;border-radius:8px;background:#E8F5E9;display:flex;align-items:center;justify-content:center;font-size:16px}
+.period-nav{display:flex;gap:4px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:4px 0}
+.period-btn{padding:6px 14px;border-radius:16px;border:1px solid #C8E6C9;font-size:12px;cursor:pointer;white-space:nowrap;background:#fff;color:#666;transition:all .2s}
+.period-btn.active{background:#2E7D32;color:#fff;border-color:#2E7D32}
+.period-btn:hover:not(.active){background:#E8F5E9}
+
+/* Chapter Card */
+.chapter{margin-bottom:40px;scroll-margin-top:130px}
+.chapter-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding:12px 16px;background:#fff;border-radius:12px;border-left:4px solid #2E7D32;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.chapter-num{width:36px;height:36px;border-radius:50%;background:#2E7D32;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+.chapter-title{font-size:18px;font-weight:600;color:#2C3E50}
+.chapter-subtitle{font-size:12px;color:#999;margin-top:-2px}
+
+/* SVG diagram container */
+.svg-diagram{margin:10px 0;background:#FAFDF8;border:1px solid #C8E6C9;border-radius:8px;padding:10px;text-align:center}
+.svg-diagram svg{max-width:100%;height:auto}
+.svg-caption{font-size:11px;color:#888;margin-top:4px}
+
+/* Knowledge Point Card */
+.kp-card{margin-bottom:12px;background:#fff;border-radius:10px;border:1px solid #C8E6C9;overflow:hidden;transition:box-shadow .2s}
+.kp-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.kp-header{padding:12px 16px;cursor:pointer;display:flex;align-items:flex-start;gap:10px;user-select:none}
+.kp-num{min-width:22px;height:22px;border-radius:50%;background:#E8F5E9;color:#558B2F;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;margin-top:3px}
+.kp-text{flex:1;font-size:14px;line-height:1.7;color:#3D3D3D}
+.kp-text .kw{color:#2E7D32;font-weight:600;border-bottom:2px solid rgba(46,125,50,.3);cursor:pointer;padding:0 2px;transition:all .15s}
+.kp-text .kw:hover{background:rgba(46,125,50,.08)}
+.kp-text .kw.active{background:rgba(46,125,50,.12)}
+
+/* Expand Section */
+.kp-detail{display:none;border-top:1px solid #E8F5E9;background:#F8FCF8}
+.kp-detail.show{display:block}
+.detail-tabs{display:flex;border-bottom:1px solid #C8E6C9}
+.detail-tab{padding:8px 16px;font-size:12px;cursor:pointer;border-bottom:2px solid transparent;color:#888;transition:all .2s}
+.detail-tab.active{color:#2E7D32;border-bottom-color:#2E7D32;font-weight:600}
+.detail-body{padding:14px 16px;font-size:13px;line-height:1.8;color:#555}
+.detail-body .tb{background:#F5FAF5;border-left:3px solid #2E7D32;padding:12px 16px;margin-bottom:12px;border-radius:0 8px 8px 0;font-size:13.5px;line-height:1.9;color:#2C3E50}
+.detail-body .tb .hl-term{color:#2E7D32;font-weight:600}
+.detail-body .tb .hl-year{color:#6A1B9A;font-weight:600}
+.detail-body .tb .hl-person{color:#1565C0;font-weight:600}
+.detail-body .tb .hl-process{color:#E65100;font-weight:600}
+.detail-body .tb .sec-label{display:inline-flex;align-items:center;gap:4px;background:#C8E6C9;padding:1px 10px;border-radius:4px;font-size:11px;color:#2E7D32;font-weight:500;margin-right:4px}
+.detail-body .tb p{margin-bottom:8px}
+.detail-body .tb p:last-child{margin-bottom:0}
+.detail-body .tb .sub-section{margin-top:10px;padding-top:8px;border-top:1px dashed #C8E6C9}
+.detail-body .exam{background:#F3E5F5;border-left:3px solid #7B1FA2;padding:12px 16px;margin-bottom:12px;border-radius:0 8px 8px 0}
+.detail-body .exam-q{font-weight:600;color:#7B1FA2;margin-bottom:4px}
+.detail-body .exam-a{color:#666}
+
+/* ====== 隐藏答案模式 ====== */
+.hide-toggle{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#888;cursor:pointer;user-select:none;white-space:nowrap;padding:4px 10px 4px 12px;border-radius:14px;border:1px solid #C8E6C9;background:#f1f8e9;transition:all .2s;flex-shrink:0}
+.hide-toggle:hover{border-color:#2E7D32;color:#2E7D32}
+.hide-toggle.on{background:#2E7D32;color:#fff;border-color:#2E7D32}
+.hide-toggle .switch{width:28px;height:14px;border-radius:7px;background:#ddd;position:relative;transition:all .3s;flex-shrink:0}
+.hide-toggle .switch::after{content:'';position:absolute;top:1px;left:2px;width:12px;height:12px;border-radius:50%;background:#fff;transition:all .3s;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.hide-toggle.on .switch{background:#A5D6A7}
+.hide-toggle.on .switch::after{left:14px}
+
+/* 隐藏模式下红色关键词变空白 */
+.kw.hidden{color:#ccc!important;border-bottom:2px dashed #ccc!important;cursor:pointer!important}
+
+/* Modal for keyword detail */
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.4);z-index:100;justify-content:center;align-items:center;padding:20px}
+.modal-overlay.show{display:flex}
+.modal{background:#fff;border-radius:14px;max-width:700px;width:100%;max-height:80vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.15)}
+.modal-header{position:sticky;top:0;background:#fff;border-bottom:1px solid #C8E6C9;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;z-index:10}
+.modal-header h2{font-size:18px;color:#2E7D32}
+.modal-close{width:28px;height:28px;border-radius:50%;border:none;background:#E8F5E9;color:#888;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{background:#C8E6C9}
+.modal-body{padding:20px}
+.modal-section{margin-bottom:20px}
+.modal-section h3{font-size:14px;color:#2E7D32;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.modal-section h3 .tag{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:400;color:#fff}
+.modal-section h3 .tag.textbook{background:#2E7D32}
+.modal-section h3 .tag.exam{background:#7B1FA2}
+.modal-section p{font-size:14px;line-height:1.9;color:#444}
+.modal-body .tb{margin:0}
+.modal-body p{color:#444;font-size:14px;line-height:1.9}
+.modal-body .hl-term{color:#2E7D32}
+.modal-body .hl-year{color:#6A1B9A}
+.modal-body .hl-person{color:#1565C0}
+.modal-body .hl-process{color:#E65100}
+
+/* Loading/Skeleton */
+.loading{text-align:center;padding:40px;color:#999}
+
+/* Responsive */
+@media(max-width:600px){
+  header h1{font-size:16px}
+  .kp-text{font-size:13px}
+  .detail-body{font-size:12px}
+}
+
+/* Footer */
+footer{padding:20px;text-align:center;font-size:12px;color:#aaa}
+</style>
+</head>
+<body>
+
+<header>
+<div class="container">
+  <h1><span class="icon">🌱</span> 七年级下册·生物知识点</h1>
+  <div class="period-nav" id="periodNav"></div>
+  <div class="hide-toggle" id="hideToggle" onclick="toggleHideMode()"><span class="switch"></span><span>隐藏答案</span></div>
+</div>
+</header>
+
+<div class="container" id="app"></div>
+
+<!-- Keyword Detail Modal -->
+<div class="modal-overlay" id="modalOverlay">
+<div class="modal">
+  <div class="modal-header">
+    <h2 id="modalTitle">关键词</h2>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+  </div>
+  <div class="modal-body" id="modalBody"></div>
+</div>
+</div>
+
+<footer>
+  <p>基于人民教育出版社七年级下册生物学教材</p>
+</footer>
+
+<script>
+// ==================== DATA ====================
+const KNOWLEDGE = [
+  {
+    period: `植物的生活`,
+    id: `zhiwu`,
+    chapters: [
+      {
+        id: `kaodian-19`,
+        title: `考点19 \u00b7 种子萌发`,
+        points: [
+          { num: 1, text: `种子萌发需要适宜的环境条件：适宜的\u201c温度\u201d、一定的\u201c水分\u201d和充足的\u201c空气\u201d。三者缺一不可。`,
+            kws: {
+              [`温度`]: { tb: `温度是种子萌发的必需条件之一。种子萌发需要适宜的温度范围，不同植物的种子萌发所需温度不同。一般来说，多数种子在15\u2103-30\u2103范围内可以正常萌发。温度过低，酶的活性受到抑制，种子内的生理生化反应无法正常进行；温度过高，会导致种子内的蛋白质变性，伤害胚。例如，早春播种时常覆盖地膜，就是为了提高土壤温度，为种子萌发创造适宜的温度条件。` },
+              [`水分`]: { tb: `水分是种子萌发的关键条件。种子萌发时首先需要吸收充足的水分。吸水后，种皮变软，胚和胚乳吸水膨胀，有利于胚根突破种皮。同时，水分使干燥的种子细胞内酶的活性恢复，分解储存的营养物质（淀粉、蛋白质、脂肪），为胚的生长提供能量和原料。但水分过多（如土壤积水）却不利于种子萌发，因为水分过多会导致氧气缺乏，种子无法进行正常的呼吸作用。` },
+              [`空气`]: { tb: `充足的空气（氧气）是种子萌发的必要条件。种子萌发过程中，胚进行旺盛的呼吸作用，需要消耗大量氧气来分解有机物，释放能量供胚生长。如果氧气不足（如种子被水淹没或土壤板结），种子的呼吸作用受到抑制，萌发过程将受阻甚至停止。因此播种前需要松土，为种子萌发提供充足的氧气。` }
+            }
+          },
+          { num: 2, text: `种子萌发的自身条件：胚必须完整、有活力，且不处于\u201c休眠期\u201d；种子储存足够的\u201c营养物质\u201d供胚发育利用。`,
+            kws: {
+              [`胚`]: { tb: `胚是种子中最重要的结构，由受精卵发育而成，是新植物体的幼体。胚由胚芽（发育成茎和叶）、胚轴（发育成连接茎和根的部分）、胚根（发育成根）和子叶（储存或转运营养）四部分构成。种子萌发的先决条件是胚必须完整且具有活力。如果胚被破坏或死亡，种子就无法萌发。此外，种子必须经过休眠期或解除休眠才能萌发。` },
+              [`休眠期`]: { tb: `休眠期是指成熟种子在适宜的环境条件下仍然不能萌发的时期。种子休眠是植物长期进化形成的适应性策略，使种子能度过不良环境（如严寒、干旱），等到条件适宜时再萌发。不同植物的种子休眠期长短不同：有的种子休眠期很短（如水稻），有的很长（如有些野生植物种子可休眠数十年）。农业生产中常用低温层积、机械磨损种皮、激素处理等方法打破休眠期，促进种子萌发。` }
+            }
+          },
+          { num: 3, text: `种子萌发过程：吸水膨胀\u2192转运营养物质\u2192胚根突破种皮发育成根\u2192\u201c胚轴\u201d伸长\u2192\u201c胚芽\u201d发育成茎和叶。子叶出土后逐渐枯萎。`,
+            kws: {
+              [`胚根`]: { tb: `胚根是种子萌发时最先突破种皮的结构，向下生长发育成植物的主根。胚根突破种皮是种子萌发的关键标志之一。胚根先长出来可以迅速固定幼苗，并从土壤中吸收水分和无机盐。胚根发育成的根系是植物吸收养分的主要器官。在双子叶植物中，胚根发育成直根系；在单子叶植物中，发育成须根系。` },
+              [`胚轴`]: { tb: `胚轴是连接胚芽和胚根的重要结构。在种子萌发过程中，胚轴伸长，将胚芽推出土面。在子叶出土的植物（如菜豆）中，胚轴伸长明显，将子叶带出土面；在子叶不出土的植物（如豌豆）中，胚轴不伸长或伸长不明显，子叶留在土中。胚轴后期发育成为根茎连接部分。` },
+              [`胚芽`]: { tb: `胚芽是胚的顶端部分，将来发育成植物的茎和叶。种子萌发时，胚芽向上生长，突破土壤后暴露在阳光下，逐渐形成茎和真叶。真叶展开后开始进行光合作用，制造有机物，使幼苗从异养（依赖种子储存营养）转变为自养（通过光合作用自己制造营养）。` }
+            }
+          }
+        ]
+      },
+      {
+        id: `kaodian-20`,
+        title: `考点20 \u00b7 植株生长`,
+        points: [
+          { num: 1, text: `根尖是根生长最快的部位，从顶端向上依次分为\u201c根冠\u201d、\u201c分生区\u201d、\u201c伸长区\u201d和\u201c成熟区\u201d四部分。`,
+            kws: {
+              [`根冠`]: { tb: `根冠位于根尖的顶端，由一层排列疏松的薄壁细胞组成，像一顶帽子保护着幼嫩的分生区。根冠细胞的外壁有黏液化，可以减小根尖在土壤中生长时的摩擦力，帮助根尖顺利向土壤深层延伸。根冠细胞不断磨损脱落，又不断由分生区产生新的细胞补充，保持根冠的完整性。` },
+              [`分生区`]: { tb: `分生区位于根冠的内方，是根尖中细胞分裂最旺盛的区域。分生区细胞排列紧密，细胞壁薄，细胞核大，细胞质浓，具有很强的分裂能力。分生区细胞不断分裂产生新细胞，一部分补充根冠，另一部分向上分化为伸长区。分生区是根尖生长点所在，根的伸长主要依赖分生区的细胞分裂和伸长区的细胞伸长。` },
+              [`伸长区`]: { tb: `伸长区位于分生区的上方，由分生区分裂产生的细胞伸长、分化而成。伸长区细胞的特点是停止分裂但迅速纵向伸长，是根尖伸长最快的部位。伸长的长度可达到根尖总伸长量的90%以上。伸长区的细胞开始分化，逐渐形成表皮、皮层和中柱等结构，向上过渡为成熟区。` },
+              [`成熟区`]: { tb: `成熟区位于伸长区的上方，是根尖吸收水分和无机盐的主要部位。成熟区的表皮细胞向外突出形成\u201c根毛\u201d，大大增加了吸收面积。成熟区内部出现导管，将吸收的水分和无机盐向上运输到茎叶。成熟区的根毛寿命很短（几天到几周），随着根尖的生长，新的根毛不断形成，老根毛不断脱落。移栽植物时损伤根毛会影响水分吸收，因此常带土移栽以保护根尖和根毛。` }
+            }
+          },
+          { num: 2, text: `叶芽发育为枝条：\u201c芽轴\u201d发育成茎，\u201c幼叶\u201d发育成叶，\u201c芽原基\u201d发育成侧芽。`,
+            kws: {
+              [`芽轴`]: { tb: `芽轴是叶芽的中心轴，位于幼叶和芽原基的内侧。芽轴发育成植物的茎，不断伸长使枝条长高。芽轴的顶端有生长点（分生组织），不断分裂产生新细胞，使茎持续伸长。` },
+              [`幼叶`]: { tb: `幼叶位于芽轴周围，包裹着芽轴和生长点。幼叶将来发育成植物的成熟叶片，是进行光合作用的主要器官。随着芽轴伸长，幼叶逐渐展开、长大，形成绿色的功能叶。` },
+              [`芽原基`]: { tb: `芽原基位于幼叶的叶腋处，是将来发育成侧芽的结构。侧芽可以发育成侧枝，使植物产生分枝，增加光合面积和开花数量。顶芽发育旺盛时会抑制侧芽生长，这种现象称为\u201c顶端优势\u201d（如松树、杉树）。摘除顶芽可以解除顶端优势，促进侧芽发育（如果树修剪、棉花打顶）。` }
+            }
+          },
+          { num: 3, text: `植物的生长需要多种无机盐，其中需要量最多的是含\u201c氮\u201d、含\u201c磷\u201d和含\u201c钾\u201d的无机盐。\u201c施肥\u201d为植物生长提供无机盐，但过量施肥会导致\u201c烧苗\u201d。`,
+            kws: {
+              [`氮`]: { tb: `含氮的无机盐（如硝酸铵、尿素）促进植物枝叶生长。氮是叶绿素、蛋白质和核酸的重要组成元素。缺氮时，植物叶色发黄、植株矮小、生长缓慢。施氮过多会导致枝叶徒长、抗病力下降。` },
+              [`磷`]: { tb: `含磷的无机盐（如过磷酸钙）促进植物开花结果。磷是细胞核（DNA、RNA）和细胞膜（磷脂）的重要成分，参与能量代谢（ATP）。缺磷时，植物叶片暗绿或紫红、开花推迟、果实发育不良。磷还能促进根系生长，提高抗寒性。` },
+              [`钾`]: { tb: `含钾的无机盐（如氯化钾、硫酸钾）促进茎秆粗壮健壮。钾能激活多种酶的活性，促进光合作用和淀粉合成，增强植物的抗倒伏、抗病虫害能力。缺钾时，植物茎秆软弱易倒伏，叶片边缘焦枯发黄。` },
+              [`烧苗`]: { tb: `\u201c烧苗\u201d是指施肥过多导致植物萎蔫甚至死亡的现象。施肥过多使土壤溶液浓度过高（大于根细胞液浓度），根细胞不但不能从土壤中吸收水分，反而会失去水分（渗透失水），导致植物萎蔫。因此施肥要注意\u201c薄肥勤施\u201d，施肥后要适量浇水稀释土壤溶液浓度。` }
+            }
+          }
+        ]
+      },
+      {
+        id: `kaodian-21`,
+        title: `考点21 \u00b7 开花结果`,
+        points: [
+          { num: 1, text: `一朵花由\u201c花柄\u201d、\u201c花托\u201d、\u201c花萼\u201d、\u201c花冠\u201d、\u201c雄蕊\u201d和\u201c雌蕊\u201d组成。\u201c雄蕊\u201d和\u201c雌蕊\u201d是花最重要的结构。`,
+            kws: {
+              [`雄蕊`]: { tb: `雄蕊是花的雄性生殖器官，由花药和花丝组成。花药着生在花丝顶端，内含花粉囊，产生\u201c花粉\u201d（精子）。花丝细长，支持花药并输送养分。一朵花中雄蕊的数量因植物种类而异（如百合有6枚雄蕊，一朵菊花有数百枚雄蕊）。雄蕊成熟后，花药开裂释放花粉。` },
+              [`雌蕊`]: { tb: `雌蕊是花的雌性生殖器官，由柱头、花柱和子房三部分组成。\u201c柱头\u201d位于雌蕊顶端，接受花粉；\u201c花柱\u201d连接柱头和子房，是花粉管伸长的通道；\u201c子房\u201d是雌蕊膨大的基部，内含胚珠。胚珠中有卵细胞。受精后子房发育成果实，胚珠发育成种子。` }
+            }
+          },
+          { num: 2, text: `花成熟后，花粉从\u201c花药\u201d中散发出来落到\u201c柱头\u201d上，称为\u201c传粉\u201d。\u201c受精\u201d是精子与卵细胞结合形成\u201c受精卵\u201d的过程。花粉管中的两个精子分别与卵细胞和中央细胞结合，称为\u201c双受精\u201d——这是\u201c被子植物\u201d特有的受精方式。`,
+            kws: {
+              [`传粉`]: { tb: `传粉是指花粉从花药落到雌蕊柱头上的过程。传粉方式分为\u201c自花传粉\u201d和\u201c异花传粉\u201d两种：自花传粉是同一朵花的花粉落到自己的柱头上，如豌豆、小麦等；异花传粉是一朵花的花粉落到另一朵花的柱头上，需要依靠\u201c风\u201d或\u201c昆虫\u201d等媒介。风媒花（如水稻、杨树）的花粉多而轻、柱头羽毛状；虫媒花（如桃、月季）有鲜艳的花瓣和芳香的气味。农业生产中常用\u201c人工辅助授粉\u201d来提高传粉效率。` },
+              [`受精`]: { tb: `被子植物的受精过程：花粉落到柱头上后受到黏液的刺激萌发形成\u201c花粉管\u201d，花粉管穿过花柱进入子房，到达胚珠。花粉管中有两个\u201c精子\u201d。花粉管顶端破裂后，一个精子与卵细胞结合形成\u201c受精卵\u201d（发育成胚），另一个精子与两个极核结合形成\u201c受精极核\u201d（发育成胚乳）。这种两个精子分别参与受精的过程称为\u201c双受精\u201d，是被子植物（绿色开花植物）特有的受精方式。` }
+            }
+          },
+          { num: 3, text: `受精完成后，\u201c子房\u201d发育成果实，\u201c胚珠\u201d发育成种子，\u201c子房壁\u201d发育成果皮，\u201c受精卵\u201d发育成胚。`,
+            kws: {
+              [`子房`]: { tb: `子房是雌蕊基部膨大的部分，内含胚珠。受精后子房迅速发育成果实。果实的结构包括果皮和种子两部分。果皮由\u201c子房壁\u201d发育而成，具有保护种子和帮助种子传播的功能（如风传播、动物传播、弹射传播等）。` },
+              [`胚珠`]: { tb: `胚珠是子房内的结构，受精后发育成种子。胚珠中的受精卵发育成胚（新植物体的幼体），受精极核发育成胚乳（储存营养），珠被发育成种皮。种子中的子叶或胚乳为种子萌发提供营养。一个子房中的胚珠数量决定了果实中种子的数量：如桃只有一个胚珠，所以一个桃只有一个种子（桃核）；西瓜有多个胚珠，所以一个西瓜有很多种子。` },
+              [`果实`]: { tb: `果实由果皮和种子两部分构成。根据果皮的特点，果实可分为\u201c肉果\u201d（果皮肥厚多肉，如桃、苹果、葡萄）和\u201c干果\u201d（果皮干燥，如大豆、花生、向日葵）。果实在种子传播中起着重要作用：肉果被动物取食后，种子随粪便传播到远处；干果可通过风力、水流或弹射等方式传播。` }
+            }
+          }
+        ]
+      },
+      {
+        id: `kaodian-22`,
+        title: `考点22 \u00b7 叶片结构`,
+        points: [
+          { num: 1, text: `叶片由\u201c表皮\u201d、\u201c叶肉\u201d和\u201c叶脉\u201d三部分组成。\u201c表皮\u201d在叶片最外层（上表皮、下表皮），起保护作用；\u201c叶肉\u201d含大量\u201c叶绿体\u201d，是光合作用的主要场所；\u201c叶脉\u201d有\u201c输导\u201d和支持作用。`,
+            kws: {
+              [`表皮`]: { tb: `表皮是叶片最外面的一层细胞，分为上表皮和下表皮。表皮细胞排列紧密，无色透明，细胞壁外有\u201c角质层\u201d（蜡质层），能防止水分蒸发和病菌侵入。上表皮的角质层一般比下表皮厚。气孔分布于表皮上，下表皮的气孔通常比上表皮多。` },
+              [`叶肉`]: { tb: `叶肉是叶片中主要的薄壁组织，含大量叶绿体，是光合作用的主要场所。叶肉分为\u201c栅栏组织\u201d和\u201c海绵组织\u201d。\u201c栅栏组织\u201d靠近上表皮，细胞排列整齐呈柱状，含叶绿体多，光合能力强；\u201c海绵组织\u201d靠近下表皮，细胞形状不规则，排列疏松，含叶绿体较少，细胞间有发达的气腔，有利于气体交换。` },
+              [`叶脉`]: { tb: `叶脉是叶中的\u201c血管\u201d，内有\u201c导管\u201d和\u201c筛管\u201d。\u201c导管\u201d由下而上运输水分和无机盐；\u201c筛管\u201d由上而下运输光合作用制造的有机物。叶脉还像骨骼一样支撑叶片，使叶片保持伸展状态，有利于接受阳光。叶脉的排列方式分为网状脉（双子叶植物，如苹果）和平行脉（单子叶植物，如玉米）。` }
+            }
+          },
+          { num: 2, text: `\u201c气孔\u201d是叶片与外界进行气体交换的\u201c门户\u201d，由一对半月形的\u201c保卫细胞\u201d围成。当保卫细胞吸水膨胀时气孔张开，失水收缩时气孔闭合。`,
+            kws: {
+              [`气孔`]: { tb: `气孔是植物体蒸腾失水的\u201c门户\u201d，也是气体交换的\u201c窗口\u201d。气孔由两个半月形的保卫细胞围成。气孔通常分布在叶片下表皮（下表皮气孔多，上表皮少或没有）。气孔的开闭受保卫细胞控制：保卫细胞吸水膨胀，气孔张开（白天光照时）；保卫细胞失水收缩，气孔闭合（夜间或干旱时）。气孔的开闭调节直接影响光合作用（CO₂进入）、呼吸作用（O₂/CO₂交换）和蒸腾作用（水分散失）的强度。` },
+              [`保卫细胞`]: { tb: `保卫细胞是构成气孔的半月形细胞，是气孔开闭的调控者。保卫细胞区别于普通表皮细胞的特点：含有\u201c叶绿体\u201d（能进行光合作用），细胞壁厚薄不均匀（靠近气孔一侧的壁较厚，远离气孔一侧的壁较薄）。当保卫细胞因光合作用产生糖分而吸水膨胀时，较薄的壁向外凸出，较厚的壁向内凹入，气孔张开；失水时，保卫细胞体积缩小，气孔闭合。` }
+            }
+          }
+        ]
+      },
+      {
+        id: `kaodian-23`,
+        title: `考点23 \u00b7 蒸腾作用`,
+        points: [
+          { num: 1, text: `\u201c蒸腾作用\u201d是水分从植物体表面（主要是叶片\u201c气孔\u201d）以水蒸气形式散失到大气中的过程。蒸腾作用能拉动水分和无机盐在植物体内的运输，还能降低叶片温度。`,
+            kws: {
+              [`蒸腾作用`]: { tb: `蒸腾作用是植物体通过气孔将水分以水蒸气形式散失的过程。植物吸收的水分中，约95%-99%通过蒸腾作用散失，只有1%-5%用于光合作用等生理活动。蒸腾作用的三个重要生理意义：一、\u201c蒸腾拉力\u201d是植物吸收和运输水分的主要动力（如同吸水水泵）；二、溶解在水分中的无机盐随水分的运输而到达植物体各部分；三、水分蒸发带走热量，降低叶片温度，防止叶片被灼伤。影响蒸腾作用强度的因素：光照（增强）、温度（升高增强）、湿度（增大减弱）、风速（增大增强）。` },
+              [`气孔`]: { tb: `气孔是蒸腾作用的主要通道，约90%以上的水蒸气通过气孔散失（其余通过角质层蒸发）。气孔的开闭直接调控蒸腾作用的强度。植物在干旱缺水时会主动关闭气孔以减少失水，但气孔关闭也阻断了CO₂进入叶片，导致光合作用减弱。这是一个\u201c保水\u201d与\u201c光合\u201d的权衡。` }
+            }
+          },
+          { num: 2, text: `移栽植物时，为提高成活率需采取措施降低蒸腾作用：去掉部分\u201c枝叶\u201d、在\u201c阴天\u201d或\u201c傍晚\u201d移栽、移栽后适当\u201c遮阴\u201d；移栽时要尽量带\u201c土坨\u201d以保护根尖和根毛。`,
+            kws: {
+              [`枝叶`]: { tb: `移栽植物时去掉部分枝叶是为了减少蒸腾作用。叶片是蒸腾作用的主要器官，去掉部分枝叶可以降低水分蒸发速度。通常在移栽时剪去部分老叶和嫩叶，保留少量功能叶进行光合作用，可有效提高移栽成活率。` },
+              [`阴天`]: { tb: `阴天或傍晚移栽利用了这些时段光照弱、温度低的特点，此时气孔开放程度小，蒸腾作用减弱，移栽后植物的水分散失少，有利于根系恢复吸收功能，提高成活率。` },
+              [`土坨`]: { tb: `移栽植物时带\u201c土坨\u201d是指将植物连根带土一起挖出移栽。土坨可以保护根尖（特别是脆弱的分生区和伸长区）和\u201c根毛\u201d，减少根系损伤。根毛是吸收水分和无机盐的主要结构，受损后吸水能力下降，植物容易出现萎蔫。带土移栽还能保留根系周围的微生物群落，帮助植物更快适应新环境。` }
+            }
+          }
+        ]
+      },
+      {
+        id: `kaodian-24`,
+        title: `考点24 \u00b7 绿叶在光下制造有机物`,
+        points: [
+          { num: 1, text: `实验步骤：\u201c暗处理\u201d一昼夜\u2192部分\u201c遮光\u201d\u2192\u201c光照\u201d3-4小时\u2192\u201c酒精脱色\u201d\u2192清水\u201c漂洗\u201d\u2192滴加\u201c碘液\u201d\u2192观察颜色变化。`,
+            kws: {
+              [`暗处理`]: { tb: `暗处理是指将实验植物放在黑暗环境中一昼夜（约24小时）。目的：消耗掉叶片中原有储存的淀粉，避免对实验结果产生干扰。暗处理期间叶片无法进行光合作用，但呼吸作用继续进行，将储存在叶片中的淀粉逐步分解、运走。如果不进行暗处理，叶片中原有的淀粉遇碘也会变蓝，无法证明淀粉是新产生的。` },
+              [`遮光`]: { tb: `遮光是用不透光的纸片（如锡箔纸、黑纸片）将叶片的一部分上下两面遮盖起来。目的：形成\u201c有光\u201d和\u201c无光\u201d的对照，证明光是光合作用的必要条件。遮光部位由于得不到光照，不能进行光合作用；未遮光部位接受光照，能进行光合作用产生淀粉。` },
+              [`酒精脱色`]: { tb: `酒精脱色是将叶片放入盛有酒精的小烧杯中，隔水加热使叶片褪色。目的：溶解叶片中的叶绿素，使叶片变为黄白色，便于观察碘液染色后的颜色变化。注意要用\u201c隔水加热\u201d（小烧杯放在大烧杯的热水中），因为酒精易燃，直接加热有危险。脱色后叶片变黄白，绿色的叶绿素溶解到酒精中，酒精变为绿色。` },
+              [`碘液`]: { tb: `碘液（碘-碘化钾溶液）用于检验\u201c淀粉\u201d的存在。淀粉遇碘变蓝是淀粉的特征性反应。实验原理：叶片见光部分进行光合作用产生淀粉，滴加碘液后变蓝色；遮光部分没有进行光合作用，没有产生淀粉，滴加碘液后不变蓝（仍为黄白色）。` }
+            }
+          },
+          { num: 2, text: `实验结论：\u201c光\u201d是光合作用的必要条件；\u201c淀粉\u201d是光合作用的主要产物之一。绿叶在光下制造的有机物主要是\u201c淀粉\u201d（需进一步转化成其他有机物被植物利用）。`,
+            kws: {
+              [`光`]: { tb: `光是光合作用的必需条件。在光下，叶绿体才能利用光能将二氧化碳和水转化为有机物。光为光合作用提供能量来源。实验证明，没有光，叶绿体无法进行光合作用，也就不能产生淀粉。因此光照时间、光照强度都会影响光合作用的效率。` },
+              [`淀粉`]: { tb: `淀粉是光合作用的主要初始产物，是一种储能物质。绿叶在光下将二氧化碳和水合成有机物，最初形成葡萄糖，葡萄糖很快转化为淀粉暂时储存在叶片中。夜间，淀粉被分解为糖类运输到植物其他部位（如果实、种子、根、茎等），为植物生长发育提供能量或转变为其他有机物。我们吃的粮食（米、面）富含淀粉，正是因为光合作用将太阳能转化为化学能储存在淀粉中。` }
+            }
+          }
+        ]
+      },
+      {
+        id: `kaodian-25`,
+        title: `考点25 \u00b7 光合作用`,
+        points: [
+          { num: 1, text: `光合作用是指绿色植物通过\u201c叶绿体\u201d，利用\u201c光能\u201d，将\u201c二氧化碳\u201d和\u201c水\u201d转化为储存能量的\u201c有机物\u201d，并释放\u201c氧气\u201d的过程。`,
+            kws: {
+              [`叶绿体`]: { tb: `叶绿体是光合作用的场所，是植物细胞中特有的能量转换器。叶绿体含有\u201c叶绿素\u201d（呈绿色），叶绿素能吸收光能，将光能转化为化学能。在叶绿体内，光合作用分两个阶段进行：光反应（在类囊体薄膜上，需要光）产生ATP和NADPH；暗反应（在基质中，不需要光直接参与）将CO₂固定并还原为糖类。叶绿体主要分布在叶肉细胞和幼嫩茎的皮层细胞中。` },
+              [`二氧化碳`]: { tb: `二氧化碳（CO₂）是光合作用的主要原料之一。CO₂通过气孔进入叶片，扩散到叶肉细胞中的叶绿体。空气中CO₂浓度约为0.03%（300-400ppm），这个浓度远低于光合作用的饱和需求。适当提高CO₂浓度（如温室中增施CO₂气肥或施用农家肥）可以提高光合作用效率。CO₂浓度过高也会抑制光合作用。` },
+              [`氧气`]: { tb: `氧气（O₂）是光合作用产生的副产物。光合作用释放的氧气来自水分子（H₂O）的光解。绿色植物是大气中氧气的\u201c制造者\u201d，光合作用释放的氧气维持了大气中O₂和CO₂的平衡。植物在白天光合作用强时，产生的氧气多于呼吸作用消耗的氧气；夜间只进行呼吸作用，消耗氧气释放二氧化碳。` }
+            }
+          },
+          { num: 2, text: `光合作用的表达式：\u201c二氧化碳+水\u201d\xa0\u201c光能\u201d叶绿体\u201c有机物（储存能量）+氧气\u201d。光合作用的产物是\u201c有机物\u201d和\u201c氧气\u201d，原料是\u201c二氧化碳\u201d和\u201c水\u201d，条件是\u201c光\u201d和\u201c叶绿体\u201d。`,
+            kws: {
+              [`光合作用表达式`]: { tb: `光合作用的化学方程式：6CO₂ + 6H₂O \u2192 C₆H₁₂O₆ + 6O₂（条件：光能、叶绿体）。文字表达式：二氧化碳 + 水 \u2192 有机物（淀粉）+ 氧气。光合作用将\u201c光能\u201d转化为\u201c化学能\u201d储存在有机物中，是生物圈中能量流动的基础。地球上的几乎所有生命都直接或间接依赖光合作用提供的有机物和能量。` }
+            }
+          },
+          { num: 3, text: `影响光合作用的因素：\u201c光照强度\u201d、\u201c二氧化碳浓度\u201d、\u201c温度\u201d、\u201c水分\u201d等。在农业上通过合理密植、间作套种、大棚增施CO₂等措施提高光合作用效率。`,
+            kws: {
+              [`光照强度`]: { tb: `光照强度是影响光合作用速率的最重要因素之一。在一定范围内，光合速率随光照强度增加而增加；当达到\u201c光饱和点\u201d后，继续增加光照强度光合速率不再增加。光照过强时，植物会关闭气孔防止水分过度散失（气孔关闭也阻断了CO₂进入），反而导致\u201c光合午休\u201d现象。` },
+              [`二氧化碳浓度`]: { tb: `CO₂浓度是影响光合作用的关键环境因子。在一定范围内，光合速率随CO₂浓度升高而加快。大气中CO₂浓度（约0.03%）远低于光合作用的\u201cCO₂饱和点\u201d，因此增加CO₂浓度通常能提高光合效率。温室大棚常通过增施CO₂气肥（燃烧天然气、施用碳酸氢铵）来提高产量。` },
+              [`合理密植`]: { tb: `合理密植是农业生产中提高光合作用效率的重要措施。种植密度过大，叶片相互遮阴，下层叶片光照不足，光合效率降低；种植密度过小，光能和土地资源浪费。合理的种植密度使植株之间既不拥挤也不稀疏，群体能最大限度地利用光能和CO₂，实现最高群体光合产量。` }
+            }
+          }
+        ]
+      },
+      {
+        id: `kaodian-26`,
+        title: `考点26 \u00b7 呼吸作用`,
+        points: [
+          { num: 1, text: `\u201c呼吸作用\u201d是细胞利用\u201c氧气\u201d，将\u201c有机物\u201d分解成\u201c二氧化碳\u201d和\u201c水\u201d，并释放出能量的过程。呼吸作用为生命活动提供\u201c能量\u201d。`,
+            kws: {
+              [`呼吸作用`]: { tb: `呼吸作用是所有生物活细胞最重要的生命活动之一。表达式：有机物（葡萄糖）+ 氧气 \u2192 二氧化碳 + 水 + 能量（ATP）。呼吸作用释放的能量一部分以\u201c热能\u201d形式散失（维持体温），大部分转化为\u201cATP\u201d（三磷酸腺苷）中活跃的化学能，供给细胞进行各种生命活动（如物质运输、肌肉收缩、细胞分裂、主动运输等）。呼吸作用时刻都在进行（不论白天黑夜、有无光照）。` },
+              [`能量`]: { tb: `呼吸作用释放的能量是生物体一切生命活动的动力源泉。能量以ATP的形式储存和利用：植物的生长、开花、结果、根吸收矿质元素等都需要能量；动物的奔跑、呼吸、消化、神经传导等也依赖于呼吸作用提供的能量。实验证明：萌发的种子呼吸作用旺盛，释放大量热能（可用温度计测量）；干燥的种子呼吸作用微弱。` }
+            }
+          },
+          { num: 2, text: `呼吸作用的主要场所是\u201c线粒体\u201d。\u201c有机物\u201d+ \u201c氧气\u201d\u2192\u201c二氧化碳\u201d+ \u201c水\u201d+ \u201c能量\u201d（ATP）。`,
+            kws: {
+              [`线粒体`]: { tb: `线粒体是呼吸作用的主要场所，被称为细胞的\u201c动力工厂\u201d。线粒体具有双层膜结构，内膜向内折叠形成\u201c嵴\u201d，扩大了反应面积。线粒体中含有与呼吸作用有关的酶和少量DNA。呼吸作用在细胞质基质（糖酵解阶段）和线粒体（有氧呼吸第二、三阶段）中分步完成。一个典型的肝细胞中约有1000-2000个线粒体，心肌细胞中线粒体更多（因能量需求大）。植物细胞、动物细胞都含有线粒体。` }
+            }
+          },
+          { num: 3, text: `呼吸作用在生产生活中的应用：\u201c田间松土\u201d促进根系呼吸；\u201c低温储存\u201d水果蔬菜降低呼吸作用；\u201c晾晒粮食\u201d减少水分抑制呼吸；移栽植物后适当遮阴降低呼吸消耗。`,
+            kws: {
+              [`田间松土`]: { tb: `田间松土是为了增加土壤中氧气的含量，促进根系呼吸作用的正常进行。土壤板结时，氧气不足，根细胞被迫进行\u201c无氧呼吸\u201d，产生酒精和少量能量。酒精积累会对根细胞造成毒害，影响水分和养分的吸收。松土还能除去杂草、改善土壤通气性，促进有益微生物的活动。但不能过度松土以免伤害根系。` },
+              [`低温储存`]: { tb: `低温储存的原理：温度越低，酶的活性越弱，呼吸作用越慢，有机物的消耗越少。当温度接近0\u2103时，呼吸作用降到很低的水平。因此，水果、蔬菜和粮食在低温下可以长期保存。但需要注意的是，低温不能过低（不能结冰），否则细胞内水分结冰会破坏细胞结构。此外，降低氧气浓度（气调储藏）也能抑制呼吸作用。` },
+              [`晾晒粮食`]: { tb: `晾晒粮食是通过减少种子中的含水量来抑制呼吸作用。含水量越低，种子内酶的活性越弱，呼吸作用越微弱。晒干的粮食呼吸作用几乎停止，可以长期保存而不发霉变质。反之，如果粮食受潮，含水量增加，呼吸作用急剧增强，有机物大量消耗，同时释放的热量和水分又促进霉菌滋生，导致粮食腐烂变质。` }
+            }
+          }
+        ]
+      },
+      {
+        id: `kaodian-27`,
+        title: `考点27 \u00b7 光合呼吸曲线`,
+        points: [
+          { num: 1, text: `\u201c光照强度\u201d与光合作用速率的关系曲线：在一定范围内，光合速率随光照强度增加而增加；当光照达到\u201c光饱和点\u201d后，光合速率不再增加。\u201c光补偿点\u201d是光合速率等于呼吸速率时的光照强度。`,
+            kws: {
+              [`光补偿点`]: { tb: `光补偿点是指光合作用吸收的CO₂量等于呼吸作用释放的CO₂量时的光照强度。此时，光合作用制造的有机物恰好等于呼吸作用消耗的有机物，净光合速率为零。在光补偿点以下，呼吸作用消耗量大于光合作用产量，植物无法积累有机物；在光补偿点以上，净光合速率为正，植物可以积累有机物。不同植物的光补偿点不同：阳生植物光补偿点较高（约1000-2000 lux），阴生植物光补偿点较低（约200-500 lux）。` },
+              [`光饱和点`]: { tb: `光饱和点是指继续增加光照强度时光合速率不再增加时的光照强度。达到光饱和点后，限制光合作用的不再是光照，而是其他因素（如CO₂浓度、温度、叶绿体数量等）。阳生植物的光饱和点较高（如玉米全光照下达到），阴生植物较低。在农业上，通过合理密植使植株群体充分利用光能，群体光饱和点远高于单叶光饱和点。` }
+            }
+          },
+          { num: 2, text: `一昼夜内植物\u201cCO₂吸收量\u201d变化曲线：白天光合\u201c吸收\u201dCO₂ > 呼吸\u201c释放\u201dCO₂，表现为从外界吸收CO₂；夜间只进行呼吸作用，释放CO₂。中午前后可能因气孔关闭出现\u201c光合午休\u201d现象。`,
+            kws: {
+              [`光合午休`]: { tb: `\u201c光合午休\u201d是指夏季晴天中午时分（11:00-14:00）光合作用速率暂时下降的现象。原因：中午光照过强、温度过高，叶片蒸腾作用过于旺盛，植物为\u201c保水\u201d而部分关闭气孔。气孔关闭虽减少了水分散失，但也阻碍了CO₂进入叶片，导致光合作用\u201c原料\u201d不足，光合速率下降。光合午休在C₃植物（小麦、水稻、大豆）中表现明显；C₄植物（玉米、甘蔗）有CO₂浓缩机制，光合午休不明显。` }
+            }
+          },
+          { num: 3, text: `\u201c净光合速率\u201d= 总光合（实际光合）- 呼吸消耗。一天中有机物的积累量 = 白天净光合总量 - 夜间呼吸消耗量。当净光合速率为正值时，植物才能积累有机物、正常生长。`,
+            kws: {
+              [`净光合速率`]: { tb: `净光合速率是指单位时间内植物从外界吸收的CO₂量（或释放的O₂量），反映了植物有机物的净积累情况。\u201c净光合 = 总光合 - 呼吸消耗\u201d。在农业生产中，我们更关心的是净光合速率，因为它直接关系到作物产量。提高净光合的途径：增强总光合（增施CO₂、延长光照、改善光照质量）和降低呼吸消耗（适当降低夜间温度）。` }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    period: `人体生理与健康`,
+    id: `renti`,
+    chapters: [
+      {
+        id: `kaodian-28`,
+        title: `考点28 \u00b7 人的生殖`,
+        points: [
+          { num: 1, text: `男性生殖系统中，\u201c睾丸\u201d是主要生殖器官，产生\u201c精子\u201d并分泌\u201c雄性激素\u201d。女性生殖系统中，\u201c卵巢\u201d是主要生殖器官，产生\u201c卵细胞\u201d并分泌\u201c雌性激素\u201d。`,
+            kws: {
+              [`睾丸`]: { tb: `睾丸（testis）是男性的主要性器官，位于阴囊内，左右各一个。睾丸的功能：一、产生精子（男性生殖细胞），精子很小形似蝌蚪，有尾能游动，在附睾中成熟储存；二、分泌雄性激素（主要是睾酮），促进男性生殖器官的发育和第二性征的出现（如喉结突出、声调变低、长胡须等）。青春期男性睾丸开始快速发育，标志着性成熟。` },
+              [`卵巢`]: { tb: `卵巢（ovary）是女性的主要性器官，位于盆腔内子宫两侧，左右各一个。卵巢的功能：一、产生卵细胞（女性生殖细胞），卵细胞是人体最大的细胞，含有丰富的细胞质和营养物质，直径约0.1mm；二、分泌雌性激素和孕激素，促进女性生殖器官发育和第二性征出现（如乳房发育、骨盆宽大、皮下脂肪增多等）。卵巢一般每月排出一个成熟的卵细胞（排卵）。` },
+              [`精子`]: { tb: `精子是男性的生殖细胞，由睾丸中的曲细精管产生。精子非常小（长约60\u00b5m），形似蝌蚪，分为头、颈、尾三部分：头部含细胞核，携带遗传物质；尾部能摆动，使精子具有运动能力。正常男性一次射精可排出约2-5亿个精子。精子在女性生殖道内可以存活2-3天，但具有受精能力的时间约为24小时。` },
+              [`卵细胞`]: { tb: `卵细胞（卵子）是女性的生殖细胞，由卵巢产生。卵细胞是人体中最大的细胞，直径约0.1-0.2mm，肉眼勉强可见。卵细胞富含细胞质和营养物质，为早期胚胎发育提供营养支持。女性一生中大约有400-500个卵细胞发育成熟并排出。一般每月只排出一个成熟卵细胞（排卵期通常在下次月经前14天左右）。` }
+            }
+          },
+          { num: 2, text: `\u201c受精\u201d发生在\u201c输卵管\u201d中。受精卵不断分裂形成\u201c胚泡\u201d，植入\u201c子宫\u201d内膜继续发育。从受精卵到胎儿成熟约\u201c38周\u201d（266天）。`,
+            kws: {
+              [`受精`]: { tb: `受精是指精子和卵细胞在输卵管中结合形成受精卵的过程。精子通过阴道、子宫到达输卵管，与卵细胞相遇。众多精子包围一个卵细胞，但通常只有一个精子能进入卵细胞。精子头部进入卵细胞后，细胞核融合在一起，形成一个含有父母双方遗传物质的\u201c受精卵\u201d（合子）。受精卵的染色体数目恢复到23对（46条，其中23条来自父亲，23条来自母亲）。受精是新生命开始的标志。` },
+              [`输卵管`]: { tb: `输卵管是一对细长而弯曲的管道，连接卵巢和子宫。输卵管的功能是输送卵细胞，也是受精的场所。输卵管伞端伸展到卵巢附近，卵细胞排出后由输卵管伞部拾取并送入管腔。受精卵在输卵管中一边向子宫方向移动一边开始细胞分裂。如果输卵管堵塞（如炎症导致），精子和卵细胞无法相遇，会导致不孕。` },
+              [`子宫`]: { tb: `子宫是胚胎和胎儿发育的场所，位于盆腔中央，呈倒置梨形。子宫壁由外向内分为浆膜、肌层和内膜（子宫内膜）。胚泡植入子宫内膜的过程称为\u201c着床\u201d。子宫内膜富含血管，为胚胎提供充足的血液供应。随着胚胎发育，子宫逐渐增大（从妊娠前的拳头大小到足月时的西瓜大小）。分娩时子宫肌层强烈收缩，将胎儿推出体外。` },
+              [`胚胎发育`]: { tb: `胚胎发育从受精卵开始，经历分裂、分化和成熟三个阶段。受精后1周左右形成\u201c胚泡\u201d并着床；2-8周为\u201c胚胎期\u201d，各器官系统基本形成（心脏开始搏动、脑和四肢形成）；9周以后称为\u201c胎儿期\u201d，各器官逐渐成熟、体重增加。孕期约38周（从受精算起）或40周（从末次月经算起）。胎儿在母体内的生活依靠胎盘和脐带获取营养和氧气，排泄废物。` }
+            }
+          },
+          { num: 3, text: `\u201c胎盘\u201d是胎儿与母体进行\u201c物质交换\u201d的器官。\u201c脐带\u201d连接胎儿和胎盘，是运输物质的\u201c桥梁\u201d。胎盘中有丰富的毛细血管，胎儿和母体通过\u201c扩散\u201d作用交换物质。`,
+            kws: {
+              [`胎盘`]: { tb: `胎盘是母体与胎儿进行物质交换的重要器官，由胎儿的绒毛膜和母体的子宫内膜共同构成。胎盘呈圆盘状，直径约15-20cm，厚约2-3cm。胎盘内含有丰富的\u201c毛细血管\u201d，胎儿血液与母体血液在胎盘处\u201c不直接相通\u201d（隔着毛细血管壁），但物质可通过\u201c扩散\u201d作用进行交换：氧气和营养物质（葡萄糖、氨基酸、无机盐、维生素）从母体扩散到胎儿血液中；二氧化碳和代谢废物（尿素等）从胎儿血液扩散到母体血液中，由母体排出。胎盘还分泌多种激素（如人绒毛膜促性腺激素hCG）维持妊娠。` },
+              [`脐带`]: { tb: `脐带是连接胎儿脐部和胎盘的一条索状结构，长约50-60cm，直径约1-2cm。脐带内含两条\u201c脐动脉\u201d（将胎儿产生的废物和二氧化碳运向胎盘）和一条\u201c脐静脉\u201d（将胎盘获得的氧气和营养运给胎儿）。脐带是胎儿生存的\u201c生命线\u201d，如果脐带受压或缠绕，会导致胎儿缺氧。胎儿出生后，脐带被剪断，留下的疤痕就是\u201c肚脐\u201d。` },
+              [`物质交换`]: { tb: `胎儿通过胎盘和脐带与母体进行物质交换：\u201c氧气\u201d和\u201c营养物质\u201d（葡萄糖、氨基酸、无机盐、维生素、水）从母体血液通过胎盘扩散到胎儿血液中；\u201c二氧化碳\u201d和\u201c代谢废物\u201d（尿素、尿酸等）从胎儿血液扩散到母体血液中，由母体的肺和肾脏排出体外。胎盘还有屏障作用，能阻挡一部分病菌和大分子物质（但某些病毒如风疹病毒、HIV可通过胎盘感染胎儿。孕妇用药也要谨慎，因为一些药物也可通过胎盘进入胎儿体内）。` }
+            }
+          }
+        ]
+      }
+    ]
+  }
+];
+
+// ==================== SVG DIAGRAMS ====================
+const SVGS = {
+  seed: `
+<svg viewBox="0 0 240 220" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="120" cy="110" rx="80" ry="70" fill="#F5E6CA" stroke="#8D6E63" stroke-width="2"/>
+  <text x="120" y="18" text-anchor="middle" font-size="13" fill="#2E7D32" font-weight="bold">种子结构示意图</text>
+  <!-- 种皮 -->
+  <text x="200" y="60" font-size="9" fill="#8D6E63">\u276e种皮\u276f</text>
+  <line x1="185" y1="55" x2="160" y2="70" stroke="#8D6E63" stroke-width="0.8" stroke-dasharray="3,2"/>
+  <!-- 胚根 -->
+  <ellipse cx="130" cy="140" rx="16" ry="8" fill="#D7CCC8" stroke="#8D6E63" stroke-width="1"/>
+  <text x="130" y="160" text-anchor="middle" font-size="9" fill="#E65100">胚根</text>
+  <!-- 胚轴 -->
+  <rect x="126" y="108" width="8" height="32" fill="#E8D5B7" stroke="#8D6E63" stroke-width="1"/>
+  <text x="106" y="116" font-size="9" fill="#E65100">胚轴</text>
+  <!-- 胚芽 -->
+  <path d="M120 60 Q130 85 130 108" fill="#A5D6A7" stroke="#4CAF50" stroke-width="1"/>
+  <path d="M140 55 Q135 80 130 108" fill="#A5D6A7" stroke="#4CAF50" stroke-width="1" transform="scale(-1,1) translate(-268,0)"/>
+  <text x="148" y="82" font-size="9" fill="#E65100">胚芽</text>
+  <!-- 子叶 -->
+  <path d="M100 110 Q70 90 65 130 Q70 160 100 140 Z" fill="#C8E6C9" stroke="#4CAF50" stroke-width="1" opacity="0.7"/>
+  <path d="M140 110 Q170 90 175 130 Q170 160 140 140 Z" fill="#C8E6C9" stroke="#4CAF50" stroke-width="1" opacity="0.7"/>
+  <text x="52" y="130" font-size="9" fill="#2E7D32">子叶</text>
+  <text x="172" y="130" font-size="9" fill="#2E7D32">子叶</text>
+  <!-- Label -->
+  <text x="120" y="200" text-anchor="middle" font-size="10" fill="#888">菜豆种子（双子叶）纵剖面</text>
+</svg>`,
+  root: `
+<svg viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg">
+  <text x="150" y="18" text-anchor="middle" font-size="13" fill="#2E7D32" font-weight="bold">根尖结构示意图</text>
+  <!-- 根尖整体轮廓 -->
+  <path d="M135 30 Q130 30 128 50 Q125 80 130 110 Q135 130 132 160 Q130 180 125 200 Q122 215 130 230 Q140 245 150 250 Q160 245 170 230 Q178 215 175 200 Q172 180 170 160 Q167 130 172 110 Q177 80 175 50 Q173 30 168 30 Z" fill="#E8F5E9" stroke="#4CAF50" stroke-width="1.5"/>
+  <!-- 横分隔线示意各区域 -->
+  <line x1="128" y1="50" x2="175" y2="50" stroke="#81C784" stroke-width="0.8" stroke-dasharray="4,3"/>
+  <line x1="130" y1="110" x2="172" y2="110" stroke="#81C784" stroke-width="0.8" stroke-dasharray="4,3"/>
+  <line x1="132" y1="160" x2="170" y2="160" stroke="#81C784" stroke-width="0.8" stroke-dasharray="4,3"/>
+  <line x1="125" y1="200" x2="178" y2="200" stroke="#81C784" stroke-width="0.8" stroke-dasharray="4,3"/>
+  <!-- 根毛 - 成熟区 (110-160) -->
+  <line x1="130" y1="120" x2="100" y2="115" stroke="#A5D6A7" stroke-width="1"/>
+  <line x1="171" y1="125" x2="200" y2="118" stroke="#A5D6A7" stroke-width="1"/>
+  <line x1="129" y1="135" x2="95" y2="130" stroke="#A5D6A7" stroke-width="1"/>
+  <line x1="172" y1="140" x2="205" y2="135" stroke="#A5D6A7" stroke-width="1"/>
+  <line x1="130" y1="150" x2="98" y2="148" stroke="#A5D6A7" stroke-width="1"/>
+  <!-- 区域标签 -->
+  <text x="112" y="72" text-anchor="end" font-size="10" fill="#1B5E20">\u276e成熟区\u276f</text>
+  <line x1="112" y1="72" x2="128" y2="72" stroke="#1B5E20" stroke-width="0.8"/>
+  <text x="112" y="100" text-anchor="end" font-size="10" fill="#1565C0">根毛</text>
+  <text x="112" y="130" text-anchor="end" font-size="10" fill="#1B5E20">\u276e伸长区\u276f</text>
+  <line x1="112" y1="130" x2="130" y2="130" stroke="#1B5E20" stroke-width="0.8"/>
+  <text x="112" y="178" text-anchor="end" font-size="10" fill="#1B5E20">\u276e分生区\u276f</text>
+  <line x1="112" y1="178" x2="132" y2="178" stroke="#1B5E20" stroke-width="0.8"/>
+  <text x="112" y="215" text-anchor="end" font-size="10" fill="#1B5E20">\u276e根冠\u276f</text>
+  <line x1="112" y1="215" x2="125" y2="215" stroke="#1B5E20" stroke-width="0.8"/>
+  <text x="150" y="255" text-anchor="middle" font-size="10" fill="#888">根尖纵切面结构</text>
+</svg>`,
+  flower: `
+<svg viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
+  <text x="160" y="18" text-anchor="middle" font-size="13" fill="#2E7D32" font-weight="bold">花结构示意图</text>
+  <!-- 花柄 -->
+  <rect x="148" y="340" width="24" height="30" fill="#A5D6A7" stroke="#4CAF50" stroke-width="1.5"/>
+  <text x="180" y="360" font-size="9" fill="#666">花柄</text>
+  <!-- 花托 -->
+  <ellipse cx="160" cy="335" rx="60" ry="15" fill="#C8E6C9" stroke="#4CAF50" stroke-width="1.5"/>
+  <text x="222" y="338" font-size="9" fill="#666">花托</text>
+  <!-- 花萼 -->
+  <path d="M110 330 Q100 310 108 300 Q118 295 120 310 Z" fill="#81C784" stroke="#388E3C" stroke-width="1.5"/>
+  <path d="M200 330 Q215 312 220 305 Q210 295 205 310 Z" fill="#81C784" stroke="#388E3C" stroke-width="1.5"/>
+  <path d="M155 340 Q145 320 148 310 Q158 308 158 320 Z" fill="#81C784" stroke="#388E3C" stroke-width="1.5"/>
+  <text x="96" y="315" font-size="9" fill="#666">花萼</text>
+  <!-- 花冠（花瓣） -->
+  <ellipse cx="100" cy="260" rx="30" ry="18" fill="#F8BBD0" stroke="#E91E63" stroke-width="1.2" transform="rotate(-30,100,260)"/>
+  <ellipse cx="220" cy="260" rx="30" ry="18" fill="#F8BBD0" stroke="#E91E63" stroke-width="1.2" transform="rotate(30,220,260)"/>
+  <ellipse cx="80" cy="300" rx="28" ry="16" fill="#F8BBD0" stroke="#E91E63" stroke-width="1.2" transform="rotate(-10,80,300)"/>
+  <ellipse cx="240" cy="300" rx="28" ry="16" fill="#F8BBD0" stroke="#E91E63" stroke-width="1.2" transform="rotate(10,240,300)"/>
+  <ellipse cx="130" cy="235" rx="25" ry="15" fill="#FCE4EC" stroke="#E91E63" stroke-width="1.2" transform="rotate(-40,130,235)"/>
+  <ellipse cx="190" cy="235" rx="25" ry="15" fill="#FCE4EC" stroke="#E91E63" stroke-width="1.2" transform="rotate(40,190,235)"/>
+  <text x="250" y="265" font-size="9" fill="#E91E63">花瓣</text>
+
+  <!-- 雄蕊群 -->
+  <line x1="150" y1="250" x2="145" y2="200" stroke="#FFB74D" stroke-width="2.5"/>
+  <ellipse cx="145" cy="195" rx="8" ry="5" fill="#FFCC80" stroke="#FF9800" stroke-width="1"/>
+  <line x1="170" y1="250" x2="160" y2="195" stroke="#FFB74D" stroke-width="2.5"/>
+  <ellipse cx="160" cy="190" rx="8" ry="5" fill="#FFCC80" stroke="#FF9800" stroke-width="1"/>
+  <line x1="155" y1="250" x2="175" y2="200" stroke="#FFB74D" stroke-width="2.5"/>
+  <ellipse cx="175" cy="195" rx="8" ry="5" fill="#FFCC80" stroke="#FF9800" stroke-width="1"/>
+  <text x="190" y="205" font-size="9" fill="#E65100">花药</text>
+  <text x="190" y="218" font-size="9" fill="#666">花丝</text>
+  <text x="135" y="160" font-size="9" fill="#E65100">\u276e雄蕊\u276f</text>
+
+  <!-- 雌蕊 -->
+  <rect x="155" y="250" width="10" height="50" fill="#A5D6A7" stroke="#4CAF50" stroke-width="1"/>
+  <ellipse cx="160" cy="248" rx="6" ry="4" fill="#C8E6C9" stroke="#4CAF50" stroke-width="1"/>
+  <circle cx="160" cy="242" r="7" fill="#E8F5E9" stroke="#4CAF50" stroke-width="1.5"/>
+  <!-- 子房内部 -->
+  <ellipse cx="160" cy="270" rx="12" ry="10" fill="#FFF9C4" stroke="#FFB300" stroke-width="1"/>
+  <circle cx="160" cy="270" r="3" fill="#FF9800"/>
+  <text x="180" y="238" font-size="9" fill="#666">柱头</text>
+  <text x="180" y="252" font-size="9" fill="#666">花柱</text>
+  <text x="180" y="272" font-size="9" fill="#666">子房（内}含胚珠）</text>
+  <text x="135" y="295" font-size="9" fill="#4CAF50">\u276e雌蕊\u276f</text>
+  <text x="160" y="375" text-anchor="middle" font-size="10" fill="#888">桃花纵剖面结构</text>
+</svg>`,
+  leaf: `
+<svg viewBox="0 0 340 220" xmlns="http://www.w3.org/2000/svg">
+  <text x="170" y="18" text-anchor="middle" font-size="13" fill="#2E7D32" font-weight="bold">叶片横切面结构示意图</text>
+  <!-- 上表皮 -->
+  <rect x="20" y="30" width="300" height="8" fill="#A5D6A7" stroke="#388E3C" stroke-width="1"/>
+  <text x="325" y="37" font-size="9" fill="#388E3C">上表皮</text>
+  <!-- 栅栏组织 -->
+  <rect x="20" y="38" width="300" height="35" fill="#66BB6A" opacity="0.4"/>
+  <g fill="#43A047" opacity="0.6">
+    <rect x="30" y="38" width="16" height="35" rx="2"/>
+    <rect x="56" y="38" width="16" height="35" rx="2"/>
+    <rect x="82" y="38" width="16" height="35" rx="2"/>
+    <rect x="108" y="38" width="16" height="35" rx="2"/>
+    <rect x="134" y="38" width="16" height="35" rx="2"/>
+    <rect x="160" y="38" width="16" height="35" rx="2"/>
+    <rect x="186" y="38" width="16" height="35" rx="2"/>
+    <rect x="212" y="38" width="16" height="35" rx="2"/>
+    <rect x="238" y="38" width="16" height="35" rx="2"/>
+    <rect x="264" y="38" width="16" height="35" rx="2"/>
+    <rect x="290" y="38" width="16" height="35" rx="2"/>
+  </g>
+  <circle cx="38" cy="55" r="4" fill="#4CAF50"/>
+  <circle cx="62" cy="55" r="4" fill="#4CAF50"/>
+  <circle cx="90" cy="55" r="4" fill="#4CAF50"/>
+  <circle cx="140" cy="55" r="4" fill="#4CAF50"/>
+  <circle cx="190" cy="55" r="4" fill="#4CAF50"/>
+  <circle cx="240" cy="55" r="4" fill="#4CAF50"/>
+  <text x="108" y="83" text-anchor="middle" font-size="9" fill="#2E7D32">栅栏组织（含叶绿体多）</text>
+  <!-- 叶脉 -->
+  <ellipse cx="170" cy="110" rx="40" ry="14" fill="#FFCC80" stroke="#FF9800" stroke-width="1.5"/>
+  <circle cx="160" cy="108" r="5" fill="#E65100"/>
+  <circle cx="180" cy="112" r="5" fill="#E65100"/>
+  <text x="210" y="113" font-size="9" fill="#E65100">叶脉（导管+筛管）</text>
+  <!-- 海绵组织 -->
+  <rect x="20" y="125" width="300" height="45" fill="#81C784" opacity="0.25"/>
+  <circle cx="40" cy="140" r="7" fill="none" stroke="#66BB6A" stroke-width="0.8"/>
+  <circle cx="60" cy="145" r="9" fill="none" stroke="#66BB6A" stroke-width="0.8"/>
+  <circle cx="85" cy="138" r="6" fill="none" stroke="#66BB6A" stroke-width="0.8"/>
+  <circle cx="110" cy="148" r="8" fill="none" stroke="#66BB6A" stroke-width="0.8"/>
+  <circle cx="140" cy="140" r="7" fill="none" stroke="#66BB6A" stroke-width="0.8"/>
+  <circle cx="170" cy="150" r="10" fill="none" stroke="#66BB6A" stroke-width="0.8"/>
+  <circle cx="200" cy="138" r="6" fill="none" stroke="#66BB6A" stroke-width="0.8"/>
+  <circle cx="225" cy="148" r="8" fill="none" stroke="#66BB6A" stroke-width="0.8"/>
+  <circle cx="255" cy="140" r="7" fill="none" stroke="#66BB6A" stroke-width="0.8"/>
+  <circle cx="280" cy="145" r="6" fill="none" stroke="#66BB6A" stroke-width="0.8"/>
+  <text x="108" y="178" text-anchor="middle" font-size="9" fill="#2E7D32">海绵组织（含叶绿体少、气腔多）</text>
+  <!-- 下表皮 -->
+  <rect x="20" y="180" width="300" height="8" fill="#A5D6A7" stroke="#388E3C" stroke-width="1"/>
+  <text x="325" y="187" font-size="9" fill="#388E3C">下表皮</text>
+  <!-- 气孔 -->
+  <path d="M100 188 Q105 184 110 188 Q105 192 100 188 Z" fill="none" stroke="#2E7D32" stroke-width="1.5"/>
+  <text x="118" y="192" font-size="8" fill="#2E7D32">气孔</text>
+  <path d="M270 188 Q275 184 280 188 Q275 192 270 188 Z" fill="none" stroke="#2E7D32" stroke-width="1.5"/>
+  <text x="288" y="192" font-size="8" fill="#2E7D32">气孔</text>
+  <text x="170" y="215" text-anchor="middle" font-size="10" fill="#888">叶片横切面结构（叶肉中圆形为叶绿体）</text>
+</svg>`,
+  phoresp: `
+<svg viewBox="0 0 400 170" xmlns="http://www.w3.org/2000/svg">
+  <text x="200" y="18" text-anchor="middle" font-size="13" fill="#2E7D32" font-weight="bold">光合作用与呼吸作用对比</text>
+  <!-- 光合作用框 -->
+  <rect x="15" y="30" width="170" height="120" rx="10" fill="#E8F5E9" stroke="#2E7D32" stroke-width="2"/>
+  <text x="100" y="52" text-anchor="middle" font-size="12" fill="#1B5E20" font-weight="bold">\u2600 光合作用</text>
+  <!-- 箭头 -->
+  <line x1="30" y1="72" x2="170" y2="72" stroke="#2E7D32" stroke-width="1.5"/>
+  <polygon points="165,68 175,72 165,76" fill="#2E7D32"/>
+  <text x="36" y="68" font-size="9" fill="#666">6CO\u2082</text>
+  <text x="36" y="82" font-size="9" fill="#666">6H\u2082O</text>
+  <text x="100" y="72" text-anchor="middle" font-size="8" fill="#E65100">光能/叶绿体</text>
+  <text x="144" y="68" font-size="9" fill="#2E7D32">C\u2086H\u2081\u2082O\u2086</text>
+  <text x="144" y="82" font-size="9" fill="#2E7D32">6O\u2082</text>
+  <text x="100" y="98" text-anchor="middle" font-size="9" fill="#666">储藏能量 \u2192 释放氧气</text>
+  <text x="100" y="115" text-anchor="middle" font-size="8" fill="#888">原料：CO\u2082 + H\u2082O</text>
+  <text x="100" y="128" text-anchor="middle" font-size="8" fill="#888">产物：有机物 + O\u2082</text>
+  <text x="100" y="141" text-anchor="middle" font-size="8" fill="#888">场所：叶绿体 / 条件：光</text>
+
+  <!-- 双向箭头 -->
+  <text x="208" y="85" text-anchor="middle" font-size="18" fill="#888">\u21c4</text>
+  <text x="208" y="102" text-anchor="middle" font-size="8" fill="#999">相互依存</text>
+
+  <!-- 呼吸作用框 -->
+  <rect x="215" y="30" width="170" height="120" rx="10" fill="#FFF3E0" stroke="#E65100" stroke-width="2"/>
+  <text x="300" y="52" text-anchor="middle" font-size="12" fill="#BF360C" font-weight="bold">\u2601 呼吸作用</text>
+  <!-- 箭头 -->
+  <line x1="228" y1="72" x2="370" y2="72" stroke="#E65100" stroke-width="1.5"/>
+  <polygon points="365,68 375,72 365,76" fill="#E65100"/>
+  <text x="234" y="68" font-size="9" fill="#E65100">C\u2086H\u2081\u2082O\u2086</text>
+  <text x="234" y="82" font-size="9" fill="#E65100">6O\u2082</text>
+  <text x="300" y="72" text-anchor="middle" font-size="8" fill="#666">酶/线粒体</text>
+  <text x="344" y="68" font-size="9" fill="#666">6CO\u2082</text>
+  <text x="344" y="82" font-size="9" fill="#666">6H\u2082O</text>
+  <text x="300" y="98" text-anchor="middle" font-size="9" fill="#666">分解有机物 \u2192 释放能量</text>
+  <text x="300" y="115" text-anchor="middle" font-size="8" fill="#888">原料：有机物 + O\u2082</text>
+  <text x="300" y="128" text-anchor="middle" font-size="8" fill="#888">产物：CO\u2082 + H\u2082O</text>
+  <text x="300" y="141" text-anchor="middle" font-size="8" fill="#888">场所：线粒体 / 时刻进行</text>
+</svg>`
+};
+
+// ==================== RENDER ====================
+const app = document.getElementById('app');
+const nav = document.getElementById('periodNav');
+
+// Navigation
+KNOWLEDGE.forEach((period, i) => {
+  const btn = document.createElement('button');
+  btn.className = `period-btn${i === 0 ? ' active' : ''}`;
+  btn.textContent = period.period;
+  btn.onclick = () => {
+    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(period.id).scrollIntoView({ behavior: 'smooth' });
+  };
+  nav.appendChild(btn);
+});
+
+// Which SVGs to insert per chapter
+const CHAPTER_SVGS = {
+  'kaodian-19': ['seed'],
+  'kaodian-20': ['root'],
+  'kaodian-21': ['flower'],
+  'kaodian-22': ['leaf'],
+  'kaodian-27': ['phoresp']
+};
+
+// Build page
+function buildPage() {
+  let html = '';
+
+  KNOWLEDGE.forEach(period => {
+    html += `<div class="chapter" id="${period.id}">`;
+    period.chapters.forEach(ch => {
+      html += `<div class="chapter-header"><div class="chapter-num">${ch.id.split('-')[1]}</div><div><div class="chapter-title">${ch.title}</div></div></div>`;
+      // Insert SVG for matching chapters
+      const svgs = CHAPTER_SVGS[ch.id] || [];
+      svgs.forEach(svgKey => {
+        if (SVGS[svgKey]) {
+          html += `<div class="svg-diagram">${SVGS[svgKey]}</div>`;
+        }
+      });
+      ch.points.forEach(pt => {
+        // Process text to mark keywords
+        let text = pt.text;
+        if (pt.kws) {
+          Object.keys(pt.kws).forEach(kw => {
+            const idx = text.indexOf(kw);
+            if (idx >= 0) {
+              const before = text.substring(0, idx);
+              const after = text.substring(idx + kw.length);
+              text = before + `<span class="kw" data-keyword="${kw}" data-chapter="${ch.id}" data-point="${pt.num}">${kw}</span>` + after;
+            }
+          });
+        }
+
+        html += `<div class="kp-card"><div class="kp-header" onclick="toggleDetail(this, event)">`;
+        html += `<div class="kp-num">${pt.num}</div>`;
+        html += `<div class="kp-text">${text}</div>`;
+        html += `</div></div>`;
+      });
+    });
+    html += `</div>`;
+  });
+
+  app.innerHTML = html;
+}
+
+buildPage();
+
+// ==================== INTERACTIONS ====================
+
+// Format textbook content for better readability
+function formatTbContent(text) {
+  let paras = text.split(/(?<=[。！？])/);
+  return paras.map(p => {
+    if (!p.trim()) return '';
+    let formatted = p;
+    // Highlight numbers/years
+    formatted = formatted.replace(/(\d{1,4})(\u2103|\u00b5m|mm|cm|dm|m|h)/g, `<span class="hl-year">$1$2</span>`);
+    // Highlight key biology terms
+    const terms = [
+      `光合作用`, `呼吸作用`, `蒸腾作用`, `传粉`, `受精`, `双受精`,
+      `叶绿体`, `线粒体`, `叶绿素`, `气孔`, `保卫细胞`,
+      `导管`, `筛管`, `叶脉`, `胚珠`, `子房`, `花药`, `花丝`,
+      `胚芽`, `胚轴`, `胚根`, `子叶`, `种皮`, `胚乳`,
+      `根冠`, `分生区`, `伸长区`, `成熟区`, `根毛`,
+      `栅栏组织`, `海绵组织`, `角质层`,
+      `光补偿点`, `光饱和点`, `净光合速率`, `光合午休`,
+      `受精卵`, `胚泡`, `着床`, `胚胎`, `胎儿`, `胎盘`, `脐带`,
+      `精子`, `卵细胞`, `睾丸`, `卵巢`, `输卵管`, `子宫`,
+      `ATP`, `淀粉`, `有机物`, `无机盐`,
+      `合理密植`, `顶端优势`, `烧苗`, `带土移栽`,
+      `阳生植物`, `阴生植物`, `C\u2083植物`, `C\u2084植物`,
+      `糖酵解`, `无氧呼吸`, `有氧呼吸`,
+      `休眠期`, `光反应`, `暗反应`
+    ];
+    terms.forEach(t => {
+      const re = new RegExp(t.replace(/[.*+?^${}()|[\]\\]/g, `\\$&`), `g`);
+      formatted = formatted.replace(re, `<span class="hl-term">${t}</span>`);
+    });
+    // Highlight scientists/persons
+    const persons = [`胰岛素`, `达尔文`, `施莱登`, `施旺`];
+    persons.forEach(pr => {
+      const re = new RegExp(pr.replace(/[.*+?^${}()|[\]\\]/g, `\\$&`), `g`);
+      formatted = formatted.replace(re, `<span class="hl-person">${pr}</span>`);
+    });
+    // Highlight process terms
+    const processes = [`暗处理`, `遮光`, `酒精脱色`, `漂洗`, `碘液`, `隔水加热`,
+      `田间松土`, `低温储存`, `晾晒粮食`, `人工辅助授粉`,
+      `薄肥勤施`, `气调储藏`
+    ];
+    processes.forEach(pr => {
+      const re = new RegExp(pr.replace(/[.*+?^${}()|[\]\\]/g, `\\$&`), `g`);
+      formatted = formatted.replace(re, `<span class="hl-process">${pr}</span>`);
+    });
+    return `<p>${formatted}</p>`;
+  }).filter(p => p.trim()).join('');
+}
+
+function toggleDetail(header, evt) {
+  if (evt && evt.target && evt.target.closest && evt.target.closest(`.kw`)) return;
+  const card = header.closest(`.kp-card`);
+  let detail = card.querySelector(`.kp-detail`);
+  if (!detail) {
+    detail = document.createElement(`div`);
+    detail.className = `kp-detail show`;
+    detail.innerHTML = `<div class="detail-tabs"><div class="detail-tab active">\ud83d\udcd6 课本详解</div><div class="detail-tab">\ud83d\udcdd 相关真题</div></div><div class="detail-body" style="padding:10px 16px;color:#999;font-size:12px">点击红色关键词查看课本详解内容</div>`;
+    card.appendChild(detail);
+  } else {
+    detail.classList.toggle(`show`);
+    detail.style.display = detail.classList.contains(`show`) ? `block` : `none`;
+  }
+}
+
+// Click on keyword to open modal
+document.addEventListener(`click`, function(e) {
+  const kw = e.target.closest(`.kw`);
+  if (kw) {
+    e.stopPropagation();
+    const keyword = kw.dataset.keyword;
+    const chapterId = kw.dataset.chapter;
+    const pointNum = kw.dataset.point;
+
+    let foundData = null;
+    KNOWLEDGE.forEach(p => {
+      p.chapters.forEach(ch => {
+        if (ch.id === chapterId) {
+          ch.points.forEach(pt => {
+            if (pt.num == pointNum && pt.kws && pt.kws[keyword]) {
+              foundData = { keyword, ...pt.kws[keyword], chapter: ch.title };
+            }
+          });
+        }
+      });
+    });
+
+    if (foundData) {
+      document.getElementById(`modalTitle`).textContent = foundData.keyword;
+
+      let tbContent = foundData.tb ? formatTbContent(foundData.tb) : `<p style="color:#999">暂无内容</p>`;
+      let examContent = foundData.exam ? `<p>${foundData.exam}</p>` : `<p style="color:#999">\ud83d\udccc 等你发了真题，我会补到这里～</p>`;
+
+      document.getElementById(`modalBody`).innerHTML = `
+        <div class="detail-tabs" style="margin-bottom:14px">
+          <div class="detail-tab active" onclick="switchModalTab(this,0)">\ud83d\udcd6 课本详解</div>
+          <div class="detail-tab" onclick="switchModalTab(this,1)">\ud83d\udcdd 相关真题</div>
+        </div>
+        <div class="tab-content" data-tab="0">${tbContent}</div>
+        <div class="tab-content" data-tab="1" style="display:none">${examContent}</div>
+      `;
+      document.getElementById(`modalOverlay`).classList.add(`show`);
+      applyHideMode();
+    }
+  }
+});
+
+function switchModalTab(tab, index) {
+  const tabs = tab.parentElement.querySelectorAll(`.detail-tab`);
+  tabs.forEach(t => t.classList.remove(`active`));
+  tab.classList.add(`active`);
+  const body = document.getElementById(`modalBody`);
+  body.querySelectorAll(`.tab-content`).forEach(c => c.style.display = `none`);
+  body.querySelectorAll(`.tab-content`)[index].style.display = `block`;
+  applyHideMode();
+}
+
+// ====== 隐藏答案模式 ======
+let hideMode = false;
+
+function toggleHideMode(){
+  hideMode = !hideMode;
+  document.getElementById('hideToggle').classList.toggle('on', hideMode);
+  if(hideMode) applyHideMode();
+  else resetHideMode();
+}
+
+function applyHideMode(){
+  if(!hideMode) return;
+  document.querySelectorAll('.kw').forEach(el => {
+    if(!el.dataset.originalText){
+      el.dataset.originalText = el.textContent;
+    }
+    el.textContent = el.textContent.replace(/./g, '_');
+    el.classList.add('hidden');
+  });
+}
+
+function resetHideMode(){
+  document.querySelectorAll('.kw').forEach(el => {
+    if(el.dataset.originalText){
+      el.textContent = el.dataset.originalText;
+    }
+    el.classList.remove('hidden');
+  });
+}
+
+function closeModal() {
+  document.getElementById(`modalOverlay`).classList.remove(`show`);
+}
+
+// Close modal on overlay click
+document.getElementById(`modalOverlay`).onclick = function(e) {
+  if (e.target === this) closeModal();
+};
+
+// Escape key closes modal
+document.addEventListener(`keydown`, e => {
+  if (e.key === `Escape`) closeModal();
+});
+
+console.log(`\u2705 \u751f\u7269\u77e5\u8bc6\u70b9\u9875\u9762\u5df2\u52a0\u8f7d\uff01`);
+</script>
+</body>
+</html>

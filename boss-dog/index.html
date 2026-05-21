@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>The Boss Dog of Blossom Street</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#FEFCF3;color:#2C3E50;font-family:-apple-system,'Segoe UI',sans-serif;line-height:1.8;font-size:18px}
+.container{max-width:1200px;margin:0 auto;padding:0 16px}
+
+header{position:sticky;top:0;z-index:40;background:rgba(254,252,243,.97);backdrop-filter:blur(8px);border-bottom:1px solid #E8DCC8;padding:10px 0}
+header .container{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+header h1{font-size:18px;color:#D35400;display:flex;align-items:center;gap:6px}
+header h1 .icon{width:30px;height:30px;border-radius:8px;background:#FFF0E0;display:flex;align-items:center;justify-content:center;font-size:14px}
+
+.tab-nav{display:flex;gap:4px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:2px 0}
+.tab-btn{padding:5px 14px;border-radius:16px;border:none;font-size:13px;cursor:pointer;white-space:nowrap;background:#F0EBE0;color:#666;transition:all .2s}
+.tab-btn.active{background:#D35400;color:#fff}
+
+/* Part card - two column layout */
+.part-card{margin-bottom:32px;scroll-margin-top:120px;background:#fff;border-radius:16px;border:1px solid #E8DCC8;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.part-card-header{display:flex;align-items:center;gap:10px;padding:14px 20px;background:#FFF8F0;border-bottom:1px solid #E8DCC8}
+.part-number{width:30px;height:30px;border-radius:50%;background:#D35400;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.part-title{font-size:18px;color:#2C3E50;font-weight:600}
+.part-subtitle{font-size:12px;color:#999;margin-left:40px;margin-top:-4px}
+
+.part-body{display:flex;gap:0}
+.part-story{flex:7;padding:20px 24px;border-right:1px solid #F0EBE0}
+.part-story p{margin-bottom:14px;font-size:17px;line-height:1.9;color:#3D3D3D}
+
+.part-sidebar{flex:3;min-width:220px;padding:16px}
+.sidebar-section{margin-bottom:16px}
+.sidebar-section:last-child{margin-bottom:0}
+.sidebar-section-title{font-size:12px;font-weight:600;color:#D35400;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;display:flex;align-items:center;gap:4px}
+
+.vocab-item{display:flex;justify-content:space-between;align-items:center;padding:5px 8px;border-radius:6px;cursor:pointer;transition:background .15s;gap:8px}
+.vocab-item:hover{background:#FFF5EB}
+.vocab-item .en{font-size:13px;color:#D35400;font-weight:600}
+.vocab-item .cn{font-size:12px;color:#888}
+
+.q-list{display:flex;flex-wrap:wrap;gap:4px}
+.q-mini{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:18px;padding:0 5px;border-radius:9px;font-size:10px;font-weight:600;cursor:pointer;transition:all .2s}
+.q-mini.fill{background:#D35400;color:#fff}
+.q-mini.reading,.q-mini.character,.q-mini.writing{background:#8E44AD;color:#fff}
+.q-mini:hover{transform:scale(1.08);opacity:.9}
+
+/* 正文内生词高亮 */
+.vocab-word{color:#D35400;font-weight:600;border-bottom:2px solid rgba(211,84,0,.4);cursor:pointer;padding:0 2px;border-radius:3px;transition:all .2s}
+.vocab-word.active{background:rgba(211,84,0,.12)}
+
+/* 正文内题号标签 */
+.q-badge{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:20px;padding:0 5px;border-radius:10px;background:#D35400;color:#fff;font-size:10px;font-weight:600;cursor:pointer;vertical-align:middle;margin:0 2px;transition:all .2s}
+.q-badge:hover,.q-badge.active{background:#E67E22;transform:scale(1.05)}
+.q-badge.exercise{background:#8E44AD}
+
+/* 释义小卡片 */
+.tooltip-card{position:fixed;z-index:1000;background:#fff;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.15);padding:12px 16px;max-width:300px;border:1px solid #F0EBE0;display:none}
+.tooltip-card.show{display:block}
+.tooltip-card .word{font-size:15px;font-weight:700;color:#D35400;margin-bottom:2px}
+.tooltip-card .meaning{font-size:14px;color:#2C3E50;margin-bottom:2px}
+.tooltip-card .sentence{font-size:12px;color:#999;font-style:italic}
+.tooltip-close{position:absolute;top:5px;right:7px;border:none;background:0 0;font-size:14px;cursor:pointer;color:#ccc;line-height:1}
+
+/* 题目答案卡片 */
+.overlay{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.25);display:none}
+.overlay.show{display:block}
+.question-card{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1001;background:#fff;border-radius:14px;box-shadow:0 8px 40px rgba(0,0,0,.2);padding:22px 26px;max-width:460px;width:90%;display:none;max-height:80vh;overflow-y:auto}
+.question-card.show{display:block}
+.question-card .q-hdr{font-size:13px;color:#D35400;font-weight:600;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.question-card .q-hdr .close-q{cursor:pointer;font-size:18px;color:#ccc;border:none;background:0 0}
+.question-card .q-body{font-size:15px;color:#2C3E50;margin-bottom:10px;line-height:1.6}
+.question-card .q-answer{background:#FFF8F0;border-radius:10px;padding:12px 16px;border-left:3px solid #D35400}
+.question-card .q-answer .label{font-size:11px;color:#D35400;font-weight:600;margin-bottom:3px}
+.question-card .q-answer .content{font-size:14px;color:#3D3D3D}
+
+/* 响应式 */
+@media(max-width:768px){
+  .part-body{flex-direction:column}
+  .part-story{border-right:0;border-bottom:1px solid #F0EBE0;padding:16px 18px}
+  .part-sidebar{padding:14px 18px}
+  body{font-size:16px}
+  .part-story p{font-size:16px}
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="container">
+  <h1><span class="icon">📖</span> The Boss Dog of Blossom Street</h1>
+  <div class="tab-nav" id="tabNav"></div>
+</div>
+</header>
+
+<div class="container" id="storyArea"></div>
+
+<!-- 释义小卡片 -->
+<div class="tooltip-card" id="tooltipCard">
+  <button class="tooltip-close" onclick="closeTooltip()">✕</button>
+  <div class="word" id="tipWord"></div>
+  <div class="meaning" id="tipMeaning"></div>
+  <div class="sentence" id="tipSentence"></div>
+</div>
+
+<!-- 题目卡片 -->
+<div class="overlay" id="overlay" onclick="closeQuestion()"></div>
+<div class="question-card" id="questionCard">
+  <div class="q-hdr"><span id="qHeader"></span><button class="close-q" onclick="closeQuestion()">✕</button></div>
+  <div class="q-body" id="qBody"></div>
+  <div class="q-answer"><div class="label">✅ 参考答案</div><div class="content" id="qAnswer"></div></div>
+</div>
+
+<script>
+const STORY = [
+  {id:"part1",title:"Snap the Boss Dog",cn:"花朵街的狗老大",
+    p:[
+      "Snap was a small black and brown dog. He was the boss dog of Blossom Street. One Saturday morning he walked up and down Blossom Street as usual. [Q1] He sniffed all the doorsteps and lampposts. He wagged his tail at all the children who saved scraps for him. He poked his head into baby Kelly&#39;s pram. Kelly laughed and touched Snap&#39;s wet nose. Then Snap made sure that the dogs and cats on the street were in their places.",
+      "[Q9] Snap trotted back to his own door. Everything seemed fine on Blossom Street. But everything was not fine.",
+      "Snap&#39;s owners, Ada and Harry, were at home. This was odd. They always went to work on Saturday mornings. There were boxes everywhere. Harry was taking a bed apart. Ada was putting cups into a box. [Q10]",
+      'Hello, Snap, she said, as he came in. Snap sniffed the boxes. You&#39;d better have your Doggy Chunks before the van comes.',
+      'What van? Snap thought. He soon found out. A big van came to the front of the house. Two men helped Harry and Ada to put all their things in the van.',
+      'I can&#39;t move away! thought Snap. [Q2] Who&#39;s going to look after Blossom Street? Who will play with the children and keep the other dogs off the street? Who will make sure the cats stay on the back yard walls?',
+      'Come on, Snap, called Harry. Say goodbye to Blossom Street. He picked Snap up and put him in the front of the van.',
+      'The children on Blossom Street came out to wave as the van set off. Kelly&#39;s mum gave Snap a bit of cake.'
+    ]},
+  {id:"part2",title:"A New Home, A Plan",cn:"新家，新计划",
+    p:[
+      "The van had to go slowly all the way to the new house. There was a big orange bus in front of it. Snap watched the bus and it gave him an idea. [Q11] By the time he got to the new house he had a plan.",
+      "Snap felt a bit happier when he jumped out of the van. [Q3] He went to sniff every corner of his new home.",
+      "The next day was Sunday and Ada and Harry had to unpack things. The new house had a garden at the back instead of a yard. [Q4]",
+      "The dogs round here stay in their own gardens, Ada told Snap.",
+      'Snap went to see what was at the end of the garden and he heard a yapping sound. Something was trying to get through the fence. [Q5]',
+      "It was a little Yorkie dog with a red ribbon tied in a bow on top of its head.",
+      'Snap couldn&#39;t believe it. Ugh! he thought. What a wimp! [Q12]',
+      'That night he fell asleep [Q6] thinking of his plan for keeping his eye on Blossom Street. [Q6]',
+      'Opening doors was easy for a clever dog like Snap. [Q14c]'
+    ]},
+  {id:"part3",title:"The Great Escape",cn:"大逃亡",
+    p:[
+      "He set off down the path and out of the front gate. He stopped at the bus stop.",
+      "When the big orange bus came he jumped on behind them so the bus driver didn&#39;t notice him.",
+      "Soon they came to Blossom Street and Snap got off behind a man with a shopping bag."
+    ]},
+  {id:"part4",title:"Back on Blossom Street",cn:"回到花朵街",
+    p:[
+      "Snap was already running down Blossom Street. He sniffed at all the doorsteps and the lampposts.",
+      "He put his head into Kelly&#39;s pram. Kelly laughed so much that her mum looked.",
+      'Snap! she cried in surprise. [Q13] What are you doing here?',
+      "Come inside, said Kelly&#39;s mum. There&#39;s some meat left from yesterday.",
+      'When the children came home they yelled, Snap! Snap! They patted him and hugged him. [Q13]',
+      'In the end, Kelly&#39;s mum set off to Snap&#39;s new house. [Q7]'
+    ]},
+  {id:"part5",title:"The Secret is Out",cn:"秘密暴露了",
+    p:[
+      'I&#39;ve come about Snap. Oh, he&#39;s here! Of course, said Ada. He was fast asleep in the kitchen.',
+      'Snap understands every word, you know. Rubbish! said Harry.',
+      "Next day Ada watched Snap get on the big orange bus. [Q8] What a clever dog! she thought. [Q14c]"
+    ]},
+  {id:"part6",title:"Snap Goes by Bus!",cn:"Snap坐公交！",
+    p:[
+      "At half past four Snap trotted off and caught the bus home.",
+      'More like a naughty dog, I think. [Q14n]',
+      "The headline said, Snap goes by Bus! And Snap is still the boss dog of Blossom Street. [Q15]"
+    ]}
+];
+
+const VOCAB = {
+  part1:[
+    {w:"brown",m:"棕色的",s:"a small black and brown dog"},
+    {w:"sniffed",m:"嗅，闻",s:"He sniffed all the doorsteps."},
+    {w:"doorsteps",m:"门阶",s:"He sniffed all the doorsteps."},
+    {w:"lampposts",m:"路灯杆",s:"sniffed all the lampposts"},
+    {w:"wagged his tail",m:"摇尾巴",s:"He wagged his tail at the children."},
+    {w:"saved scraps",m:"留残羹剩饭",s:"the children who saved scraps for him"},
+    {w:"pram",m:"婴儿车",s:"poked his head into the pram"},
+    {w:"trotted",m:"小跑",s:"Snap trotted back to his own door."},
+    {w:"odd",m:"反常的",s:"This was odd."},
+    {w:"van",m:"货车",s:"A big van came."},
+    {w:"look after",m:"照管",s:"look after Blossom Street"},
+    {w:"picked up",m:"抱起",s:"He picked Snap up."},
+    {w:"set off",m:"出发",s:"the van set off"}
+  ],
+  part2:[
+    {w:"instead of",m:"而不是",s:"garden instead of a yard"},
+    {w:"yapping",m:"汪汪叫的",s:"a yapping sound"},
+    {w:"fence",m:"栅栏",s:"get through the fence"},
+    {w:"Yorkie",m:"约克夏狗",s:"a little Yorkie dog"},
+    {w:"ribbon",m:"丝带",s:"a red ribbon"},
+    {w:"wimp",m:"窝囊废",s:"What a wimp!"},
+    {w:"clever",m:"聪明的",s:"a clever dog like Snap"},
+    {w:"fell asleep",m:"入睡",s:"fell asleep thinking"},
+    {w:"keeping his eye on",m:"照看",s:"keeping his eye on Blossom Street"}
+  ],
+  part3:[
+    {w:"got off",m:"下车",s:"Snap got off behind a man"}
+  ],
+  part4:[
+    {w:"cried in surprise",m:"吃惊地叫",s:"she cried in surprise"},
+    {w:"yelled",m:"大喊",s:"the children yelled"},
+    {w:"patted",m:"轻拍",s:"They patted him."},
+    {w:"hugged",m:"拥抱",s:"They hugged him."}
+  ],
+  part5:[
+    {w:"fast asleep",m:"熟睡",s:"fast asleep in the kitchen"},
+    {w:"Rubbish!",m:"胡扯！",s:"Rubbish! said Harry."},
+    {w:"get on",m:"上车",s:"get on the big orange bus"}
+  ],
+  part6:[
+    {w:"trotted off",m:"小跑离开",s:"trotted off to the bus stop"},
+    {w:"caught the bus",m:"坐公交",s:"caught the bus home"},
+    {w:"naughty",m:"顽皮的",s:"a naughty dog"},
+    {w:"even though",m:"尽管",s:"even though he doesn&#39;t live there"}
+  ]
+};
+
+const QUESTIONS = [
+  {id:"Q1",type:"fill",q:'One Saturday morning he walked ___ Blossom Street.',a:'up and down',full:'walked up and down Blossom Street',p:'part1'},
+  {id:"Q2",type:"fill",q:'"I can&#39;t ___!" thought Snap. "Who&#39;s going to ___ Blossom Street?"',a:'move away, look after',full:'I can&#39;t move away! ... look after Blossom Street',p:'part1'},
+  {id:"Q3",type:"fill",q:'Snap felt happier when he ___ the van.',a:'jumped out of',p:'part2'},
+  {id:"Q4",type:"fill",q:'The new house had a garden at the back ___ a yard.',a:'instead of',p:'part2'},
+  {id:"Q5",type:"fill",q:'Something was trying to ___ the fence.',a:'get through',p:'part2'},
+  {id:"Q6",type:"fill",q:'That night he ___ thinking of his plan for ___ Blossom Street.',a:'fell asleep, keeping his eye on',p:'part2'},
+  {id:"Q7",type:"fill",q:'In the end, Kelly&#39;s mum ___ to Snap&#39;s new house.',a:'set off',p:'part4'},
+  {id:"Q8",type:"fill",q:'Next day Ada watched Snap ___ the big orange bus.',a:'get on',p:'part5'},
+  {id:"Q9",type:"reading",q:'What did Snap do at Blossom Street?',a:'Walked up and down, sniffed doorsteps, wagged tail, poked head into pram, kept dogs and cats in place.',p:'part1'},
+  {id:"Q10",type:"reading",q:'Something was not fine. What?',a:'Ada and Harry were moving away.',p:'part1'},
+  {id:"Q11",type:"reading",q:'What was Snap&#39;s idea when he saw the bus?',a:'He could take the bus back to Blossom Street.',p:'part2'},
+  {id:"Q12",type:"reading",q:'Did Snap like his new house? How do you know?',a:'No. He called Foofoo a wimp and said "Let me get back to Blossom Street."',p:'part2'},
+  {id:"Q13",type:"reading",q:'How did people react when they saw Snap again?',a:'Kelly&#39;s mum cried in surprise. Children yelled and hugged him.',p:'part4'},
+  {id:"Q14",type:"character",q:'What are Snap&#39;s characters? Give reasons.',a:'Clever — opened doors, rode bus alone. Responsible — looked after Blossom Street. Naughty — called naughty dog.',p:'多处'},
+  {id:"Q15",type:"writing",q:'Write a news report about Snap (≥50 words).',a:'THE DAILY SNOOP — EXCLUSIVE! SNAP GOES BY BUS! The cleverest dog in town takes the bus by himself every morning. At 4:30 he catches the bus home. More like a naughty dog, said Harry. But Snap is still the boss dog!',p:'part6'}
+];
+
+// ====== 渲染 ======
+const vocabMap = {};
+for(const [pid,vws] of Object.entries(VOCAB)){
+  for(const v of vws) vocabMap[v.w.toLowerCase()]=v;
+}
+
+function esc(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$1')}
+
+function renderPara(text,pid){
+  let parts = text.split(/(\[Q\d+\w*\])/);
+  return parts.map(seg=>{
+    const m = seg.match(/^\[(Q\d+\w*)\]$/);
+    if(m){
+      const q = QUESTIONS.find(x=>x.id===m[1]);
+      if(q) return `<span class="q-badge ${q.type==='fill'?'':'exercise'}" onclick="showQ('${q.id}')">${q.id}</span>`;
+      return seg;
+    }
+    let r = seg;
+    const sorted = Object.values(vocabMap).sort((a,b)=>b.w.length-a.w.length);
+    for(const v of sorted){
+      const re = new RegExp('\\b('+esc(v.w)+')\\b','gi');
+      r = r.replace(re,`<span class="vocab-word" data-word="${v.w.toLowerCase()}">$1</span>`);
+    }
+    return r;
+  }).join('');
+}
+
+function render(){
+  const area = document.getElementById('storyArea');
+  const nav = document.getElementById('tabNav');
+  area.innerHTML='';nav.innerHTML='';
+
+  STORY.forEach((p,i)=>{
+    const vws = VOCAB[p.id]||[];
+    const qs = QUESTIONS.filter(q=>q.p===p.id||(p.id==='part1'?['part1'].includes(q.p):false)||(p.id==='part2'?['part2'].includes(q.p):false)||(p.id==='part4'?['part4'].includes(q.p):false)||(p.id==='part5'?['part5'].includes(q.p):false)||(p.id==='part6'?['part6'].includes(q.p):false));
+    // simpler: just check part prefix
+    const partQs = QUESTIONS.filter(q=>q.p===p.id||(p.id==='part1'&&q.id==='Q14'));
+    
+    // collect all Qs for this part
+    const allQs = QUESTIONS.filter(q=>{
+      if(q.p===p.id) return true;
+      if(q.id==='Q14' && (p.id==='part2'||p.id==='part5'||p.id==='part6')) return true;
+      return false;
+    });
+
+    const card = document.createElement('div');
+    card.className='part-card';card.id=p.id;
+
+    // sidebar
+    let sideHtml = '';
+    if(vws.length){
+      sideHtml += `<div class="sidebar-section"><div class="sidebar-section-title">📝 单词 · ${vws.length}个</div>`;
+      sideHtml += vws.map(v=>`<div class="vocab-item" onclick="scrollToWord('${v.w.toLowerCase()}')"><span class="en">${v.w}</span><span class="cn">${v.m}</span></div>`).join('');
+      sideHtml += '</div>';
+    }
+    if(allQs.length){
+      sideHtml += `<div class="sidebar-section"><div class="sidebar-section-title">🏷️ 练习题</div><div class="q-list">`;
+      sideHtml += allQs.map(q=>`<span class="q-mini ${q.type}" onclick="showQ('${q.id}')">${q.id}</span>`).join('');
+      sideHtml += '</div></div>';
+    }
+
+    card.innerHTML = `
+      <div class="part-card-header">
+        <span class="part-number">${i+1}</span>
+        <span class="part-title">${p.title}</span>
+        <span style="font-size:12px;color:#999;margin-left:auto">${p.cn}</span>
+      </div>
+      <div class="part-body">
+        <div class="part-story">
+          ${p.p.map(para=>`<p>${renderPara(para,p.id)}</p>`).join('')}
+        </div>
+        <div class="part-sidebar">${sideHtml}</div>
+      </div>`;
+    area.appendChild(card);
+
+    const btn = document.createElement('button');
+    btn.className='tab-btn'+(i===0?' active':'');
+    btn.textContent='Part '+(i+1);
+    btn.onclick=()=>{document.getElementById(p.id).scrollIntoView({behavior:'smooth'});updateTab(p.id);};
+    nav.appendChild(btn);
+  });
+}
+
+// ====== 交互 ======
+let activeVocab=null;
+function showVocabTip(e,word){
+  e.stopPropagation();
+  const v=vocabMap[word];
+  if(!v) return;
+  if(activeVocab===word){closeTooltip();return;}
+  activeVocab=word;
+  const card=document.getElementById('tooltipCard');
+  document.getElementById('tipWord').textContent=v.w;
+  document.getElementById('tipMeaning').textContent=v.m;
+  document.getElementById('tipSentence').textContent='"'+v.s+'"';
+  const rect=e.target.getBoundingClientRect();
+  let top=rect.bottom+6,left=rect.left;
+  if(left+300>window.innerWidth) left=window.innerWidth-310;
+  if(top+100>window.innerHeight) top=rect.top-100;
+  card.style.top=top+'px';card.style.left=Math.max(6,left)+'px';
+  card.classList.add('show');
+  document.addEventListener('click',handleDocClick);
+}
+function closeTooltip(){document.getElementById('tooltipCard').classList.remove('show');activeVocab=null;document.removeEventListener('click',handleDocClick);}
+function handleDocClick(e){if(!e.target.closest('.tooltip-card')&&!e.target.closest('.vocab-word'))closeTooltip();}
+
+function showQ(id){
+  const q=QUESTIONS.find(x=>x.id===id);
+  if(!q) return;
+  const typeMap={fill:'填空',reading:'阅读理解',character:'性格分析',writing:'写作'};
+  document.getElementById('qHeader').textContent = q.id+' · '+ (typeMap[q.type]||'');
+  document.getElementById('qBody').innerHTML = q.type==='fill'? q.q+(q.full?'<br><br><span style="font-size:13px;color:#999">完整句子：'+q.full+'</span>':'') : q.q;
+  document.getElementById('qAnswer').textContent = q.a;
+  document.getElementById('questionCard').classList.add('show');
+  document.getElementById('overlay').classList.add('show');
+}
+function closeQuestion(){document.getElementById('questionCard').classList.remove('show');document.getElementById('overlay').classList.remove('show');}
+
+function scrollToWord(word){
+  const el=document.querySelector(`[data-word="${word}"]`);
+  if(el){
+    el.scrollIntoView({behavior:'smooth',block:'center'});
+    el.classList.add('active');
+    setTimeout(()=>el.classList.remove('active'),2000);
+    const event = {target:el,stopPropagation:()=>{}};
+    showVocabTip(event,word);
+  }
+}
+
+function updateTab(id){
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{b.classList.toggle('active',STORY[i].id===id);});
+}
+
+document.addEventListener('scroll',()=>{
+  const sy=window.scrollY+140;
+  for(const p of STORY){
+    const el=document.getElementById(p.id);
+    if(el&&el.offsetTop<=sy&&el.offsetTop+el.offsetHeight>sy){updateTab(p.id);break;}
+  }
+});
+
+// Vocab word click handler (delegate)
+document.addEventListener('click',function(e){
+  const el=e.target.closest('.vocab-word');
+  if(el){showVocabTip(e,el.dataset.word);}
+});
+
+render();
+</script>
+</body>
+</html>
