@@ -784,12 +784,16 @@ function renderChoiceQuestions(html) {
             // Extract answer
             var aMatch = card.match(/a-text[^>]*>([^<]*)<\/span>/);
             var answer = aMatch ? aMatch[1].trim() : '';
+            // Extract analysis (解析)
+            var parseMatch = card.match(/exam-parse[^>]*>([^<]*)<\/span>/);
+            var analysis = parseMatch ? parseMatch[1].trim() : '';
             if (question && opts.length > 0) {
               periodQuestions.push({
                 source: source,
                 question: question,
                 options: opts,
-                answer: answer
+                answer: answer,
+                analysis: analysis
               });
             }
           }
@@ -810,11 +814,10 @@ function renderChoiceQuestions(html) {
         cqHtml += '<span class="cq-expand">▾</span></div>';
         cqHtml += '<div class="cq-options">';
         q.options.forEach(function(o) {
-          var isCorrect = q.answer.indexOf(o.charAt(0)) === 0;
-          cqHtml += '<span class="opt' + (isCorrect ? ' opt-correct"' : '"') + '>' + o + '</span>';
+          cqHtml += '<span class="opt">' + o + '</span>';
         });
         cqHtml += '</div>';
-        cqHtml += '<div class="cq-answer" id="' + cqId + '"><span style="color:#999;font-weight:400">答案：</span>' + q.answer + '</div>';
+        cqHtml += '<div class="cq-answer" id="' + cqId + '"><span style="color:#999;font-weight:400">答案：</span>' + q.answer + (q.analysis ? '<br><span style="color:#666;font-weight:400;font-size:12px">解析：' + q.analysis + '</span>' : '') + '</div>';
         cqHtml += '</div>';
       });
       cqHtml += '</div>';
