@@ -2874,7 +2874,9 @@ function rdAnalyze(id,qId,idx){
   status.innerHTML='<span class="ld"></span> AI 分析中……';
   resultDiv.classList.remove('sh');
   var qf=q.q+(q.s?'\n'+q.s:'');
-  var sp="你是一位经验丰富的初中语文教师。请按以下三点分析学生的答案：【缺失点】【原因分析】【改进建议】。";
+  var sp="分析正确答案是什么、为什么对，再对比孩子答案指出哪里不完善或错误。简洁。";
+  var totalLen=sp.length+qf.length+(q.a||'').length+studentAnswer.length+50;
+  if(totalLen>3000){status.textContent='⚠️ 输入过长('+totalLen+'字)，已取消请求';return;}
   var xhr=new XMLHttpRequest();
   xhr.open('POST',API_URL,true);
   xhr.setRequestHeader('Content-Type','application/json');
@@ -2890,7 +2892,7 @@ function rdAnalyze(id,qId,idx){
     }catch(e){status.textContent='❌ 解析失败';}
   };
   xhr.onerror=function(){status.textContent='❌ 请求失败';};
-  xhr.send(JSON.stringify({model:MODEL,messages:[{role:'system',content:sp},{role:'user',content:'## 题目\n'+qf+'\n\n## 正确答案\n'+q.a+'\n\n## 学生的回答\n'+studentAnswer+'\n\n请按【缺失点】【原因分析】【改进建议】三点给出分析。'}],temperature:0.3,max_tokens:2000}));
+  xhr.send(JSON.stringify({model:MODEL,messages:[{role:'system',content:sp},{role:'user',content:'题目：'+qf+'\n正确答案：'+(q.a||'')+'\n学生答案：'+studentAnswer+'\n\n请分析正确答案为什么对，然后对比学生答案指出哪里不完善或错误。'}],temperature:0.3,max_tokens:800}));
 }
 function exAnalyze(id,qId,idx){
   var arr=EX_DATA[id];
@@ -2904,7 +2906,9 @@ function exAnalyze(id,qId,idx){
   var resultDiv=document.getElementById('r'+id+'_'+qId);
   status.innerHTML='<span class="ld"></span> AI 分析中……';
   resultDiv.classList.remove('sh');
-  var sp="你是一位经验丰富的初中语文教师。请按以下三点分析学生的答案：【缺失点】【原因分析】【改进建议】。";
+  var sp="分析正确答案是什么、为什么对，再对比孩子答案指出哪里不完善或错误。简洁。";
+  var totalLen=sp.length+(q.text||'').length+(q.correct||'').length+studentAnswer.length+50;
+  if(totalLen>3000){status.textContent='⚠️ 输入过长('+totalLen+'字)，已取消请求';return;}
   var xhr=new XMLHttpRequest();
   xhr.open('POST',API_URL,true);
   xhr.setRequestHeader('Content-Type','application/json');
@@ -2920,17 +2924,15 @@ function exAnalyze(id,qId,idx){
     }catch(e){status.textContent='❌ 解析失败';}
   };
   xhr.onerror=function(){status.textContent='❌ 请求失败';};
-  xhr.send(JSON.stringify({model:MODEL,messages:[{role:'system',content:sp},{role:'user',content:'## 题目\n'+q.text+'\n\n## 正确答案\n'+q.correct+'\n\n## 学生的回答\n'+studentAnswer+'\n\n请按【缺失点】【原因分析】【改进建议】三点给出分析。'}],temperature:0.3,max_tokens:2000}));
+  xhr.send(JSON.stringify({model:MODEL,messages:[{role:'system',content:sp},{role:'user',content:'题目：'+(q.text||'')+'\n正确答案：'+(q.correct||'')+'\n学生答案：'+studentAnswer+'\n\n请分析正确答案为什么对，然后对比学生答案指出哪里不完善或错误。'}],temperature:0.3,max_tokens:800}));
 }
 function showAnalysis(el,text){
   el.innerHTML='';
-  var m1=text.match(/【缺失点】([\s\S]*?)(?=【原因分析】|【改进建议】|$)/);
-  var m2=text.match(/【原因分析】([\s\S]*?)(?=【缺失点】|【改进建议】|$)/);
-  var m3=text.match(/【改进建议】([\s\S]*?)(?=【缺失点】|【原因分析】|$)/);
-  if(m1)el.innerHTML+='<div class="asec"><span class="sl miss">❌ 缺失点</span><div class="sc">'+m1[1].trim().replace(/\n/g,'<br>')+'</div></div>';
-  if(m2)el.innerHTML+='<div class="asec"><span class="sl reason">🤔 原因分析</span><div class="sc">'+m2[1].trim().replace(/\n/g,'<br>')+'</div></div>';
-  if(m3)el.innerHTML+='<div class="asec"><span class="sl suggest">💡 改进建议</span><div class="sc">'+m3[1].trim().replace(/\n/g,'<br>')+'</div></div>';
-  if(!m1&&!m2&&!m3)el.innerHTML='<div style="font-size:14px;line-height:1.8;white-space:pre-wrap;">'+text.replace(/</g,'&lt;')+'</div>';
+  var m1=text.match(/【正确答案】([\s\S]*?)(?=【对比分析】|$)/);
+  var m2=text.match(/【对比分析】([\s\S]*?)(?=【正确答案】|$)/);
+  if(m1)el.innerHTML+='<div class="asec"><span class="sl miss">✅ 正确答案分析</span><div class="sc">'+m1[1].trim().replace(/\n/g,'<br>')+'</div></div>';
+  if(m2)el.innerHTML+='<div class="asec"><span class="sl reason">🔍 对比分析</span><div class="sc">'+m2[1].trim().replace(/\n/g,'<br>')+'</div></div>';
+  if(!m1&&!m2)el.innerHTML='<div style="font-size:14px;line-height:1.8;white-space:pre-wrap;">'+text.replace(/</g,'&lt;')+'</div>';
   el.classList.add('sh');
 }
 function saveErr(id,qId,questionText,studentAnswer,analysis){
@@ -2952,7 +2954,7 @@ function renderErrBook(id){
       return;
     }
     container.innerHTML='<div class="eb"><h2 style="font-size:18px;margin-bottom:8px;">📖 错题本</h2><p style="font-size:13px;color:#888;margin-bottom:10px;">共 '+book.length+' 条分析记录 <button onclick="copyErrBook()" style="background:#555;color:#fff;padding:4px 10px;border:none;border-radius:4px;cursor:pointer;font-size:12px;vertical-align:middle;">📋 复制全部</button></p>'+book.map(function(e){
-      var m=e.analysis.match(/【缺失点】([\s\S]*?)(?=【原因分析】|【改进建议】|$)/);
+      var m=e.analysis.match(/【正确答案】([\s\S]*?)(?=【对比分析】|$)/)||e.analysis.match(/【缺失点】([\s\S]*?)(?=【原因分析】|【改进建议】|$)/);
       var ms=m?m[1].trim().substring(0,120)+(m[1].trim().length>120?'…':''):'';
       return '<div class="een"><button class="del" onclick="delErr(\''+e.id+'\')">✕</button><div class="meta">'+e.timestamp+'</div><div class="qt2">'+e.text+'</div><div class="asum"><strong style="color:#c0392b;">缺失点：</strong>'+ms+'</div><details style="margin-top:6px;font-size:13px;"><summary style="color:#2d5a27;cursor:pointer;">查看完整分析</summary><div style="margin-top:6px;padding:8px;background:#f9f9f9;border-radius:6px;line-height:1.7;white-space:pre-wrap;">'+(e.analysis||'').replace(/</g,'&lt;')+'</div></details></div>';
     }).join('')+'</div>';
