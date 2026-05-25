@@ -2951,12 +2951,28 @@ function renderErrBook(id){
       container.innerHTML='<div class="eb"><h2 style="font-size:18px;margin-bottom:8px;">📖 错题本</h2><p style="font-size:13px;color:#888;margin-bottom:10px;">共 0 条记录</p><div class="emp">📝 暂无分析记录，先做一道题吧</div></div>';
       return;
     }
-    container.innerHTML='<div class="eb"><h2 style="font-size:18px;margin-bottom:8px;">📖 错题本</h2><p style="font-size:13px;color:#888;margin-bottom:10px;">共 '+book.length+' 条分析记录</p>'+book.map(function(e){
+    container.innerHTML='<div class="eb"><h2 style="font-size:18px;margin-bottom:8px;">📖 错题本</h2><p style="font-size:13px;color:#888;margin-bottom:10px;">共 '+book.length+' 条分析记录 <button onclick="copyErrBook()" style="background:#555;color:#fff;padding:4px 10px;border:none;border-radius:4px;cursor:pointer;font-size:12px;vertical-align:middle;">📋 复制全部</button></p>'+book.map(function(e){
       var m=e.analysis.match(/【缺失点】([\s\S]*?)(?=【原因分析】|【改进建议】|$)/);
       var ms=m?m[1].trim().substring(0,120)+(m[1].trim().length>120?'…':''):'';
       return '<div class="een"><button class="del" onclick="delErr(\''+e.id+'\')">✕</button><div class="meta">'+e.timestamp+'</div><div class="qt2">'+e.text+'</div><div class="asum"><strong style="color:#c0392b;">缺失点：</strong>'+ms+'</div><details style="margin-top:6px;font-size:13px;"><summary style="color:#2d5a27;cursor:pointer;">查看完整分析</summary><div style="margin-top:6px;padding:8px;background:#f9f9f9;border-radius:6px;line-height:1.7;white-space:pre-wrap;">'+(e.analysis||'').replace(/</g,'&lt;')+'</div></details></div>';
     }).join('')+'</div>';
   }catch(e){}
+}
+function copyErrBook(){
+  try{
+    var book=JSON.parse(localStorage.getItem('err_all')||'[]');
+    if(book.length===0){alert('暂无记录可复制');return;}
+    var txt=book.map(function(e,i){
+      return '【'+(i+1)+'】'+e.text+'\n时间：'+e.timestamp+'\n我的答案：'+e.studentAnswer+'\n分析：'+(e.analysis||'')+'\n---';
+    }).join('\n\n');
+    var ta=document.createElement('textarea');
+    ta.value=txt;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert('✅ 已复制 '+book.length+' 条错题记录');
+  }catch(e){alert('复制失败，请手动选择复制');}
 }
 function delErr(entryId){
   try{
